@@ -6,6 +6,7 @@ import {
   getSnap,
   isLocalSnap,
   sendHello,
+  sendReset,
   shouldDisplayReconnectButton,
 } from '../utils';
 import {
@@ -132,6 +133,15 @@ const Index = () => {
     }
   };
 
+  const handleResetClick = async () => {
+    try {
+      await sendReset();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   return (
     <Container>
       <Heading>
@@ -197,6 +207,25 @@ const Index = () => {
             button: (
               <SendHelloButton
                 onClick={handleSendHelloClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            isMetaMaskReady &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+        <Card
+          content={{
+            title: 'Reset Snap Data',
+            description:
+              'Display a custom message within a confirmation screen in MetaMask.',
+            button: (
+              <SendHelloButton
+                onClick={handleResetClick}
                 disabled={!state.installedSnap}
               />
             ),

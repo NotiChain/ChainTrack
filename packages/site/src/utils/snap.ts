@@ -63,4 +63,15 @@ export const sendHello = async () => {
   });
 };
 
+/**
+ * Invoke the "hello" method from the example snap.
+ */
+
+export const sendReset = async () => {
+  await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: { snapId: defaultSnapOrigin, request: { method: 'reset' } },
+  });
+};
+
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
