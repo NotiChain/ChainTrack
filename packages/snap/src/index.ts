@@ -137,6 +137,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
         });
         console.log('!!!!! intervalHours', intervalHours);
         snapData.track = {
+          // why we store intervalHours here?
           intervalHours,
           intervalMs: intervalHours * 60 * 60 * 1000,
           ...snapData.track,
@@ -173,6 +174,7 @@ export const onCronjob: OnCronjobHandler = async (params) => {
         return;
       }
 
+      // does it work properly, when lastTransaction is not set?
       if (
         snapData.track.lastTransaction <
         Date.now() - snapData.track.intervalMs
@@ -194,18 +196,51 @@ export const onCronjob: OnCronjobHandler = async (params) => {
   }
 };
 
+// does it even invoked on incoming transaction?
+//
+// also, I don't understand, how I can execute test transaction,
+// so I have no idea how to extract needed info properly,
+// because format of transaction in unclear
 export const onTransaction: OnTransactionHandler = async ({
   transaction,
   chainId,
   transactionOrigin,
 }) => {
   console.log('!!!!! onTransaction', transaction, chainId, transactionOrigin);
-  const insight = `It's a scammer!`;
+
+  const snapData =
+        (await snap.request({
+          method: 'snap_manageState',
+          params: { operation: 'get' },
+        })) || {};
+
+  if (
+    !snapData?.track?.network ||
+    !snapData?.track?.from ||
+    !snapData?.track?.intervalMs
+  ) {
+    return;
+  }
+
+  // somehow get this data
+  const transaction_from = ;
+  const transaction_network = ;
+
+  if (
+    transaction_from === snapData.track.from &&
+    transaction_network === snapData.track.network
+  ) {
+    snapData.track.lastTransaction = Date.now()
+  }
+
+  await snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'update', newState: snapData },
+  });
+
   return {
     content: panel([
-      heading('My Transaction Insights'),
-      text('Here are the insights:'),
-      insight,
+      heading('The transaction is taken into account'),
     ]),
   };
 };
