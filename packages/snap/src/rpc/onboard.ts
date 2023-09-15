@@ -1,6 +1,5 @@
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
-import storage, { Data, DataItem } from './storage';
-
+import storage, { Data, DataItem } from '../storage';
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
@@ -99,51 +98,4 @@ export async function onboard(origin: string): Promise<void> {
   snapData.track.push(snapDataItem);
 
   await storage.set(snapData);
-}
-
-/**
- * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- */
-export async function reset() {
-  const confirm = await snap.request({
-    method: 'snap_dialog',
-    params: {
-      type: 'confirmation',
-      content: panel([
-        heading('Are you sure?'),
-        text('This will reset all the data.'),
-      ]),
-    },
-  });
-  if (confirm) {
-    // reset snap state
-    await storage.clear();
-  }
-}
-
-/**
- * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- */
-export async function list() {
-  const snapData = await storage.get();
-  console.log('!!!!! list', snapData);
-  if (!snapData.track) {
-    snapData.track = [];
-  }
-
-  await snap.request({
-    method: 'snap_dialog',
-    params: {
-      type: 'alert',
-      content: panel(
-        snapData.track.map((item) => {
-          let { from } = item;
-          if (!from) {
-            from = 'empty from';
-          }
-          return text(from);
-        }),
-      ),
-    },
-  });
 }
