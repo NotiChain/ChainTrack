@@ -3,9 +3,10 @@ import {
   OnCronjobHandler,
   OnTransactionHandler,
 } from '@metamask/snaps-types';
-import { panel, heading, text, copyable } from '@metamask/snaps-ui';
+import { panel, heading, text } from '@metamask/snaps-ui';
 
 import storage from './storage';
+import { onboard, list, reset } from './rpc';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -23,118 +24,19 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
 }) => {
   console.log('!!!! onRpcRequest args', origin, request);
 
-  // let's get data from snap state first, just to proceed from where we left off
-  let snapData = await storage.get();
-
   switch (request.method) {
+    case 'onboard':
+      await onboard(origin);
+      break;
+
+    case 'list':
+      await list();
+      break;
+
     case 'reset':
-      const confirm = await snap.request({
-        method: 'snap_dialog',
-        params: {
-          type: 'confirmation',
-          content: panel([
-            heading('Are you sure?'),
-            text('This will reset all the data.'),
-          ]),
-        },
-      });
-      if (confirm) {
-        // reset snap state
-        await storage.clear();
-      }
+      await reset();
       break;
-    case 'hello':
-      // We need to get some data from user - what wallet to track, what network, and time interval
-      // TODO: add many wallets support
 
-      // just a hello screen
-      await snap.request({
-        method: 'snap_dialog',
-        params: {
-          type: 'confirmation',
-          content: panel([
-            text(`Hello, **${origin}**!`),
-            text('Welcome to our transaction tracker snap!'),
-            text('We want to ask you for some information to get started.'),
-          ]),
-        },
-      });
-
-      if (!snapData?.network) {
-        // Get the network, from which we expect to have transactions
-        // TODO: add validation for network
-        // TODO: load networks from somewhere
-        // TODO: add selector
-        const network = await snap.request({
-          method: 'snap_dialog',
-          params: {
-            type: 'prompt',
-            content: panel([
-              heading('What is the network we should track?'),
-              text('Please enter the network to be monitored'),
-              copyable('sepolia'),
-            ]),
-            placeholder: 'sepolia',
-          },
-        });
-        console.log('!!!!! network', network);
-        snapData = {
-          ...snapData,
-          network,
-        };
-
-        await storage.set(snapData);
-      }
-
-      if (!snapData?.from) {
-        // Get the wallet address, from which we expect to have transactions
-        // TODO: add validation for wallet address
-        const walletAddress = await snap.request({
-          method: 'snap_dialog',
-          params: {
-            type: 'prompt',
-            content: panel([
-              heading('What is the wallet address we should track?'),
-              text('Please enter the wallet address to be monitored'),
-            ]),
-            placeholder: '0x123...',
-          },
-        });
-        console.log('!!!!! walletAddress', walletAddress);
-        snapData = {
-          ...snapData,
-          from: walletAddress,
-        };
-
-        await storage.set(snapData);
-      }
-
-      if (!snapData?.intervalMs) {
-        // TODO: add validation for interval
-        // TODO: add selector
-        const intervalHours = await snap.request({
-          method: 'snap_dialog',
-          params: {
-            type: 'prompt',
-            content: panel([
-              heading('What is the interval in hours?'),
-              text('Please enter the interval in hours'),
-              copyable('24'),
-            ]),
-            placeholder: '24',
-          },
-        });
-        console.log('!!!!! intervalHours', intervalHours);
-        snapData = {
-          ...snapData,
-          intervalHours,
-          intervalMs: intervalHours * 60 * 60 * 1000,
-        };
-
-        await storage.set(snapData);
-      }
-
-      break;
     default:
       throw new Error('Method not found.');
   }

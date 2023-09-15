@@ -1,8 +1,13 @@
-type Data = {
+export type DataItem = {
   network?: string;
   from?: string;
   to?: string;
   intervalHours?: string;
+  intervalMs?: number;
+};
+
+export type Data = {
+  track?: DataItem[];
 };
 
 export class Storage {
