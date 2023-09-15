@@ -5,6 +5,8 @@ import {
 } from '@metamask/snaps-types';
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
 
+import storage from './storage';
+
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
@@ -22,11 +24,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   console.log('!!!! onRpcRequest args', origin, request);
 
   // let's get data from snap state first, just to proceed from where we left off
-  const snapData =
-    (await snap.request({
-      method: 'snap_manageState',
-      params: { operation: 'get' },
-    })) || {};
+  let snapData = await storage.get();
 
   switch (request.method) {
     case 'reset':
@@ -42,10 +40,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       });
       if (confirm) {
         // reset snap state
-        await snap.request({
-          method: 'snap_manageState',
-          params: { operation: 'clear' },
-        });
+        await storage.clear();
       }
       break;
     case 'hello':
@@ -65,7 +60,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
         },
       });
 
-      if (!snapData?.track?.network) {
+      if (!snapData?.network) {
         // Get the network, from which we expect to have transactions
         // TODO: add validation for network
         // TODO: load networks from somewhere
@@ -83,18 +78,15 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
           },
         });
         console.log('!!!!! network', network);
-        snapData.track = {
+        snapData = {
+          ...snapData,
           network,
-          ...snapData.track,
         };
 
-        await snap.request({
-          method: 'snap_manageState',
-          params: { operation: 'update', newState: snapData },
-        });
+        await storage.set(snapData);
       }
 
-      if (!snapData?.track?.from) {
+      if (!snapData?.from) {
         // Get the wallet address, from which we expect to have transactions
         // TODO: add validation for wallet address
         const walletAddress = await snap.request({
@@ -109,18 +101,15 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
           },
         });
         console.log('!!!!! walletAddress', walletAddress);
-        snapData.track = {
+        snapData = {
+          ...snapData,
           from: walletAddress,
-          ...snapData.track,
         };
 
-        await snap.request({
-          method: 'snap_manageState',
-          params: { operation: 'update', newState: snapData },
-        });
+        await storage.set(snapData);
       }
 
-      if (!snapData?.track?.intervalMs) {
+      if (!snapData?.intervalMs) {
         // TODO: add validation for interval
         // TODO: add selector
         const intervalHours = await snap.request({
@@ -136,16 +125,13 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
           },
         });
         console.log('!!!!! intervalHours', intervalHours);
-        snapData.track = {
+        snapData = {
+          ...snapData,
           intervalHours,
           intervalMs: intervalHours * 60 * 60 * 1000,
-          ...snapData.track,
         };
 
-        await snap.request({
-          method: 'snap_manageState',
-          params: { operation: 'update', newState: snapData },
-        });
+        await storage.set(snapData);
       }
 
       break;
@@ -156,15 +142,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
 
 export const onCronjob: OnCronjobHandler = async (params) => {
   console.log('!!!!! onCronjob', params);
+  const snapData = await storage.get();
 
   switch (params.request.method) {
     case 'everyMinute':
-      const snapData =
-        (await snap.request({
-          method: 'snap_manageState',
-          params: { operation: 'get' },
-        })) || {};
-
       if (
         !snapData?.track?.network ||
         !snapData?.track?.from ||
