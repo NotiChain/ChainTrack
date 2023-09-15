@@ -5,7 +5,8 @@ import {
   connectSnap,
   getSnap,
   isLocalSnap,
-  sendHello,
+  sendOnboard,
+  sendList,
   sendReset,
   shouldDisplayReconnectButton,
 } from '../utils';
@@ -124,9 +125,18 @@ const Index = () => {
     }
   };
 
-  const handleSendHelloClick = async () => {
+  const handleSendOnboardClick = async () => {
     try {
-      await sendHello();
+      await sendOnboard();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
+  const handleSendListClick = async () => {
+    try {
+      await sendList();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -201,12 +211,31 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Send Hello message',
+            title: 'Send Onbloard message',
             description:
               'Display a custom message within a confirmation screen in MetaMask.',
             button: (
               <SendHelloButton
-                onClick={handleSendHelloClick}
+                onClick={handleSendOnboardClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            isMetaMaskReady &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+        <Card
+          content={{
+            title: 'Show List',
+            description:
+              'Display a custom message within a confirmation screen in MetaMask.',
+            button: (
+              <SendHelloButton
+                onClick={handleSendListClick}
                 disabled={!state.installedSnap}
               />
             ),
