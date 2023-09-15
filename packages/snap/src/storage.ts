@@ -1,9 +1,12 @@
+export type Chain = 'sepolia' | 'goerli' | 'mainnet';
+
 export type DataItem = {
-  network?: string;
+  network?: Chain;
   from?: string;
   to?: string;
   intervalHours?: string;
   intervalMs?: number;
+  lastTransaction?: number;
 };
 
 export type Data = {

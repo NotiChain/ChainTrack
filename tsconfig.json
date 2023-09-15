@@ -3,12 +3,14 @@
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "node",
     "useUnknownInCatchVariables": false,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2017"
+    "target": "ES2020",
+    "skipLibCheck": true ,                               /* Skip type checking all .d.ts files. */
+    "resolveJsonModule": true,                           /*  lets us import JSON modules from within TypeScript modules. */
   },
   "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
 }

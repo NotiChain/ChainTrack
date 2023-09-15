@@ -211,7 +211,7 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Send Onbloard message',
+            title: 'Send Onboard message',
             description:
               'Display a custom message within a confirmation screen in MetaMask.',
             button: (
