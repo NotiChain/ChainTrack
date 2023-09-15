@@ -5,7 +5,7 @@ import {
 } from '@metamask/snaps-types';
 import { panel, heading, text } from '@metamask/snaps-ui';
 
-import storage from './storage';
+import cronJob from './cron-job';
 import { list, reset, onboard, update, del } from './rpc';
 
 /**
@@ -73,39 +73,14 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   }
 };
 
-export const onCronjob: OnCronjobHandler = async (params) => {
-  console.log('!!!!! onCronjob', params);
-  const snapData = await storage.get();
-
-  switch (params.request.method) {
-    case 'everyMinute':
-      if (
-        !snapData?.track?.network ||
-        !snapData?.track?.from ||
-        !snapData?.track?.intervalMs
-      ) {
-        return;
-      }
-
-      if (
-        snapData.track.lastTransaction <
-        Date.now() - snapData.track.intervalMs
-      ) {
-        return;
-      }
-
-      await snap.request({
-        method: 'snap_notify',
-        params: {
-          type: 'native',
-          // can not be longer than 50 characters
-          message: `Expected transaction not found!`,
-        },
-      });
-      break;
-    default:
-      throw new Error('Method not found.');
-  }
+/**
+ * Handle incoming cronjob requests, sent through `wallet_invokeSnap`.
+ *
+ * @param ctx - The cronjob handler args as object.
+ */
+export const onCronjob: OnCronjobHandler = async (ctx) => {
+  console.log('onCronjob', ctx);
+  await cronJob.process(ctx);
 };
 
 export const onTransaction: OnTransactionHandler = async ({
@@ -119,7 +94,7 @@ export const onTransaction: OnTransactionHandler = async ({
     content: panel([
       heading('My Transaction Insights'),
       text('Here are the insights:'),
-      insight,
+      text(insight),
     ]),
   };
 };
