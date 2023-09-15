@@ -1,5 +1,5 @@
 import { panel, text } from '@metamask/snaps-ui';
-import storage, { Data, DataItem } from '../storage';
+import storage from '../storage';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.

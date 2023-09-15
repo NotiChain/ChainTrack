@@ -41,14 +41,16 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       if (!request.params) {
         throw new Error('Params not found.');
       }
+
       if (!request.params.index) {
         throw new Error('Index not found.');
       }
+
       if (!request.params.item) {
         throw new Error('Item not found.');
       }
-      const index = request.params.index;
-      const item = request.params.item;
+      const { index } = request.params;
+      const { item } = request.params;
       await update(index, item);
       break;
     }
@@ -57,10 +59,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       if (!request.params) {
         throw new Error('Params not found.');
       }
+
       if (!request.params.index) {
         throw new Error('Index not found.');
       }
-      const index = request.params.index;
+      const { index } = request.params;
       await del(index);
       break;
     }
