@@ -6,7 +6,7 @@ import {
 import { panel, heading, text } from '@metamask/snaps-ui';
 
 import storage from './storage';
-import { onboard, list, reset } from './rpc';
+import { list, reset, onboard, update, del } from './rpc';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -36,6 +36,37 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'reset':
       await reset();
       break;
+
+    case 'update': {
+      if (!request.params) {
+        throw new Error('Params not found.');
+      }
+
+      if (!request.params.index) {
+        throw new Error('Index not found.');
+      }
+
+      if (!request.params.item) {
+        throw new Error('Item not found.');
+      }
+      const { index } = request.params;
+      const { item } = request.params;
+      await update(index, item);
+      break;
+    }
+
+    case 'delete': {
+      if (!request.params) {
+        throw new Error('Params not found.');
+      }
+
+      if (!request.params.index) {
+        throw new Error('Index not found.');
+      }
+      const { index } = request.params;
+      await del(index);
+      break;
+    }
 
     default:
       throw new Error('Method not found.');
