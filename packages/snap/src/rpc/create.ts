@@ -1,14 +1,16 @@
-import storage, { Data, DataItem } from '../storage';
+import storage, { ChainId, Data, DataItem } from '../storage';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
  * @param network - The network to be tracked.
+ * @param from - The wallet address to be tracked.
  * @param wallet - The wallet address to be tracked.
  * @param intervalHours - The interval in hours to check for transactions.
  */
 export async function create(
-  network: string,
+  network: ChainId,
+  from: string,
   wallet: string,
   intervalHours: string,
 ): Promise<void> {
@@ -21,7 +23,8 @@ export async function create(
 
   const snapDataItem: DataItem = {
     network,
-    from: wallet,
+    from,
+    to: wallet,
     intervalMs,
     intervalHours,
   };

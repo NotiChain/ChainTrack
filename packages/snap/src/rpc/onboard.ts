@@ -1,4 +1,4 @@
-import { panel, heading, text, copyable } from '@metamask/snaps-ui';
+import { panel, text } from '@metamask/snaps-ui';
 import { create } from './create';
 
 /**
@@ -15,8 +15,7 @@ export async function onboard(origin: string): Promise<void> {
       type: 'confirmation',
       content: panel([
         text(`Hello, **${origin}**!`),
-        text('Welcome to our transaction tracker snap!'),
-        text('We want to ask you for some information to get started.'),
+        text('Would you like to monitor sepolia-faucet.pk910.de?'),
       ]),
     },
   });
@@ -43,8 +42,12 @@ export async function onboard(origin: string): Promise<void> {
   // });
 
   const network = await window.ethereum.request({ method: 'eth_chainId' });
+  if (network !== '0xaa36a7') {
+    throw new Error('Network is not sepolia');
+  }
   // Get the wallet address, from which we expect to have transactions
   // TODO: add validation for wallet address
+  const FAUCET_WALLET = '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455';
   const wallets = await window.ethereum.request({
     method: 'eth_requestAccounts',
   });
@@ -53,6 +56,7 @@ export async function onboard(origin: string): Promise<void> {
 
   // TODO: add validation for interval
   // TODO: add selector
+  /*
   const intervalHours = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -65,12 +69,14 @@ export async function onboard(origin: string): Promise<void> {
       placeholder: '24',
     },
   });
-  console.log('!!!!! intervalHours', intervalHours);
   if (typeof intervalHours !== 'string') {
     throw new Error('Interval is not a string');
   }
+  */
+  const intervalHours = '24';
+  console.log('!!!!! intervalHours', intervalHours);
 
   for (const wallet of wallets) {
-    create(network, wallet, intervalHours);
+    await create(network, FAUCET_WALLET, wallet, intervalHours);
   }
 }
