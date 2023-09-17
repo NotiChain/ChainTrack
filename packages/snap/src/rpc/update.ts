@@ -17,10 +17,19 @@ export async function update(index: number, item: DataItem) {
     return;
   }
 
+  const prevItem = snapData.monitors[index];
   snapData.monitors[index] = item;
-  snapData.sentNotifications = snapData.sentNotifications?.filter(
-    (n) => n !== index,
-  );
+
+  // resend notifications only if the network or the wallet addresses changed
+  if (
+    prevItem.from !== item.from ||
+    prevItem.to !== item.to ||
+    prevItem.network !== item.network
+  ) {
+    snapData.sentNotifications = snapData.sentNotifications?.filter(
+      (n) => n !== index,
+    );
+  }
 
   await storage.set(snapData);
 }

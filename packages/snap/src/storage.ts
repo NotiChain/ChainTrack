@@ -8,7 +8,6 @@ export type DataItem = {
   to?: string;
   intervalHours?: string;
   intervalMs?: number;
-  lastTransaction?: number;
 };
 
 export type Data = {
