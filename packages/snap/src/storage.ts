@@ -1,6 +1,8 @@
 export type ChainId = '0xaa36a7' | '0x1' | '0x5';
 
 export type DataItem = {
+  // can not be longer than 14 characters to fit in the notification
+  name?: string;
   network?: ChainId;
   from?: string;
   to?: string;
@@ -10,7 +12,9 @@ export type DataItem = {
 };
 
 export type Data = {
-  track?: DataItem[];
+  monitors?: DataItem[];
+  // each element is an index of a monitor
+  sentNotifications?: number[];
 };
 
 export class Storage {

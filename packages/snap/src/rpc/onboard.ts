@@ -77,6 +77,6 @@ export async function onboard(origin: string): Promise<void> {
   console.log('!!!!! intervalHours', intervalHours);
 
   for (const wallet of wallets) {
-    await create(network, FAUCET_WALLET, wallet, intervalHours);
+    await create('pk910', network, FAUCET_WALLET, wallet, intervalHours);
   }
 }

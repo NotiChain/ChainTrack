@@ -7,8 +7,8 @@ import storage from '../storage';
 export async function list() {
   const snapData = await storage.get();
   console.log('!!!!! list', snapData);
-  if (!snapData.track) {
-    snapData.track = [];
+  if (!snapData.monitors) {
+    snapData.monitors = [];
   }
 
   await snap.request({
@@ -16,7 +16,7 @@ export async function list() {
     params: {
       type: 'alert',
       content: panel(
-        snapData.track.map((item) => {
+        snapData.monitors.map((item) => {
           let { from } = item;
           if (!from) {
             from = 'empty from';

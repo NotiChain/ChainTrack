@@ -10,14 +10,17 @@ export async function update(index: number, item: DataItem) {
   const snapData = await storage.get();
   console.log('!!!!! update', snapData, 'index', index, 'item', item);
   if (
-    !snapData.track ||
-    !Array.isArray(snapData.track) ||
-    snapData.track.length < index
+    !snapData.monitors ||
+    !Array.isArray(snapData.monitors) ||
+    snapData.monitors.length < index
   ) {
     return;
   }
 
-  snapData.track[index] = item;
+  snapData.monitors[index] = item;
+  snapData.sentNotifications = snapData.sentNotifications?.filter(
+    (n) => n !== index,
+  );
 
   await storage.set(snapData);
 }

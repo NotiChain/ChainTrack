@@ -9,14 +9,17 @@ export async function del(index: number) {
   const snapData = await storage.get();
   console.log('!!!!! delete', snapData, 'index', index);
   if (
-    !snapData.track ||
-    !Array.isArray(snapData.track) ||
-    snapData.track.length < index
+    !snapData.monitors ||
+    !Array.isArray(snapData.monitors) ||
+    snapData.monitors.length < index
   ) {
     return;
   }
 
-  snapData.track.splice(index, 1);
+  snapData.monitors.splice(index, 1);
+  snapData.sentNotifications = snapData.sentNotifications?.filter(
+    (n) => n !== index,
+  );
 
   await storage.set(snapData);
 }
