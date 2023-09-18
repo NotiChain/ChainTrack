@@ -6,7 +6,7 @@ import {
 import { panel, heading, text } from '@metamask/snaps-ui';
 
 import cronJob from './cron-job';
-import { list, reset, onboard, update, del } from './rpc';
+import { list, reset, onboard, update, del, getList } from './rpc';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -32,6 +32,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'list':
       await list();
       break;
+
+    case 'get_list':
+      return await getList();
 
     case 'reset':
       await reset();
