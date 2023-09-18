@@ -75,6 +75,17 @@ export const sendList = async () => {
 };
 
 /**
+ * Invoke the "get_list" method from the example snap.
+ */
+
+export const getList = async () => {
+  return await window.ethereum.request<{ tracks: Record<string, unknown> }>({
+    method: 'wallet_invokeSnap',
+    params: { snapId: defaultSnapOrigin, request: { method: 'get_list' } },
+  });
+};
+
+/**
  * Invoke the "reset" method from the example snap.
  */
 

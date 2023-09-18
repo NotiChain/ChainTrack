@@ -8,14 +8,18 @@ import {
   sendOnboard,
   sendList,
   sendReset,
+  getList,
   shouldDisplayReconnectButton,
 } from '../utils';
 import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
+  GetTracksButton,
   Card,
+  SendOnboardButton,
+  ResetButton,
+  Table,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 
@@ -110,6 +114,16 @@ const Index = () => {
     ? state.isFlask
     : state.snapsDetected;
 
+  const handleGetList = async () => {
+    try {
+      const data = await getList();
+      dispatch({ type: MetamaskActions.SetTrackList, payload: data });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   const handleConnectClick = async () => {
     try {
       await connectSnap();
@@ -119,6 +133,8 @@ const Index = () => {
         type: MetamaskActions.SetInstalled,
         payload: installedSnap,
       });
+
+      await handleGetList();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -128,15 +144,6 @@ const Index = () => {
   const handleSendOnboardClick = async () => {
     try {
       await sendOnboard();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleSendListClick = async () => {
-    try {
-      await sendList();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -211,11 +218,10 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Send Onboard message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+            title: 'Onboard',
+            description: 'Start your onboarding right from the snap.',
             button: (
-              <SendHelloButton
+              <SendOnboardButton
                 onClick={handleSendOnboardClick}
                 disabled={!state.installedSnap}
               />
@@ -230,12 +236,11 @@ const Index = () => {
         />
         <Card
           content={{
-            title: 'Show List',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+            title: 'Reset Snap',
+            description: 'Remove all your tracks from the snap and start over.',
             button: (
-              <SendHelloButton
-                onClick={handleSendListClick}
+              <ResetButton
+                onClick={handleResetClick}
                 disabled={!state.installedSnap}
               />
             ),
@@ -247,23 +252,30 @@ const Index = () => {
             !shouldDisplayReconnectButton(state.installedSnap)
           }
         />
-        <Card
-          content={{
-            title: 'Reset Snap Data',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleResetClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
+        <Table
+          title={'Transactions to monitor'}
+          data={
+            state?.trackList?.length
+              ? state.trackList.map((item, index) => ({
+                  id: index + 1,
+                  from: item.from,
+                  to: item.to,
+                  intervalHours: item.intervalHours,
+                }))
+              : [
+                  {
+                    id: 1,
+                    from: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
+                    to: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
+                    intervalHours: '24',
+                  },
+                  {
+                    id: 2,
+                    from: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
+                    to: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
+                    intervalHours: '24',
+                  },
+                ]
           }
         />
         <Notice>

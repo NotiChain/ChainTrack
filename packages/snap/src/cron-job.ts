@@ -15,12 +15,12 @@ export class CronJob {
       throw new Error('Method not found.');
     }
 
-    if (!data?.tracks) {
+    if (!data?.track) {
       console.log('CronJob process no tracks found');
       return;
     }
 
-    for (const track of data.tracks) {
+    for (const track of data.track) {
       await this.checkTrack(track);
     }
   }
@@ -36,7 +36,7 @@ export class CronJob {
     if (transaction) {
       console.log('CronJob.checkTrack transaction found');
       // compare time
-      const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
+      const transactionTime = new Date(transaction.timestamp * 1000).getTime();
       const diff = Date.now() - transactionTime;
       if (diff < track.intervalMs) {
         console.log('CronJob.checkTrack transaction found in time');

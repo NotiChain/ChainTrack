@@ -25,7 +25,7 @@ export class Etherscan {
   ): Promise<Transaction[]> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');
-      return;
+      return [];
     }
 
     const host = this.chains[chain];

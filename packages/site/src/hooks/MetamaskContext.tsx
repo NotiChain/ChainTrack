@@ -37,6 +37,7 @@ export enum MetamaskActions {
   SetSnapsDetected = 'SetSnapsDetected',
   SetError = 'SetError',
   SetIsFlask = 'SetIsFlask',
+  SetTrackList = 'SetTrackList',
 }
 
 const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
@@ -56,6 +57,11 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
       return {
         ...state,
         isFlask: action.payload,
+      };
+    case MetamaskActions.SetTrackList:
+      return {
+        ...state,
+        trackList: action.payload,
       };
     case MetamaskActions.SetError:
       return {

@@ -98,6 +98,18 @@ export const SendHelloButton = (props: ComponentProps<typeof Button>) => {
   return <Button {...props}>Send message</Button>;
 };
 
+export const ResetButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Reset</Button>;
+};
+
+export const SendOnboardButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Onboard</Button>;
+};
+
+export const GetTracksButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Get Tracks</Button>;
+};
+
 export const HeaderButtons = ({
   state,
   onConnectClick,
