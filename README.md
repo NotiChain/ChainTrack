@@ -76,3 +76,38 @@ The project follows the same release process as the other libraries in the MetaM
 
 - Babel is used for transpiling TypeScript to JavaScript, so when building with the CLI,
   `transpilationMode` must be set to `localOnly` (default) or `localAndDeps`.
+
+
+## Renaming
+here is the list of possible names, let me know which one you like more, or add yours:
+
+- TransnapFlow
+- ChainTrack
+- NotiChain
+- TransNotiFlow
+- RecurRadar
+- ChainNotifier
+- NotiCycle
+- EtherNoti
+- ChainCycle
+- PulsePayTrack
+- Transnaption
+- RecurNotiWave
+- NotiPulse
+- SnapNotiRadar
+- CycleSnaptix
+- RecurSnapster
+- SnapTransactify
+- EtherepeatSnap
+- BlockNotiBeam
+- NotiSnapTrack
+- DecentraNotiFlow
+- DecentraTrack
+- NotiDecentraWave
+- DecentraSnapAlert
+- ChainDecentra
+- DecentraPulse
+- TransDecentraBeam
+- DecentraCycle
+- EtherDecentraNoti
+- DecentraRadar
