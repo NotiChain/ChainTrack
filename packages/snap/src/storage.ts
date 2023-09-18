@@ -1,7 +1,7 @@
-export type Chain = 'sepolia' | 'goerli' | 'mainnet';
+export type ChainId = '0xaa36a7' | '0x1' | '0x5';
 
 export type DataItem = {
-  network?: Chain;
+  network?: ChainId;
   from?: string;
   to?: string;
   intervalHours?: string;

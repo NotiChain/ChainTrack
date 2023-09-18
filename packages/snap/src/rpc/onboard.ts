@@ -1,5 +1,5 @@
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
-import storage, { Data, DataItem } from '../storage';
+import { create } from './create';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -25,8 +25,6 @@ export async function onboard(origin: string): Promise<void> {
     return;
   }
 
-  const snapDataItem: DataItem = {};
-
   // Get the network, from which we expect to have transactions
   // TODO: add validation for network
   // TODO: load networks from somewhere
@@ -44,31 +42,14 @@ export async function onboard(origin: string): Promise<void> {
   //   },
   // });
 
-  const network = 'sepolia';
-  console.log('!!!!! network', network);
-  if (typeof network === 'string') {
-    snapDataItem.network = network;
-  }
-
+  const network = await window.ethereum.request({ method: 'eth_chainId' });
   // Get the wallet address, from which we expect to have transactions
   // TODO: add validation for wallet address
-  const walletAddress = await snap.request({
-    method: 'snap_dialog',
-    params: {
-      type: 'prompt',
-      content: panel([
-        heading('What is the wallet address we should track?'),
-        text('Please enter the wallet address to be monitored'),
-      ]),
-      placeholder: '0x123...',
-    },
+  const wallets = await window.ethereum.request({
+    method: 'eth_requestAccounts',
   });
-  console.log('!!!!! walletAddress', walletAddress);
-  if (typeof walletAddress !== 'string') {
-    throw new Error('Wallet address is not a string');
-  }
 
-  snapDataItem.from = walletAddress;
+  console.log('!!!!! wallets', wallets);
 
   // TODO: add validation for interval
   // TODO: add selector
@@ -89,14 +70,7 @@ export async function onboard(origin: string): Promise<void> {
     throw new Error('Interval is not a string');
   }
 
-  snapDataItem.intervalHours = intervalHours;
-  snapDataItem.intervalMs = Number(intervalHours) * 60 * 60 * 1000;
-
-  const snapData: Data = await storage.get();
-  if (!snapData.track) {
-    snapData.track = [];
+  for (const wallet of wallets) {
+    create(network, wallet, intervalHours);
   }
-  snapData.track.push(snapDataItem);
-
-  await storage.set(snapData);
 }
