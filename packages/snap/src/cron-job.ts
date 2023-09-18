@@ -20,16 +20,16 @@ export class CronJob {
       return;
     }
 
-    if (!data?.sentNotifications) {
-      data.sentNotifications = [];
+    if (!data?.sentAlerts) {
+      data.sentAlerts = [];
     }
 
     console.log('CronJob process monitors', data.monitors);
-    console.log('CronJob process sentNotifications', data.sentNotifications);
+    console.log('CronJob process sentAlerts', data.sentAlerts);
     for (const [i, monitor] of data.monitors.entries()) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
-        if (data.sentNotifications.includes(i)) {
+        if (data.sentAlerts.includes(i)) {
           console.log('CronJob notification already sent');
         } else {
           try {
@@ -45,7 +45,7 @@ export class CronJob {
               },
             });
             // if no error, then notification was sent
-            data.sentNotifications.push(i);
+            data.sentAlerts.push(i);
           } catch (e) {
             console.log('CronJob notification error', e);
           }
@@ -54,7 +54,7 @@ export class CronJob {
 
       if (!notify) {
         console.log('CronJob remove sent notification');
-        data.sentNotifications = data.sentNotifications.filter((n) => n !== i);
+        data.sentAlerts = data.sentAlerts.filter((n) => n !== i);
       }
     }
 
@@ -94,30 +94,41 @@ export class CronJob {
     monitor: DataItem,
   ): Promise<Transaction | undefined> {
     if (!monitor?.network) {
-      console.log('CronJob.getLastTransaction network is not provided');
+      console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;
     }
 
-    if (!monitor?.to) {
-      console.log('CronJob.getLastTransaction to is not provided');
+    if (!(monitor?.to || monitor?.from)) {
+      console.log(
+        'CronJob.getLastMatchingTransaction from and to are not provided',
+      );
       return undefined;
     }
+
+    const monitorAddress: string = monitor.to || monitor.from;
 
     const transactions = await etherscan.getTransactions(
-      monitor.to,
+      monitorAddress,
       monitor.network,
     );
 
     const filteredTransactions = transactions.filter(
       (transaction: Transaction) => {
-        return (
-          transaction.to === monitor.to && transaction.from === monitor.from
-        );
+        if (monitor.to && monitor.from) {
+          return (
+            transaction.to === monitor.to && transaction.from === monitor.from
+          );
+        } else if (monitor.to) {
+          return transaction.to === monitor.to;
+        } else if (monitor.from) {
+          return transaction.from === monitor.from;
+        }
+        throw new Error('CronJob.getLastMatchingTransaction no address found');
       },
     );
 
     if (!filteredTransactions.length) {
-      console.log('CronJob.getLastTransaction no transactions found');
+      console.log('CronJob.getLastMatchingTransaction no transactions found');
       return undefined;
     }
 

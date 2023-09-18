@@ -26,7 +26,7 @@ export async function update(index: number, item: DataItem) {
     prevItem.to !== item.to ||
     prevItem.network !== item.network
   ) {
-    snapData.sentNotifications = snapData.sentNotifications?.filter(
+    snapData.sentAlerts = snapData.sentAlerts?.filter(
       (n) => n !== index,
     );
   }

@@ -17,7 +17,7 @@ export async function del(index: number) {
   }
 
   snapData.monitors.splice(index, 1);
-  snapData.sentNotifications = snapData.sentNotifications?.filter(
+  snapData.sentAlerts = snapData.sentAlerts?.filter(
     (n) => n !== index,
   );
 

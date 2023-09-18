@@ -13,7 +13,7 @@ export type DataItem = {
 export type Data = {
   monitors?: DataItem[];
   // each element is an index of a monitor
-  sentNotifications?: number[];
+  sentAlerts?: number[];
 };
 
 export class Storage {
