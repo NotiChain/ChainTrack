@@ -37,7 +37,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
 
   switch (request.method) {
     case 'add':
-      await add(origin);
+      await add();
       break;
 
     case 'create':

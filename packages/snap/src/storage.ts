@@ -5,10 +5,12 @@ export enum ChainEnum {
 }
 
 type BaseMonitor = {
+  name?: string;
   network: ChainEnum;
   intervalHours: string;
-  intervalMs?: number;
-  lastTransaction?: number;
+  intervalMs: number;
+  contractAddress: string | null;
+  amount?: number;
 };
 
 type FromOnlyMonitor = BaseMonitor & {
@@ -28,8 +30,10 @@ export type FromToMonitor = BaseMonitor & {
 
 export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
 
-export type Alert = Monitor & {
-  date?: string;
+export type Alert = {
+  monitor: Monitor;
+  date: string;
+  confirmed: boolean;
 };
 
 export type Monitors = Monitor[];
@@ -40,6 +44,16 @@ export type Data = {
   monitors?: Monitors;
   alerts?: Alerts;
 };
+
+export function monitorEq(a: Monitor, b: Monitor): boolean {
+  const keys = Object.keys(a) as (keyof Monitor)[];
+  for (const key of keys) {
+    if (a[key] !== b[key]) {
+      return false;
+    }
+  }
+  return true;
+}
 
 export class Storage {
   async get(): Promise<Data> {
@@ -100,6 +114,7 @@ export class Storage {
     if (!data.alerts) {
       data.alerts = [];
     }
+    // TODO: if alerts len exceeds some threshold, delete first
     data.alerts.push(alert);
     await this.set(data);
   }

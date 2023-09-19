@@ -1,5 +1,34 @@
-import storage, { Monitor } from './storage';
+import { panel, text } from '@metamask/snaps-ui';
+import storage, { Monitor, monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
+
+function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
+  const date = new Date(alert.date);
+  const diff = Date.now() - date.getTime();
+  if (diff < alert.monitor.intervalMs) {
+    return false;
+  }
+  return true;
+}
+
+type NotificationType = 'inApp' | 'native';
+
+// message cannot be longer than 50 characters
+export async function snapNotify(type: NotificationType, message: string) {
+  try {
+    await snap.request({
+      method: 'snap_notify',
+      params: {
+        type,
+        message,
+      },
+    });
+    return true;
+  } catch (e) {
+    console.log('Notification error', e);
+  }
+  return false;
+}
 
 export class CronJob {
   constructor() {
@@ -21,68 +50,118 @@ export class CronJob {
     }
 
     for (const monitor of data.monitors) {
-      await this.checkMonitor(monitor);
-    }
-  }
+      const notify = await this.checkMonitor(monitor);
+      if (notify) {
+        const found = data.alerts?.find((alert) => {
+          return monitorEq(alert.monitor, monitor);
+        });
+        if (!found) {
+          const notificationSent = await snapNotify(
+            'native',
+            `Expected transaction from ${monitor.name} not found`,
+          );
 
-  async checkMonitor(monitor: Monitor) {
-    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
-      console.log('CronJob process not all data provided');
-      return;
-    }
+          // if no error, then notification was sent
+          if (notificationSent) {
+            await storage.addAlert({
+              monitor,
+              date: new Date().toISOString(),
+              confirmed: false,
+            });
+          }
+        } else if (found && alertExpired(found) && !found.confirmed) {
+          const confirm = await snap.request({
+            method: 'snap_dialog',
+            params: {
+              type: 'confirmation',
+              content: panel([
+                text(`You didn't receive transaction from ${monitor.name}`),
+                text('Would you like to NOT receive another notification?'),
+              ]),
+            },
+          });
 
-    const transaction = await this.getLastTransaction(monitor);
-
-    if (transaction) {
-      console.log('CronJob.checkMonitor transaction found');
-      // compare time
-      const transactionTime = new Date(transaction.timestamp * 1000).getTime();
-      const diff = Date.now() - transactionTime;
-      if (diff < monitor.intervalMs) {
-        console.log('CronJob.checkMonitor transaction found in time');
-        return;
+          if (confirm) {
+            found.confirmed = true;
+            await storage.set(data);
+          }
+        }
       }
     }
-
-    await storage.addAlert({ ...monitor, date: new Date().toISOString() });
-
-    await snap.request({
-      method: 'snap_notify',
-      params: {
-        type: 'native',
-        // type: 'inApp',
-        // can not be longer than 50 characters
-        message: `Expected transaction not found!`,
-      },
-    });
   }
 
-  async getLastTransaction(monitor: Monitor): Promise<Transaction | undefined> {
+  async checkMonitor(monitor: Monitor): Promise<boolean> {
+    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
+      console.log('CronJob process not all data provided');
+      return false;
+    }
+
+    const transaction = await this.getLastMatchingTransaction(monitor);
+
+    if (!transaction) {
+      return false;
+    }
+
+    console.log('CronJob.checkMonitor transaction found');
+    // compare time
+    const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
+    const diff = Date.now() - transactionTime;
+
+    if (diff < monitor.intervalMs) {
+      console.log('CronJob.checkMonitor transaction found in time');
+      return false;
+    }
+
+    return true;
+  }
+
+  async getLastMatchingTransaction(
+    monitor: Monitor,
+  ): Promise<Transaction | undefined> {
     if (!monitor?.network) {
-      console.log('CronJob.getLastTransaction network is not provided');
+      console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;
     }
 
-    if (!monitor?.to) {
-      console.log('CronJob.getLastTransaction to is not provided');
+    if (!(monitor?.to || monitor?.from)) {
+      console.log(
+        'CronJob.getLastMatchingTransaction from and to are not provided',
+      );
       return undefined;
     }
+
+    const monitorAddress: string = monitor.to || monitor.from;
 
     const transactions = await etherscan.getTransactions(
-      monitor.to,
+      monitorAddress,
       monitor.network,
+      monitor.contractAddress,
     );
+
+    if (!transactions) {
+      console.log(
+        'CronJob.getLastMatchingTransaction returned error (probably rate limit)',
+      );
+      return undefined;
+    }
 
     const filteredTransactions = transactions.filter(
       (transaction: Transaction) => {
-        return (
-          transaction.to === monitor.to && transaction.from === monitor.from
-        );
+        if (monitor.to && monitor.from) {
+          return (
+            transaction.to === monitor.to && transaction.from === monitor.from
+          );
+        } else if (monitor.to) {
+          return transaction.to === monitor.to;
+        } else if (monitor.from) {
+          return transaction.from === monitor.from;
+        }
+        throw new Error('CronJob.getLastMatchingTransaction no address found');
       },
     );
 
     if (!filteredTransactions.length) {
-      console.log('CronJob.getLastTransaction no transactions found');
+      console.log('CronJob.getLastMatchingTransaction no transactions found');
       return undefined;
     }
 

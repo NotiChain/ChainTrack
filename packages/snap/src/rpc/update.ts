@@ -4,6 +4,7 @@ export type UpdateParams = {
   index: number;
   item: Monitor;
 };
+
 export async function update({ index, item }: UpdateParams) {
   if (typeof index !== 'number') {
     throw new Error('Invalid index');

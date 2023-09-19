@@ -4,7 +4,7 @@ export type Transaction = {
   from: string;
   to: string;
   value: number;
-  timestamp: number;
+  timeStamp: number;
 };
 
 export class Etherscan {
@@ -22,7 +22,8 @@ export class Etherscan {
   async getTransactions(
     walletAddress: string,
     chain: ChainEnum,
-  ): Promise<Transaction[]> {
+    contractAddress: string | null,
+  ): Promise<Transaction[] | null> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');
       return [];
@@ -31,13 +32,19 @@ export class Etherscan {
     const host = this.chains[chain];
 
     // TODO: limit with block numbers
+    const request =
+      contractAddress === null
+        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc`
+        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc`;
 
-    const response = await fetch(
-      `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc`,
-    );
+    const response = await fetch(request);
 
     const data = await response.json();
     console.log('Etherscan.getTransactions', data);
+    if (data.status !== '1') {
+      console.log('Etherscan.getTransactions status is not 1');
+      return null;
+    }
     return data.result;
   }
 }

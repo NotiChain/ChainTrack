@@ -331,7 +331,7 @@ const Index = () => {
           title={'Transactions to monitor'}
           data={
             state?.monitors?.length
-              ? state.monitors.map((item, index) => {
+              && state.monitors.map((item, index) => {
                   return {
                     id: index + 1,
                     from: item.from,
@@ -339,49 +339,19 @@ const Index = () => {
                     intervalHours: item.intervalHours,
                   };
                 })
-              : [
-                  {
-                    id: 1,
-                    from: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
-                    to: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
-                    intervalHours: '24',
-                  },
-                  {
-                    id: 2,
-                    from: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
-                    to: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
-                    intervalHours: '24',
-                  },
-                ]
           }
         />
         <AlertsTable
           title={'Alerts'}
           data={
             state?.alerts?.length
-              ? state.alerts.map((item, index) => ({
+              && state.alerts.map((item, index) => ({
                   id: index + 1,
-                  from: item.from,
-                  to: item.to,
-                  intervalHours: item.intervalHours,
+                  from: item.monitor.from,
+                  to: item.monitor.to,
+                  intervalHours: item.monitor.intervalHours,
                   date: item.date,
                 }))
-              : [
-                  {
-                    id: 1,
-                    from: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
-                    to: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
-                    intervalHours: '24',
-                    date: new Date(),
-                  },
-                  {
-                    id: 2,
-                    from: '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455',
-                    to: '0xC8CD462620feA7CBc2D237DC966655B02FeA5b21',
-                    intervalHours: '24',
-                    date: new Date(),
-                  },
-                ]
           }
         />
         <Notice>
