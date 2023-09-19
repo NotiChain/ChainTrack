@@ -21,6 +21,7 @@ import {
   ResetButton,
   TransactionsTable,
   AlertsTable,
+  DonateButton,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 
@@ -166,6 +167,38 @@ const Index = () => {
     }
   };
 
+  const handleDonateClick = async () => {
+    try {
+      const addresses = await window.ethereum.request<string[]>({
+        method: 'eth_requestAccounts',
+      });
+      console.log('!!!! Accounts', addresses);
+      if (!addresses?.length) {
+        return;
+      }
+      const transactionHash = await window.ethereum.request<string>({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: addresses[0],
+            to: '0x88E67d6eC54E05401aF7a5bDe8Cf609c01eC83D3',
+            value: (0.01 * 1000000000000000000).toString(16),
+          },
+        ],
+      });
+
+      if (!transactionHash) {
+        return;
+      }
+
+      // show thank you message
+      console.log('!!!! Donate', transactionHash);
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   const handleResetClick = async () => {
     try {
       await sendReset();
@@ -188,11 +221,9 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>ChainTrack</Span>
       </Heading>
-      <Subtitle>
-        Get started by editing <code>src/index.ts</code>
-      </Subtitle>
+      <Subtitle>Get started by adding a new transaction to monitor!</Subtitle>
       <CardContainer>
         {state.error && (
           <ErrorMessage>
@@ -244,7 +275,7 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Add monitor',
+            title: 'Add transaction to monitor',
             description: 'Add new transaction to monitor right from the snap.',
             button: (
               <SendAddButton
@@ -355,11 +386,13 @@ const Index = () => {
         />
         <Notice>
           <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
+            Support <b>ChainTrack</b>: If you've found value in our tool and
+            wish to support our mission to enhance blockchain transparency,
+            consider making a donation. Every contribution, big or small, helps
+            us continue our work and serve you better. Thank you for believing
+            in <b>ChainTrack</b>!
           </p>
+          <DonateButton onClick={handleDonateClick} />
         </Notice>
       </CardContainer>
     </Container>

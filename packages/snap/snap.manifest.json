@@ -4,15 +4,15 @@
   "proposedName": "Recurring transaction checker",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/template-snap-monorepo.git"
+    "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "XAUTqpL8WGAZZ1gJMh37bCdiOtr+9mn1bMvxiOR5JA0=",
+    "shasum": "r63cExTNhWuxiCeR0v3P8U4ClKvPdrK3kErjseXKdAg=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "snap",
+        "packageName": "chain-track-snap",
         "registry": "https://registry.npmjs.org/"
       }
     }
