@@ -1,4 +1,4 @@
-import storage, { DataItem } from './storage';
+import storage, { Monitor, monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
 
 export class CronJob {
@@ -20,16 +20,13 @@ export class CronJob {
       return;
     }
 
-    if (!data?.sentAlerts) {
-      data.sentAlerts = [];
-    }
-
-    console.log('CronJob process monitors', data.monitors);
-    console.log('CronJob process sentAlerts', data.sentAlerts);
-    for (const [i, monitor] of data.monitors.entries()) {
+    for (const monitor of data.monitors) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
-        if (data.sentAlerts.includes(i)) {
+        if (data.alerts?.find((alert) => {
+          // check date
+          return monitorEq(alert.monitor, monitor);
+        })) {
           console.log('CronJob notification already sent');
         } else {
           try {
@@ -45,31 +42,19 @@ export class CronJob {
               },
             });
             // if no error, then notification was sent
-            data.sentAlerts.push(i);
+            await storage.addAlert({ monitor, date: new Date().toISOString() });
           } catch (e) {
             console.log('CronJob notification error', e);
           }
         }
       }
-
-      if (!notify) {
-        console.log('CronJob remove sent notification');
-        data.sentAlerts = data.sentAlerts.filter((n) => n !== i);
-      }
     }
-
-    await storage.set(data);
   }
 
-  async checkMonitor(monitor: DataItem): Promise<boolean> {
-    if (
-      !monitor?.network ||
-      !monitor?.to ||
-      !monitor?.from ||
-      !monitor?.intervalMs
-    ) {
-      console.log('CronJob process not all data provided: ', monitor);
-      throw new Error('CronJob process not all data provided');
+  async checkMonitor(monitor: Monitor): Promise<boolean> {
+    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
+      console.log('CronJob process not all data provided');
+      return false;
     }
 
     const transaction = await this.getLastMatchingTransaction(monitor);
@@ -90,9 +75,7 @@ export class CronJob {
     return true;
   }
 
-  async getLastMatchingTransaction(
-    monitor: DataItem,
-  ): Promise<Transaction | undefined> {
+  async getLastMatchingTransaction(monitor: Monitor): Promise<Transaction | undefined> {
     if (!monitor?.network) {
       console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;

@@ -14,6 +14,8 @@ export type MetamaskState = {
   isFlask: boolean;
   installedSnap?: Snap;
   error?: Error;
+  alerts?: any;
+  monitors?: any;
 };
 
 const initialState: MetamaskState = {
@@ -37,6 +39,8 @@ export enum MetamaskActions {
   SetSnapsDetected = 'SetSnapsDetected',
   SetError = 'SetError',
   SetIsFlask = 'SetIsFlask',
+  SetAlerts = 'SetAlerts',
+  SetMonitors = 'SetMonitors',
 }
 
 const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
@@ -56,6 +60,16 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
       return {
         ...state,
         isFlask: action.payload,
+      };
+    case MetamaskActions.SetAlerts:
+      return {
+        ...state,
+        alerts: action.payload,
+      };
+    case MetamaskActions.SetMonitors:
+      return {
+        ...state,
+        monitors: action.payload,
       };
     case MetamaskActions.SetError:
       return {

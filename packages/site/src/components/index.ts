@@ -6,3 +6,6 @@ export * from './MetaMask';
 export * from './PoweredBy';
 export * from './SnapLogo';
 export * from './Toggle';
+export * from './Table';
+export * from './Alerts';
+export * from './Transactions';

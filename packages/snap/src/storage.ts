@@ -1,56 +1,120 @@
-export type ChainId = '0xaa36a7' | '0x1' | '0x5';
+export enum ChainEnum {
+  'sepolia' = '0xaa36a7',
+  'mainnet' = '0x1',
+  'goerli' = '0x5',
+}
 
-export type DataItem = {
-  // can not be longer than 14 characters to fit in the notification
+type BaseMonitor = {
   name?: string;
-  network?: ChainId;
-  from?: string;
-  to?: string;
-  intervalHours?: string;
+  network: ChainEnum;
+  intervalHours: string;
   intervalMs?: number;
+  amount?: number;
 };
+
+type FromOnlyMonitor = BaseMonitor & {
+  from: string;
+  to?: null;
+};
+
+type ToOnlyMonitor = BaseMonitor & {
+  from?: null;
+  to: string;
+};
+
+export type FromToMonitor = BaseMonitor & {
+  from: string;
+  to: string;
+};
+
+export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
+
+export type Alert = {
+  monitor: Monitor;
+  date: string;
+};
+
+export type Monitors = Monitor[];
+
+export type Alerts = Alert[];
 
 export type Data = {
-  monitors?: DataItem[];
-  // each element is an index of a monitor
-  sentAlerts?: number[];
+  monitors?: Monitors;
+  alerts?: Alerts;
 };
 
+export function monitorEq(a: Monitor, b: Monitor): boolean {
+  const keys = Object.keys(a) as (keyof Monitor)[];
+  for (const key of keys) {
+    if (a[key] !== b[key]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export class Storage {
-  /**
-   * Get the current snap state.
-   */
   async get(): Promise<Data> {
-    console.log('Storage.get');
+    console.log('Storage.get()');
     const data = await snap.request({
       method: 'snap_manageState',
       params: { operation: 'get' },
     });
-    return data || {};
+    return (
+      data || {
+        monitors: [],
+        alerts: [],
+      }
+    );
   }
 
-  /**
-   * Update the snap state.
-   *
-   * @param data - The new snap state.
-   */
   async set(data: Data): Promise<void> {
-    console.log('Storage.set', data);
+    console.log('Storage.set()', data);
     await snap.request({
       method: 'snap_manageState',
       params: { operation: 'update', newState: data },
     });
   }
 
-  /**
-   * Clear the snap state.
-   */
   async clear(): Promise<void> {
-    console.log('Storage.clear');
+    console.log('Storage.clear()');
     await snap.request({
       method: 'snap_manageState',
       params: { operation: 'clear' },
     });
+  }
+
+  async getMonitors(): Promise<Monitors> {
+    console.log('Storage.getMonitors()');
+    const data = await this.get();
+    return data.monitors || [];
+  }
+
+  async addMonitor(monitor: Monitor): Promise<void> {
+    console.log('Storage.addMonitor()', monitor);
+    const data = await this.get();
+    if (!data.monitors) {
+      data.monitors = [];
+    }
+    data.monitors.push(monitor);
+    await this.set(data);
+  }
+
+  async getAlerts(): Promise<Alerts> {
+    console.log('Storage.getAlerts()');
+    const data = await this.get();
+    return data.alerts || [];
+  }
+
+  async addAlert(alert: Alert): Promise<void> {
+    console.log('Storage.addAlert()', alert);
+    const data = await this.get();
+    if (!data.alerts) {
+      data.alerts = [];
+    }
+    // TODO: if alerts len exceeds some threshold, delete first
+    data.alerts.push(alert);
+    await this.set(data);
   }
 }
 

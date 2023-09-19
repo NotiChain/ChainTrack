@@ -1,39 +1,64 @@
-import storage, { ChainId, Data, DataItem } from '../storage';
+import storage, { Data, Monitor } from '../storage';
 
-/**
- * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- *
- * @param name - The name of the monitor.
- * @param network - The network to be tracked.
- * @param from - The wallet address to be tracked.
- * @param wallet - The wallet address to be tracked.
- * @param intervalHours - The interval in hours to check for transactions.
- */
-export async function create(
-  name: string,
-  network: ChainId,
-  from: string,
-  wallet: string,
-  intervalHours: string,
-): Promise<void> {
+export type CreateParams = Omit<Monitor, 'intervalMs' | 'lastTransaction'>;
+
+export async function create({
+  name,
+  network,
+  from,
+  to,
+  intervalHours,
+}: CreateParams): Promise<void> {
+  if (!network) {
+    throw new Error('Network is required');
+  }
+
+  if (!from && !to) {
+    throw new Error('From or To is required');
+  }
+
+  if (!intervalHours) {
+    throw new Error('Interval is required');
+  }
+
   const intervalMs = Number(intervalHours) * 60 * 60 * 1000;
 
   const snapData: Data = await storage.get();
+
   if (!snapData.monitors) {
     snapData.monitors = [];
   }
 
-  const snapDataItem: DataItem = {
+  // TODO: check for duplicates before adding
+
+  const snapDataItem = {
     name,
     network,
     from,
-    to: wallet,
+    to,
     intervalMs,
     intervalHours,
-  };
-  // TODO: check for duplicates before adding
-  snapData.monitors.push(snapDataItem);
-  console.log('!!!!! snapDataItem', snapDataItem);
+  } as Monitor;
 
-  await storage.set(snapData);
+  const existing = snapData.monitors.find((item) => {
+    if (from && !to) {
+      return item.network === network && item.from === from;
+    }
+
+    if (!from && to) {
+      return item.network === network && item.to === to;
+    }
+
+    if (from && to) {
+      return item.network === network && item.from === from && item.to === to;
+    }
+
+    return false;
+  });
+
+  if (existing) {
+    throw new Error('Monitor already exists');
+  }
+
+  await storage.addMonitor(snapDataItem);
 }

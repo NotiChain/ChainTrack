@@ -5,17 +5,22 @@ import {
   connectSnap,
   getSnap,
   isLocalSnap,
-  sendOnboard,
-  sendList,
+  sendAdd,
   sendReset,
+  getAlerts,
+  getMonitors,
   shouldDisplayReconnectButton,
 } from '../utils';
 import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
   Card,
+  SendAddButton,
+  ReloadButton,
+  ResetButton,
+  TransactionsTable,
+  AlertsTable,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 
@@ -110,6 +115,32 @@ const Index = () => {
     ? state.isFlask
     : state.snapsDetected;
 
+  const handleGetMonitors = async () => {
+    try {
+      const data = await getMonitors();
+      console.log('!!!! Monitors', data);
+      dispatch({ type: MetamaskActions.SetMonitors, payload: data });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
+  const handleGetAlerts = async () => {
+    try {
+      const data = await getAlerts();
+      console.log('!!!! Alerts', data);
+      dispatch({ type: MetamaskActions.SetAlerts, payload: data });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
+  const loadData = async () => {
+    await Promise.all([handleGetMonitors(), handleGetAlerts()]);
+  };
+
   const handleConnectClick = async () => {
     try {
       await connectSnap();
@@ -123,20 +154,12 @@ const Index = () => {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
     }
+    await loadData();
   };
 
-  const handleSendOnboardClick = async () => {
+  const handleSendAddClick = async () => {
     try {
-      await sendOnboard();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleSendListClick = async () => {
-    try {
-      await sendList();
+      await sendAdd();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -146,6 +169,16 @@ const Index = () => {
   const handleResetClick = async () => {
     try {
       await sendReset();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+    await loadData();
+  };
+
+  const handleReloadClick = async () => {
+    try {
+      await loadData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -211,12 +244,11 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Send Onboard message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+            title: 'Add monitor',
+            description: 'Add new transaction to monitor right from the snap.',
             button: (
-              <SendHelloButton
-                onClick={handleSendOnboardClick}
+              <SendAddButton
+                onClick={handleSendAddClick}
                 disabled={!state.installedSnap}
               />
             ),
@@ -230,30 +262,10 @@ const Index = () => {
         />
         <Card
           content={{
-            title: 'Show List',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+            title: 'Reset Snap',
+            description: 'Remove all your tracks from the snap and start over.',
             button: (
-              <SendHelloButton
-                onClick={handleSendListClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <Card
-          content={{
-            title: 'Reset Snap Data',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
+              <ResetButton
                 onClick={handleResetClick}
                 disabled={!state.installedSnap}
               />
@@ -264,6 +276,51 @@ const Index = () => {
             isMetaMaskReady &&
             Boolean(state.installedSnap) &&
             !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+        <Card
+          content={{
+            title: 'Reload Data',
+            description: 'Get up to date info from snap.',
+            button: (
+              <ReloadButton
+                onClick={handleReloadClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            isMetaMaskReady &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+        <TransactionsTable
+          title={'Transactions to monitor'}
+          data={
+            state?.monitors?.length
+              && state.monitors.map((item, index) => {
+                  return {
+                    id: index + 1,
+                    from: item.from,
+                    to: item.to,
+                    intervalHours: item.intervalHours,
+                  };
+                })
+          }
+        />
+        <AlertsTable
+          title={'Alerts'}
+          data={
+            state?.alerts?.length
+              && state.alerts.map((item, index) => ({
+                  id: index + 1,
+                  from: item.monitor.from,
+                  to: item.monitor.to,
+                  intervalHours: item.monitor.intervalHours,
+                  date: item.date,
+                }))
           }
         />
         <Notice>

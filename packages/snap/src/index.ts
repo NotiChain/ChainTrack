@@ -6,7 +6,18 @@ import {
 import { panel, heading, text } from '@metamask/snaps-ui';
 
 import cronJob from './cron-job';
-import { list, reset, onboard, update, del } from './rpc';
+import {
+  add,
+  create,
+  update,
+  del,
+  reset,
+  getAlerts,
+  getMonitors,
+  CreateParams,
+  UpdateParams,
+  DeleteParams,
+} from './rpc';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -25,52 +36,39 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   console.log('!!!! onRpcRequest args', origin, request);
 
   switch (request.method) {
-    case 'onboard':
-      await onboard(origin);
+    case 'add':
+      await add(origin);
       break;
 
-    case 'list':
-      await list();
+    case 'create':
+      await create(request.params as CreateParams);
       break;
+
+    case 'get_monitors':
+      return await getMonitors();
+
+    case 'get_alerts':
+      return await getAlerts();
 
     case 'reset':
       await reset();
       break;
 
     case 'update': {
-      if (!request.params) {
-        throw new Error('Params not found.');
-      }
-
-      if (!request.params.index) {
-        throw new Error('Index not found.');
-      }
-
-      if (!request.params.item) {
-        throw new Error('Item not found.');
-      }
-      const { index } = request.params;
-      const { item } = request.params;
-      await update(index, item);
+      await update(request.params as UpdateParams);
       break;
     }
 
     case 'delete': {
-      if (!request.params) {
-        throw new Error('Params not found.');
-      }
-
-      if (!request.params.index) {
-        throw new Error('Index not found.');
-      }
-      const { index } = request.params;
-      await del(index);
+      await del(request.params as DeleteParams);
       break;
     }
 
     default:
       throw new Error('Method not found.');
   }
+
+  return null;
 };
 
 /**

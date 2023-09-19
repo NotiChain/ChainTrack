@@ -1,4 +1,4 @@
-import { ChainId } from './storage';
+import { ChainEnum } from './storage';
 
 export type Transaction = {
   from: string;
@@ -8,20 +8,20 @@ export type Transaction = {
 };
 
 export class Etherscan {
-  readonly chains: Record<ChainId, string>;
+  readonly chains: Record<ChainEnum, string>;
 
   constructor() {
     console.log('Etherscan constructor');
     this.chains = {
-      '0xaa36a7': 'api-sepolia.etherscan.io',
-      '0x5': 'api-goerli.etherscan.io',
-      '0x1': 'api.etherscan.io',
+      [ChainEnum.sepolia]: 'api-sepolia.etherscan.io',
+      [ChainEnum.goerli]: 'api-goerli.etherscan.io',
+      [ChainEnum.mainnet]: 'api.etherscan.io',
     };
   }
 
   async getTransactions(
     walletAddress: string,
-    chain: ChainId,
+    chain: ChainEnum,
   ): Promise<Transaction[]> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');

@@ -1,4 +1,5 @@
-import { panel, text } from '@metamask/snaps-ui';
+import { panel, heading, text, copyable } from '@metamask/snaps-ui';
+import { ChainEnum } from '../storage';
 import { create } from './create';
 
 /**
@@ -7,7 +8,7 @@ import { create } from './create';
  * @param origin - The origin of the request.
  * @returns Nothing.
  */
-export async function onboard(origin: string): Promise<void> {
+export async function add(origin: string): Promise<void> {
   // just a hello screen
   const confirm = await snap.request({
     method: 'snap_dialog',
@@ -41,18 +42,27 @@ export async function onboard(origin: string): Promise<void> {
   //   },
   // });
 
-  const network = await window.ethereum.request({ method: 'eth_chainId' });
-  if (network !== '0xaa36a7') {
-    throw new Error('Network is not sepolia');
+  const network = await window.ethereum.request<ChainEnum>({
+    method: 'eth_chainId',
+  });
+
+  console.log('!!!!! network', network);
+
+  if (!network) {
+    throw new Error('Network is not provided');
   }
+
   // Get the wallet address, from which we expect to have transactions
   // TODO: add validation for wallet address
-  const FAUCET_WALLET = '0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455';
-  const wallets = await window.ethereum.request({
+  const wallets = await window.ethereum.request<string[]>({
     method: 'eth_requestAccounts',
   });
 
   console.log('!!!!! wallets', wallets);
+
+  if (!wallets) {
+    throw new Error('Wallets are not provided');
+  }
 
   // TODO: add validation for interval
   // TODO: add selector
@@ -76,7 +86,34 @@ export async function onboard(origin: string): Promise<void> {
   const intervalHours = '24';
   console.log('!!!!! intervalHours', intervalHours);
 
+  const from = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Please enter from of the monitor'),
+      ]),
+    },
+  });
+  if (typeof from !== 'string') {
+    throw new Error('From is not a string');
+  }
+
+  const name = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Please enter the name of the monitor'),
+      ]),
+      placeholder: from,
+    },
+  });
+  if (typeof name !== 'string') {
+    throw new Error('Name is not a string');
+  }
+
   for (const wallet of wallets) {
-    await create('pk910', network, FAUCET_WALLET, wallet, intervalHours);
+    await create({ name, network, to: wallet, from, intervalHours });
   }
 }

@@ -1,6 +1,7 @@
-export { list } from './list';
-export { onboard } from './onboard';
-export { update } from './update';
-export { del } from './delete';
-export { reset } from './reset';
-export { create } from './create';
+export * from './add';
+export * from './update';
+export * from './delete';
+export * from './reset';
+export * from './create';
+export * from './get-monitors';
+export * from './get-alerts';
