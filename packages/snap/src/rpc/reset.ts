@@ -11,12 +11,11 @@ export async function reset() {
       type: 'confirmation',
       content: panel([
         heading('Are you sure?'),
-        text('This will reset all the data.'),
+        text('This will remove all the data you have.'),
       ]),
     },
   });
   if (confirm) {
-    // reset snap state
     await storage.clear();
   }
 }

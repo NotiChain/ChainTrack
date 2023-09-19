@@ -1,23 +1,25 @@
-import storage, { DataItem } from '../storage';
+import storage, { Monitor } from '../storage';
 
-/**
- * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- *
- * @param index - The index of the item to be updated.
- * @param item - New item.
- */
-export async function update(index: number, item: DataItem) {
-  const snapData = await storage.get();
-  console.log('!!!!! update', snapData, 'index', index, 'item', item);
-  if (
-    !snapData.track ||
-    !Array.isArray(snapData.track) ||
-    snapData.track.length < index
-  ) {
-    return;
+export type UpdateParams = {
+  index: number;
+  item: Monitor;
+};
+export async function update({ index, item }: UpdateParams) {
+  if (typeof index !== 'number') {
+    throw new Error('Invalid index');
   }
 
-  snapData.track[index] = item;
+  if (!item) {
+    throw new Error('Invalid item');
+  }
+
+  const snapData = await storage.get();
+
+  if (!snapData?.monitors || !snapData?.monitors[index]) {
+    throw new Error('Monitor does not exist');
+  }
+
+  snapData.monitors[index] = item;
 
   await storage.set(snapData);
 }

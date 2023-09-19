@@ -1,4 +1,4 @@
-import storage, { DataItem } from './storage';
+import storage, { Monitor } from './storage';
 import etherscan, { Transaction } from './etherscan';
 
 export class CronJob {
@@ -15,34 +15,36 @@ export class CronJob {
       throw new Error('Method not found.');
     }
 
-    if (!data?.track) {
-      console.log('CronJob process no tracks found');
+    if (!data?.monitors) {
+      console.log('CronJob process no monitors found');
       return;
     }
 
-    for (const track of data.track) {
-      await this.checkTrack(track);
+    for (const monitor of data.monitors) {
+      await this.checkMonitor(monitor);
     }
   }
 
-  async checkTrack(track: DataItem) {
-    if (!track?.network || !track?.to || !track?.intervalMs) {
+  async checkMonitor(monitor: Monitor) {
+    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
       console.log('CronJob process not all data provided');
       return;
     }
 
-    const transaction = await this.getLastTransaction(track);
+    const transaction = await this.getLastTransaction(monitor);
 
     if (transaction) {
-      console.log('CronJob.checkTrack transaction found');
+      console.log('CronJob.checkMonitor transaction found');
       // compare time
       const transactionTime = new Date(transaction.timestamp * 1000).getTime();
       const diff = Date.now() - transactionTime;
-      if (diff < track.intervalMs) {
-        console.log('CronJob.checkTrack transaction found in time');
+      if (diff < monitor.intervalMs) {
+        console.log('CronJob.checkMonitor transaction found in time');
         return;
       }
     }
+
+    await storage.addAlert({ ...monitor, date: new Date().toISOString() });
 
     await snap.request({
       method: 'snap_notify',
@@ -55,25 +57,27 @@ export class CronJob {
     });
   }
 
-  async getLastTransaction(track: DataItem): Promise<Transaction | undefined> {
-    if (!track?.network) {
+  async getLastTransaction(monitor: Monitor): Promise<Transaction | undefined> {
+    if (!monitor?.network) {
       console.log('CronJob.getLastTransaction network is not provided');
       return undefined;
     }
 
-    if (!track?.to) {
+    if (!monitor?.to) {
       console.log('CronJob.getLastTransaction to is not provided');
       return undefined;
     }
 
     const transactions = await etherscan.getTransactions(
-      track.to,
-      track.network,
+      monitor.to,
+      monitor.network,
     );
 
     const filteredTransactions = transactions.filter(
       (transaction: Transaction) => {
-        return transaction.to === track.to && transaction.from === track.from;
+        return (
+          transaction.to === monitor.to && transaction.from === monitor.from
+        );
       },
     );
 

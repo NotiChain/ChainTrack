@@ -53,42 +53,38 @@ export const getSnap = async (version?: string): Promise<Snap | undefined> => {
 };
 
 /**
- * Invoke the "onboard" method from the example snap.
+ * Invoke the "add" method from the example snap.
  */
-
-export const sendOnboard = async () => {
+export const sendAdd = async () => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
-    params: { snapId: defaultSnapOrigin, request: { method: 'onboard' } },
+    params: { snapId: defaultSnapOrigin, request: { method: 'add' } },
   });
 };
 
 /**
- * Invoke the "list" method from the example snap.
+ * Invoke the "get_monitors" method from the example snap.
  */
-
-export const sendList = async () => {
-  await window.ethereum.request({
-    method: 'wallet_invokeSnap',
-    params: { snapId: defaultSnapOrigin, request: { method: 'list' } },
-  });
-};
-
-/**
- * Invoke the "get_list" method from the example snap.
- */
-
-export const getList = async () => {
+export const getMonitors = async () => {
   return await window.ethereum.request<{ tracks: Record<string, unknown> }>({
     method: 'wallet_invokeSnap',
-    params: { snapId: defaultSnapOrigin, request: { method: 'get_list' } },
+    params: { snapId: defaultSnapOrigin, request: { method: 'get_monitors' } },
+  });
+};
+
+/**
+ * Invoke the "get_alerts" method from the example snap.
+ */
+export const getAlerts = async () => {
+  return await window.ethereum.request<{ tracks: Record<string, unknown> }>({
+    method: 'wallet_invokeSnap',
+    params: { snapId: defaultSnapOrigin, request: { method: 'get_alerts' } },
   });
 };
 
 /**
  * Invoke the "reset" method from the example snap.
  */
-
 export const sendReset = async () => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
