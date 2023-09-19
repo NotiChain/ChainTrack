@@ -5,11 +5,11 @@ import { create } from './create';
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
- * @param origin - The origin of the request.
  * @returns Nothing.
  */
-export async function add(origin: string): Promise<void> {
+export async function add(): Promise<void> {
   // just a hello screen
+  /*
   const confirm = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -24,6 +24,7 @@ export async function add(origin: string): Promise<void> {
   if (!confirm) {
     return;
   }
+  */
 
   // Get the network, from which we expect to have transactions
   // TODO: add validation for network
@@ -94,20 +95,18 @@ export async function add(origin: string): Promise<void> {
   if (typeof from !== 'string') {
     throw new Error('From is not a string');
   }
+  from = `0x${from}`;
 
   const name = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'prompt',
       content: panel([heading('Please enter the name of the monitor')]),
-      placeholder: from,
     },
   });
   if (typeof name !== 'string') {
     throw new Error('Name is not a string');
   }
-
-  from = `0x${from}`;
 
   for (const wallet of wallets) {
     await create({ name, network, to: wallet, from, intervalHours });

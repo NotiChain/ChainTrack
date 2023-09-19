@@ -8,7 +8,7 @@ type BaseMonitor = {
   name?: string;
   network: ChainEnum;
   intervalHours: string;
-  intervalMs?: number;
+  intervalMs: number;
   amount?: number;
 };
 
@@ -32,6 +32,7 @@ export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
 export type Alert = {
   monitor: Monitor;
   date: string;
+  confirmed: boolean;
 };
 
 export type Monitors = Monitor[];

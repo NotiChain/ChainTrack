@@ -1,5 +1,35 @@
+import { panel, text } from '@metamask/snaps-ui';
 import storage, { Monitor, monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
+
+function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
+  return true;
+  const date = new Date(alert.date);
+  const diff = Date.now() - date.getTime();
+  if (diff < alert.monitor.intervalMs) {
+    return false;
+  }
+  return true;
+}
+
+type NotificationType = 'inApp' | 'native';
+
+// message cannot be longer than 50 characters
+export async function snapNotify(type: NotificationType, message: string) {
+  try {
+    await snap.request({
+      method: 'snap_notify',
+      params: {
+        type,
+        message,
+      },
+    });
+    return true;
+  } catch (e) {
+    console.log('Notification error', e);
+  }
+  return false;
+}
 
 export class CronJob {
   constructor() {
@@ -23,30 +53,38 @@ export class CronJob {
     for (const monitor of data.monitors) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
-        if (
-          data.alerts?.find((alert) => {
-            // check date
-            return monitorEq(alert.monitor, monitor);
-          })
-        ) {
-          console.log('CronJob notification already sent');
-        } else {
-          try {
-            // here is a tricky part, because notification may not be sent because of
-            // the rate limit, so we need to check weather it was sent or not
-            await snap.request({
-              method: 'snap_notify',
-              params: {
-                type: 'native',
-                // type: 'inApp',
-                // can not be longer than 50 characters
-                message: `Expected transaction from ${monitor.name} not found`,
-              },
+        const found = data.alerts?.find((alert) => {
+          return monitorEq(alert.monitor, monitor);
+        });
+        if (!found) {
+          const notificationSent = await snapNotify(
+            'native',
+            `Expected transaction from ${monitor.name} not found`,
+          );
+
+          // if no error, then notification was sent
+          if (notificationSent) {
+            await storage.addAlert({
+              monitor,
+              date: new Date().toISOString(),
+              confirmed: false,
             });
-            // if no error, then notification was sent
-            await storage.addAlert({ monitor, date: new Date().toISOString() });
-          } catch (e) {
-            console.log('CronJob notification error', e);
+          }
+        } else if (found && alertExpired(found) && !found.confirmed) {
+          const confirm = await snap.request({
+            method: 'snap_dialog',
+            params: {
+              type: 'confirmation',
+              content: panel([
+                text(`You didn't receive transaction from ${monitor.name}`),
+                text('Would you like to NOT receive another notification?'),
+              ]),
+            },
+          });
+
+          if (confirm) {
+            found.confirmed = true;
+            await storage.set(data);
           }
         }
       }
