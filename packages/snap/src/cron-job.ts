@@ -91,7 +91,11 @@ export class CronJob {
   }
 
   async checkMonitor(monitor: Monitor): Promise<boolean> {
-    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
+    if (
+      !monitor?.network ||
+      (!monitor?.to && !monitor?.from) ||
+      !monitor?.intervalMs
+    ) {
       console.log('CronJob process not all data provided');
       return false;
     }
@@ -123,14 +127,14 @@ export class CronJob {
       return undefined;
     }
 
-    if (!(monitor?.to || monitor?.from)) {
+    const monitorAddress: string | null | undefined =
+      monitor.to || monitor.from;
+    if (!monitorAddress) {
       console.log(
         'CronJob.getLastMatchingTransaction from and to are not provided',
       );
       return undefined;
     }
-
-    const monitorAddress: string = monitor.to || monitor.from;
 
     const transactions = await etherscan.getTransactions(
       monitorAddress,
@@ -156,6 +160,8 @@ export class CronJob {
         } else if (monitor.from) {
           return transaction.from === monitor.from;
         }
+        // this should never happen
+        // error in case we accidentally remove one of checks above
         throw new Error('CronJob.getLastMatchingTransaction no address found');
       },
     );
