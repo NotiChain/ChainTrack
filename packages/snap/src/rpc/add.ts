@@ -66,7 +66,6 @@ export async function add(origin: string): Promise<void> {
 
   // TODO: add validation for interval
   // TODO: add selector
-  /*
   const intervalHours = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -82,16 +81,13 @@ export async function add(origin: string): Promise<void> {
   if (typeof intervalHours !== 'string') {
     throw new Error('Interval is not a string');
   }
-  */
-  const intervalHours = '24';
-  console.log('!!!!! intervalHours', intervalHours);
 
-  const from = await snap.request({
+  let from = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'prompt',
       content: panel([
-        heading('Please enter from of the monitor'),
+        heading('Please enter from of the monitor\n!!!WITHOUT 0x PREFIX!!!'),
       ]),
     },
   });
@@ -103,15 +99,15 @@ export async function add(origin: string): Promise<void> {
     method: 'snap_dialog',
     params: {
       type: 'prompt',
-      content: panel([
-        heading('Please enter the name of the monitor'),
-      ]),
+      content: panel([heading('Please enter the name of the monitor')]),
       placeholder: from,
     },
   });
   if (typeof name !== 'string') {
     throw new Error('Name is not a string');
   }
+
+  from = `0x${from}`;
 
   for (const wallet of wallets) {
     await create({ name, network, to: wallet, from, intervalHours });

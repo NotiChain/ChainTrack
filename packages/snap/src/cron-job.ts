@@ -23,10 +23,12 @@ export class CronJob {
     for (const monitor of data.monitors) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
-        if (data.alerts?.find((alert) => {
-          // check date
-          return monitorEq(alert.monitor, monitor);
-        })) {
+        if (
+          data.alerts?.find((alert) => {
+            // check date
+            return monitorEq(alert.monitor, monitor);
+          })
+        ) {
           console.log('CronJob notification already sent');
         } else {
           try {
@@ -75,7 +77,9 @@ export class CronJob {
     return true;
   }
 
-  async getLastMatchingTransaction(monitor: Monitor): Promise<Transaction | undefined> {
+  async getLastMatchingTransaction(
+    monitor: Monitor,
+  ): Promise<Transaction | undefined> {
     if (!monitor?.network) {
       console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;
