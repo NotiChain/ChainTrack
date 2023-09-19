@@ -10,11 +10,8 @@ type DataRow = Record<string, string | number | null | undefined>;
 type TableProps = {
   title: string;
   data: DataRow[];
+  columns: TableColumn<Record<string, any>>[];
 };
-
-function shortenEthWallet(wallet: string) {
-  return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
-}
 
 const Title = styled.p`
   font-size: ${(props) => props.theme.fontSizes.title};
@@ -37,7 +34,7 @@ const TableWrapper = styled.div`
   padding: 2.4rem;
 `;
 
-export const Table = ({ title, data }: TableProps) => {
+export const Table = ({ title, data, columns }: TableProps) => {
   const themePreference = getThemePreference();
   const theme = useTheme();
 
@@ -67,38 +64,9 @@ export const Table = ({ title, data }: TableProps) => {
       sortFocus: {
         default: '#2aa198',
       },
-      borderRadius: theme.radii.default,
     },
     themePreference ? 'dark' : 'light',
   );
-
-  const columns: TableColumn<Record<string, any>>[] = [
-    {
-      name: 'Id',
-      sortable: true,
-      selector: (row) => row.id,
-    },
-    {
-      name: 'From',
-      sortable: true,
-      selector: (row) => row.from,
-      format: (row) => shortenEthWallet(row.from),
-      grow: 2,
-    },
-    {
-      name: 'To',
-      sortable: true,
-      selector: (row) => row.to,
-      format: (row) => shortenEthWallet(row.from),
-      grow: 2,
-    },
-    {
-      name: 'Interval',
-      sortable: true,
-      selector: (row) => row.interval,
-      format: (row) => `${row.intervalHours} hours`,
-    },
-  ];
 
   return (
     <TableWrapper>

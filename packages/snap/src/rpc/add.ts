@@ -1,4 +1,5 @@
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
+import { ChainEnum } from '../storage';
 import { create } from './create';
 
 /**
@@ -7,7 +8,7 @@ import { create } from './create';
  * @param origin - The origin of the request.
  * @returns Nothing.
  */
-export async function onboard(origin: string): Promise<void> {
+export async function add(origin: string): Promise<void> {
   // just a hello screen
   const confirm = await snap.request({
     method: 'snap_dialog',
@@ -42,14 +43,27 @@ export async function onboard(origin: string): Promise<void> {
   //   },
   // });
 
-  const network = await window.ethereum.request({ method: 'eth_chainId' });
+  const network = await window.ethereum.request<ChainEnum>({
+    method: 'eth_chainId',
+  });
+
+  console.log('!!!!! network', network);
+
+  if (!network) {
+    throw new Error('Network is not provided');
+  }
+
   // Get the wallet address, from which we expect to have transactions
   // TODO: add validation for wallet address
-  const wallets = await window.ethereum.request({
+  const wallets = await window.ethereum.request<string[]>({
     method: 'eth_requestAccounts',
   });
 
   console.log('!!!!! wallets', wallets);
+
+  if (!wallets) {
+    throw new Error('Wallets are not provided');
+  }
 
   // TODO: add validation for interval
   // TODO: add selector
@@ -71,6 +85,6 @@ export async function onboard(origin: string): Promise<void> {
   }
 
   for (const wallet of wallets) {
-    create(network, wallet, intervalHours);
+    await create({ network, to: wallet, from: '', intervalHours });
   }
 }
