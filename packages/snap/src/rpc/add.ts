@@ -5,19 +5,18 @@ import { create } from './create';
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
- * @param origin - The origin of the request.
  * @returns Nothing.
  */
-export async function add(origin: string): Promise<void> {
+export async function add(): Promise<void> {
   // just a hello screen
+  /*
   const confirm = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
       content: panel([
         text(`Hello, **${origin}**!`),
-        text('Welcome to our transaction tracker snap!'),
-        text('We want to ask you for some information to get started.'),
+        text('Would you like to monitor sepolia-faucet.pk910.de?'),
       ]),
     },
   });
@@ -25,6 +24,7 @@ export async function add(origin: string): Promise<void> {
   if (!confirm) {
     return;
   }
+  */
 
   // Get the network, from which we expect to have transactions
   // TODO: add validation for network
@@ -79,12 +79,65 @@ export async function add(origin: string): Promise<void> {
       placeholder: '24',
     },
   });
-  console.log('!!!!! intervalHours', intervalHours);
   if (typeof intervalHours !== 'string') {
     throw new Error('Interval is not a string');
   }
 
+  let from = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Please enter from of the monitor'),
+        heading('!!!WITHOUT 0x PREFIX!!!'),
+      ]),
+    },
+  });
+  if (typeof from !== 'string') {
+    throw new Error('From is not a string');
+  }
+  from = `0x${from}`;
+
+  const name = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([heading('Please enter the name of the monitor')]),
+    },
+  });
+  if (typeof name !== 'string') {
+    throw new Error('Name is not a string');
+  }
+
+  let contractAddress = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Please enter the contract address of the monitor'),
+        heading('!!!WITHOUT 0x PREFIX!!!'),
+        text('in case of eth you may leave it empty'),
+      ]),
+    },
+  });
+  if (typeof contractAddress !== 'string') {
+    throw new Error('ContractAddress is not a string');
+  }
+
+  if (contractAddress.length > 0) {
+    contractAddress = `0x${contractAddress}`;
+  } else {
+    contractAddress = null;
+  }
+
   for (const wallet of wallets) {
-    await create({ network, to: wallet, from: '', intervalHours });
+    await create({
+      name,
+      network,
+      to: wallet,
+      from,
+      intervalHours,
+      contractAddress,
+    });
   }
 }

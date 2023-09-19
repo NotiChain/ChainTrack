@@ -3,10 +3,12 @@ import storage, { Data, Monitor } from '../storage';
 export type CreateParams = Omit<Monitor, 'intervalMs' | 'lastTransaction'>;
 
 export async function create({
+  name,
   network,
   from,
   to,
   intervalHours,
+  contractAddress,
 }: CreateParams): Promise<void> {
   if (!network) {
     throw new Error('Network is required');
@@ -28,12 +30,16 @@ export async function create({
     snapData.monitors = [];
   }
 
+  // TODO: check for duplicates before adding
+
   const snapDataItem = {
+    name,
     network,
     from,
     to,
     intervalMs,
     intervalHours,
+    contractAddress,
   } as Monitor;
 
   const existing = snapData.monitors.find((item) => {
