@@ -9,6 +9,7 @@ type BaseMonitor = {
   network: ChainEnum;
   intervalHours: string;
   intervalMs: number;
+  contractAddress: string | null;
   amount?: number;
 };
 

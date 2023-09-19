@@ -8,6 +8,7 @@ export async function create({
   from,
   to,
   intervalHours,
+  contractAddress,
 }: CreateParams): Promise<void> {
   if (!network) {
     throw new Error('Network is required');
@@ -38,6 +39,7 @@ export async function create({
     to,
     intervalMs,
     intervalHours,
+    contractAddress,
   } as Monitor;
 
   const existing = snapData.monitors.find((item) => {

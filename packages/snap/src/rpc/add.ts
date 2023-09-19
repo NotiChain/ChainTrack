@@ -88,7 +88,8 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('Please enter from of the monitor\n!!!WITHOUT 0x PREFIX!!!'),
+        heading('Please enter from of the monitor'),
+        heading('!!!WITHOUT 0x PREFIX!!!'),
       ]),
     },
   });
@@ -108,7 +109,35 @@ export async function add(): Promise<void> {
     throw new Error('Name is not a string');
   }
 
+  let contractAddress = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Please enter the contract address of the monitor'),
+        heading('!!!WITHOUT 0x PREFIX!!!'),
+        text('in case of eth you may leave it empty'),
+      ]),
+    },
+  });
+  if (typeof contractAddress !== 'string') {
+    throw new Error('ContractAddress is not a string');
+  }
+
+  if (contractAddress.length > 0) {
+    contractAddress = `0x${contractAddress}`;
+  } else {
+    contractAddress = null;
+  }
+
   for (const wallet of wallets) {
-    await create({ name, network, to: wallet, from, intervalHours });
+    await create({
+      name,
+      network,
+      to: wallet,
+      from,
+      intervalHours,
+      contractAddress,
+    });
   }
 }

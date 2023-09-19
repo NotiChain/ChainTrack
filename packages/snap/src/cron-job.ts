@@ -3,7 +3,6 @@ import storage, { Monitor, monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
 
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
-  return true;
   const date = new Date(alert.date);
   const diff = Date.now() - date.getTime();
   if (diff < alert.monitor.intervalMs) {
@@ -100,13 +99,14 @@ export class CronJob {
     const transaction = await this.getLastMatchingTransaction(monitor);
 
     if (!transaction) {
-      return true;
+      return false;
     }
 
     console.log('CronJob.checkMonitor transaction found');
     // compare time
-    const transactionTime = new Date(transaction.timestamp * 1000).getTime();
+    const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
     const diff = Date.now() - transactionTime;
+
     if (diff < monitor.intervalMs) {
       console.log('CronJob.checkMonitor transaction found in time');
       return false;
@@ -135,7 +135,15 @@ export class CronJob {
     const transactions = await etherscan.getTransactions(
       monitorAddress,
       monitor.network,
+      monitor.contractAddress,
     );
+
+    if (!transactions) {
+      console.log(
+        'CronJob.getLastMatchingTransaction returned error (probably rate limit)',
+      );
+      return undefined;
+    }
 
     const filteredTransactions = transactions.filter(
       (transaction: Transaction) => {
