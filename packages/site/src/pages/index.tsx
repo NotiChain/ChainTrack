@@ -110,6 +110,7 @@ const ErrorMessage = styled.div`
 `;
 
 const Index = () => {
+  let loadDataInterval: NodeJS.Timeout | null = null;
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
@@ -143,6 +144,11 @@ const Index = () => {
   };
 
   const handleConnectClick = async () => {
+    if (loadDataInterval) {
+      clearInterval(loadDataInterval);
+      loadDataInterval = null;
+    }
+
     try {
       await connectSnap();
       const installedSnap = await getSnap();
@@ -151,16 +157,20 @@ const Index = () => {
         type: MetamaskActions.SetInstalled,
         payload: installedSnap,
       });
+
+      if (!loadDataInterval) {
+        loadDataInterval = setInterval(loadData, 10000);
+      }
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
     }
-    await loadData();
   };
 
   const handleSendAddClick = async () => {
     try {
       await sendAdd();
+      await loadData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -202,6 +212,7 @@ const Index = () => {
   const handleResetClick = async () => {
     try {
       await sendReset();
+      await loadData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -330,28 +341,28 @@ const Index = () => {
         <TransactionsTable
           title={'Transactions to monitor'}
           data={
-            state?.monitors?.length
-              && state.monitors.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    from: item.from,
-                    to: item.to,
-                    intervalHours: item.intervalHours,
-                  };
-                })
+            state?.monitors?.length &&
+            state.monitors.map((item, index) => {
+              return {
+                id: index + 1,
+                from: item.from,
+                to: item.to,
+                intervalHours: item.intervalHours,
+              };
+            })
           }
         />
         <AlertsTable
           title={'Alerts'}
           data={
-            state?.alerts?.length
-              && state.alerts.map((item, index) => ({
-                  id: index + 1,
-                  from: item.monitor.from,
-                  to: item.monitor.to,
-                  intervalHours: item.monitor.intervalHours,
-                  date: item.date,
-                }))
+            state?.alerts?.length &&
+            state.alerts.map((item, index) => ({
+              id: index + 1,
+              from: item.monitor.from,
+              to: item.monitor.to,
+              intervalHours: item.monitor.intervalHours,
+              date: item.date,
+            }))
           }
         />
         <Notice>
