@@ -1,3 +1,10 @@
+## Welcome to ChainTrack
+
+ChainTrack: Your Guardian for Missed Transactions on MetaMask.
+Experience peace of mind with ChainTrack, the premier tool dedicated to alerting you about missed or absent transactions.
+In the dynamic world of decentralized finance, never miss a beat again.
+Our real-time notifications ensure you're always informed when a transaction doesn't occur, keeping your crypto management seamless and efficient.
+
 # @metamask/template-snap-monorepo
 
 This repository demonstrates how to develop a snap with TypeScript. For detailed instructions, see [the MetaMask documentation](https://docs.metamask.io/guide/snaps.html#serving-a-snap-to-your-local-environment).
