@@ -212,6 +212,7 @@ const Index = () => {
   const handleResetClick = async () => {
     try {
       await sendReset();
+
       await loadData();
     } catch (e) {
       console.error(e);
