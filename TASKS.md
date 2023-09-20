@@ -1,0 +1,11 @@
+- ~~ui connected update logic to support usual metamask~~
+- ui look and feel
+- add monitor from ui
+- ui description
+- ui wizard
+- readme
+- more chains!
+- from-to
+- precommit hooks
+- semver
+- fix tests

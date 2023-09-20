@@ -1,6 +1,6 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { defaultSnapOrigin } from '../config';
-import { GetSnapsResponse, Snap } from '../types';
+import { GetSnapsResponse, Snap, Monitors, Alerts } from '../types';
 
 /**
  * Get the installed snaps in MetaMask.
@@ -55,7 +55,7 @@ export const getSnap = async (version?: string): Promise<Snap | undefined> => {
 /**
  * Invoke the "add" method from the example snap.
  */
-export const sendAdd = async () => {
+export const sendAdd = async (): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'add' } },
@@ -65,27 +65,39 @@ export const sendAdd = async () => {
 /**
  * Invoke the "get_monitors" method from the example snap.
  */
-export const getMonitors = async () => {
-  return await window.ethereum.request<{ tracks: Record<string, unknown> }>({
+export const getMonitors = async (): Promise<Monitors> => {
+  const monitors = await window.ethereum.request<Monitors>({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'get_monitors' } },
   });
+
+  if (!monitors) {
+    return [];
+  }
+
+  return monitors as Monitors;
 };
 
 /**
  * Invoke the "get_alerts" method from the example snap.
  */
-export const getAlerts = async () => {
-  return await window.ethereum.request<{ tracks: Record<string, unknown> }>({
+export const getAlerts = async (): Promise<Alerts> => {
+  const alerts = await window.ethereum.request<Alerts>({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'get_alerts' } },
   });
+
+  if (!alerts) {
+    return [];
+  }
+
+  return alerts as Alerts;
 };
 
 /**
  * Invoke the "reset" method from the example snap.
  */
-export const sendReset = async () => {
+export const sendReset = async (): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'reset' } },

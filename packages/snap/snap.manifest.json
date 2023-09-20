@@ -7,7 +7,7 @@
     "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "Ee1nT7qm244rwf63COGFzNQGBrzOE9yu0FDw0WzeJwE=",
+    "shasum": "TxYhZBKPVvcsH9ftGqgweGwTUABnINOg+Sl4S3aeVPA=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -32,10 +32,7 @@
         {
           "expression": "* * * * *",
           "request": {
-            "method": "everyMinute",
-            "params": {
-              "param1": "foo"
-            }
+            "method": "everyMinute"
           }
         }
       ]
