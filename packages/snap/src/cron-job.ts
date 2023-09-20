@@ -123,14 +123,15 @@ export class CronJob {
       return undefined;
     }
 
-    if (!(monitor?.to || monitor?.from)) {
+    const monitorAddress: string | null | undefined =
+      monitor.to || monitor.from;
+
+    if (!monitorAddress) {
       console.log(
         'CronJob.getLastMatchingTransaction from and to are not provided',
       );
       return undefined;
     }
-
-    const monitorAddress: string = monitor.to || monitor.from;
 
     const transactions = await etherscan.getTransactions(
       monitorAddress,

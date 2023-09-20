@@ -6,7 +6,7 @@ import {
   useEffect,
   useReducer,
 } from 'react';
-import { Snap } from '../types';
+import { Snap, Monitors, Alerts } from '../types';
 import { detectSnaps, getSnap, isFlask } from '../utils';
 
 export type MetamaskState = {
@@ -14,8 +14,8 @@ export type MetamaskState = {
   isFlask: boolean;
   installedSnap?: Snap;
   error?: Error;
-  alerts?: any;
-  monitors?: any;
+  alerts?: Alerts;
+  monitors?: Monitors;
 };
 
 const initialState: MetamaskState = {
