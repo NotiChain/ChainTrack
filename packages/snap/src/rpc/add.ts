@@ -1,4 +1,4 @@
-import { panel, heading, text, copyable } from '@metamask/snaps-ui';
+import { panel, heading, text, copyable, divider } from '@metamask/snaps-ui';
 import { ChainIdToNameEnum } from '../storage';
 import { create } from './create';
 
@@ -24,12 +24,13 @@ export async function add(): Promise<void> {
     params: {
       type: 'confirmation',
       content: panel([
-        heading('Network'),
-        text('We using the network you have selected in MetaMask'),
-        text('Current network is:'),
+        heading('Network Selection'),
+        text("ChainTrack syncs with the network you've chosen in MetaMask."),
+        text('Currently Connected Network:'),
         heading(
           ChainIdToNameEnum[network] ? ChainIdToNameEnum[network] : network,
         ),
+        text('Stay aligned with ChainTrack for seamless transaction tracking!'),
       ]),
     },
   });
@@ -53,8 +54,10 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('Name'),
-        text('Please enter the name of this recurring transactions'),
+        heading('Monitor Name'),
+        text(
+          'Enter a name for this recurring transaction monitor to easily identify it later.',
+        ),
       ]),
     },
   });
@@ -68,13 +71,17 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('From Wallet'),
+        heading('Source Wallet Address'),
         text(
-          'Please enter the wallet address, from which you expect to have transactions',
+          'Enter the wallet address from which you anticipate transactions.',
+        ),
+        text(
+          'You can leave it empty if you want to track transactions from any address.',
         ),
       ]),
     },
   });
+
   if (typeof from !== 'string') {
     throw new Error('From is not a string');
   }
@@ -84,9 +91,9 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('Interval'),
+        heading('Check Interval'),
         text(
-          'Please enter the interval in hours, how often you expect to have transactions',
+          'Please enter the check interval in hours, how often you expect to have transactions',
         ),
         copyable('24'),
       ]),
@@ -113,7 +120,7 @@ export async function add(): Promise<void> {
         heading('Contract Address'),
         text('By default we monitor ETH transactions.'),
         text(
-          'If you want to monitor other ERC-20 tokens transactions, please enter the contract address',
+          'By default, ChainTrack monitors ETH transactions. To track transactions of another ERC-20 token, please enter its contract address.',
         ),
       ]),
     },
@@ -133,11 +140,11 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('Amount'),
+        heading('Token Amount'),
+        text('Specify the number of tokens expected in each transaction.'),
         text(
-          'Please enter the amount of tokens to be transferred in each transaction',
+          "If you're open to tracking any transfer amount, simply leave this field blank.",
         ),
-        text('You can leave it empty to expect any amount to be transferred'),
         copyable('0.1'),
       ]),
     },
@@ -151,10 +158,10 @@ export async function add(): Promise<void> {
     amount = '0';
   } else {
     if (isNaN(parseInt(amount, 10))) {
-      throw new Error('Interval is not a number');
+      throw new Error('Amount is not a number');
     }
 
-    if (parseInt(amount, 10) < 0) {
+    if (parseFloat(amount) < 0) {
       throw new Error('Amount can not be less than 0');
     }
   }
@@ -167,7 +174,33 @@ export async function add(): Promise<void> {
       to: wallet,
       intervalHours,
       contractAddress,
-      amount: parseInt(amount, 10),
+      amount: parseFloat(amount),
     });
   }
+
+  await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'alert',
+      content: panel([
+        heading('Success!'),
+        heading('Monitor Name'),
+        text(name),
+        heading('Network'),
+        text(ChainIdToNameEnum[network]),
+        heading('Source Address'),
+        text(from),
+        heading(`Destination ${wallets.length > 1 ? 'Addresses' : 'Address'}`),
+        text(wallets.join(', ')),
+        heading('Check Interval'),
+        text(`Every ${intervalHours} hours`),
+        heading('Token Amount'),
+        text(amount === '0' ? 'Any' : amount),
+        divider(),
+        text(
+          `Your monitor is now set up and will keep track of transactions based on the criteria above. Stay informed with ChainTrack!`,
+        ),
+      ]),
+    },
+  });
 }
