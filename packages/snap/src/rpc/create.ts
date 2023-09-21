@@ -30,8 +30,6 @@ export async function create({
     snapData.monitors = [];
   }
 
-  // TODO: check for duplicates before adding
-
   const snapDataItem = {
     name,
     network,

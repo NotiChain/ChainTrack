@@ -114,9 +114,9 @@ export async function add(): Promise<void> {
     params: {
       type: 'prompt',
       content: panel([
-        heading('Please enter the contract address of the monitor'),
-        heading('!!!WITHOUT 0x PREFIX!!!'),
-        text('in case of eth you may leave it empty'),
+        heading('Contract Address'),
+        text('Please enter the token to monitor, or leave empty for eth'),
+        text('in case of Eth leave it empty'),
       ]),
     },
   });

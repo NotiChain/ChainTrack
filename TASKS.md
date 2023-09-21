@@ -9,3 +9,4 @@
 - precommit hooks
 - semver
 - fix tests
+- logo
