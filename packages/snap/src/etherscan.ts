@@ -1,4 +1,4 @@
-import { ChainEnum } from './storage';
+import { ChainIdToNameEnum, ChainNameToIdEnum } from './storage';
 
 export type Transaction = {
   from: string;
@@ -8,21 +8,21 @@ export type Transaction = {
 };
 
 export class Etherscan {
-  readonly chains: Record<ChainEnum, string>;
+  readonly chains: Record<ChainNameToIdEnum, string>;
 
   constructor() {
     console.log('Etherscan constructor');
     this.chains = {
-      [ChainEnum.sepolia]: 'api-sepolia.etherscan.io',
-      [ChainEnum.goerli]: 'api-goerli.etherscan.io',
-      [ChainEnum.mainnet]: 'api.etherscan.io',
+      [ChainNameToIdEnum.sepolia]: 'api-sepolia.etherscan.io',
+      [ChainNameToIdEnum.goerli]: 'api-goerli.etherscan.io',
+      [ChainNameToIdEnum.mainnet]: 'api.etherscan.io',
     };
   }
 
   async getTransactions(
     walletAddress: string,
-    chain: ChainEnum,
-    contractAddress: string | null,
+    chain: keyof typeof ChainIdToNameEnum,
+    contractAddress: string,
   ): Promise<Transaction[] | null> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');
@@ -33,7 +33,7 @@ export class Etherscan {
 
     // TODO: limit with block numbers
     const request =
-      contractAddress === null
+      contractAddress === '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
         ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc`
         : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc`;
 

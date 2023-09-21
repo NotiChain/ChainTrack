@@ -1,5 +1,5 @@
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
-import { ChainEnum } from '../storage';
+import { ChainIdToNameEnum } from '../storage';
 import { create } from './create';
 
 /**
@@ -8,49 +8,34 @@ import { create } from './create';
  * @returns Nothing.
  */
 export async function add(): Promise<void> {
-  // just a hello screen
-  /*
-  const confirm = await snap.request({
+  const network = await window.ethereum.request<keyof typeof ChainIdToNameEnum>(
+    {
+      method: 'eth_chainId',
+    },
+  );
+
+  if (!network) {
+    throw new Error('Network is not provided');
+  }
+
+  // Get the network, from which we expect to have transactions
+  const networkConfirmed = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
       content: panel([
-        text(`Hello, **${origin}**!`),
-        text('Would you like to monitor sepolia-faucet.pk910.de?'),
+        heading('Network'),
+        text('We using the network you have selected in MetaMask'),
+        text('Current network is:'),
+        heading(
+          ChainIdToNameEnum[network] ? ChainIdToNameEnum[network] : network,
+        ),
       ]),
     },
   });
 
-  if (!confirm) {
-    return;
-  }
-  */
-
-  // Get the network, from which we expect to have transactions
-  // TODO: add validation for network
-  // TODO: load networks from somewhere
-  // TODO: add selector
-  // const network = await snap.request({
-  //   method: 'snap_dialog',
-  //   params: {
-  //     type: 'prompt',
-  //     content: panel([
-  //       heading('What is the network we should track?'),
-  //       text('Please enter the network to be monitored'),
-  //       copyable('sepolia'),
-  //     ]),
-  //     placeholder: 'sepolia',
-  //   },
-  // });
-
-  const network = await window.ethereum.request<ChainEnum>({
-    method: 'eth_chainId',
-  });
-
-  console.log('!!!!! network', network);
-
-  if (!network) {
-    throw new Error('Network is not provided');
+  if (!networkConfirmed) {
+    throw new Error('Network is not confirmed');
   }
 
   // Get the wallet address, from which we expect to have transactions
@@ -59,54 +44,65 @@ export async function add(): Promise<void> {
     method: 'eth_requestAccounts',
   });
 
-  console.log('!!!!! wallets', wallets);
-
-  if (!wallets) {
+  if (!wallets || wallets.length === 0) {
     throw new Error('Wallets are not provided');
   }
 
-  // TODO: add validation for interval
-  // TODO: add selector
-  const intervalHours = await snap.request({
+  let name = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'prompt',
       content: panel([
-        heading('What is the interval in hours?'),
-        text('Please enter the interval in hours'),
-        copyable('24'),
+        heading('Name'),
+        text('Please enter the name of this recurring transactions'),
       ]),
-      placeholder: '24',
     },
   });
-  if (typeof intervalHours !== 'string') {
-    throw new Error('Interval is not a string');
+
+  if (typeof name !== 'string') {
+    name = 'Untitled';
   }
 
-  let from = await snap.request({
+  const from = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'prompt',
       content: panel([
-        heading('Please enter from of the monitor'),
-        heading('!!!WITHOUT 0x PREFIX!!!'),
+        heading('From Wallet'),
+        text(
+          'Please enter the wallet address, from which you expect to have transactions',
+        ),
       ]),
     },
   });
   if (typeof from !== 'string') {
     throw new Error('From is not a string');
   }
-  from = `0x${from}`;
 
-  const name = await snap.request({
+  const intervalHours = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'prompt',
-      content: panel([heading('Please enter the name of the monitor')]),
+      content: panel([
+        heading('Interval'),
+        text(
+          'Please enter the interval in hours, how often you expect to have transactions',
+        ),
+        copyable('24'),
+      ]),
     },
   });
-  if (typeof name !== 'string') {
-    throw new Error('Name is not a string');
+
+  if (typeof intervalHours !== 'string') {
+    throw new Error('Interval is not a string');
+  }
+
+  if (isNaN(parseInt(intervalHours, 10))) {
+    throw new Error('Interval is not a number');
+  }
+
+  if (parseInt(intervalHours, 10) < 1) {
+    throw new Error('Interval can not be less than 1 hour');
   }
 
   let contractAddress = await snap.request({
@@ -115,29 +111,63 @@ export async function add(): Promise<void> {
       type: 'prompt',
       content: panel([
         heading('Contract Address'),
-        text('Please enter the token to monitor, or leave empty for eth'),
-        text('in case of Eth leave it empty'),
+        text('By default we monitor ETH transactions.'),
+        text(
+          'If you want to monitor other ERC-20 tokens transactions, please enter the contract address',
+        ),
       ]),
     },
   });
+
   if (typeof contractAddress !== 'string') {
     throw new Error('ContractAddress is not a string');
   }
 
-  if (contractAddress.length > 0) {
-    contractAddress = `0x${contractAddress}`;
+  if (contractAddress.length === 0) {
+    // ETH contract address
+    contractAddress = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8';
+  }
+
+  let amount = await snap.request({
+    method: 'snap_dialog',
+    params: {
+      type: 'prompt',
+      content: panel([
+        heading('Amount'),
+        text(
+          'Please enter the amount of tokens to be transferred in each transaction',
+        ),
+        text('You can leave it empty to expect any amount to be transferred'),
+        copyable('0.1'),
+      ]),
+    },
+  });
+
+  if (typeof amount !== 'string') {
+    throw new Error('Amount is not a string');
+  }
+
+  if (amount.length === 0) {
+    amount = '0';
   } else {
-    contractAddress = null;
+    if (isNaN(parseInt(amount, 10))) {
+      throw new Error('Interval is not a number');
+    }
+
+    if (parseInt(amount, 10) < 0) {
+      throw new Error('Amount can not be less than 0');
+    }
   }
 
   for (const wallet of wallets) {
     await create({
       name,
       network,
-      to: wallet,
       from,
+      to: wallet,
       intervalHours,
       contractAddress,
+      amount: parseInt(amount, 10),
     });
   }
 }
