@@ -98,8 +98,12 @@ export class CronJob {
 
     const transaction = await this.getLastMatchingTransaction(monitor);
 
-    if (!transaction) {
+    if (transaction === undefined) {
       return false;
+    }
+
+    if (!transaction) {
+      return true;
     }
 
     console.log('CronJob.checkMonitor transaction found');
@@ -117,7 +121,7 @@ export class CronJob {
 
   async getLastMatchingTransaction(
     monitor: Monitor,
-  ): Promise<Transaction | undefined> {
+  ): Promise<Transaction | undefined | null> {
     if (!monitor?.network) {
       console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;
@@ -163,7 +167,7 @@ export class CronJob {
 
     if (!filteredTransactions.length) {
       console.log('CronJob.getLastMatchingTransaction no transactions found');
-      return undefined;
+      return null;
     }
 
     return filteredTransactions[0];
