@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
@@ -24,6 +24,8 @@ import {
   DonateButton,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
+import { AddWizzard } from '../components/AddWizzard/AddWizzard';
+import { About } from './about';
 
 const Container = styled.div`
   display: flex;
@@ -112,7 +114,7 @@ const ErrorMessage = styled.div`
 const Index = () => {
   let loadDataInterval: NodeJS.Timeout | null = null;
   const [state, dispatch] = useContext(MetaMaskContext);
-
+  const [showAddWizzard, setShowAddWizzard] = useState(false);
   // const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
   //   ? state.isFlask
   //   : state.snapsDetected;
@@ -171,8 +173,9 @@ const Index = () => {
 
   const handleSendAddClick = async () => {
     try {
-      await sendAdd();
-      await loadData();
+      setShowAddWizzard(true);
+      // await sendAdd();
+      // await loadData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -233,148 +236,164 @@ const Index = () => {
 
   return (
     <Container>
-      <Heading>
-        Welcome to <Span>ChainTrack</Span>
-      </Heading>
-      <Subtitle>Get started by adding a new transaction to monitor!</Subtitle>
-      <CardContainer>
-        {state.error && (
-          <ErrorMessage>
-            <b>An error happened:</b> {state.error.message}
-          </ErrorMessage>
-        )}
-        {!isMetaMaskReady && (
-          <Card
-            content={{
-              title: 'Install',
-              description:
-                'Snaps is an extensions for MetaMask that allows you extend base functionality.',
-              button: <InstallMetamaskButton />,
-            }}
-            fullWidth
-          />
-        )}
-        {!state.installedSnap && (
-          <Card
-            content={{
-              title: 'Connect',
-              description:
-                'Get started by connecting to and installing the example snap.',
-              button: (
-                <ConnectButton
-                  onClick={handleConnectClick}
-                  disabled={!isMetaMaskReady}
-                />
-              ),
-            }}
-            disabled={!isMetaMaskReady}
-          />
-        )}
-        {shouldDisplayReconnectButton(state.installedSnap) && (
-          <Card
-            content={{
-              title: 'Reconnect',
-              description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
-              button: (
-                <ReconnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.installedSnap}
-                  isFlask={state.isFlask}
-                />
-              ),
-            }}
-            disabled={!state.installedSnap}
-          />
-        )}
-        <Card
-          content={{
-            title: 'Add transaction to monitor',
-            description: 'Add new transaction to monitor right from the snap.',
-            button: (
-              <SendAddButton
-                onClick={handleSendAddClick}
+      {!state.installedSnap ? (
+        <About />
+      ) : (
+        <>
+          {' '}
+          <Heading>
+            Welcome to <Span>ChainTrack</Span>
+          </Heading>
+          <Subtitle>
+            Get started by adding a new transaction to monitor!
+          </Subtitle>
+          <CardContainer>
+            {state.error && (
+              <ErrorMessage>
+                <b>An error happened:</b> {state.error.message}
+              </ErrorMessage>
+            )}
+            {!isMetaMaskReady && (
+              <Card
+                content={{
+                  title: 'Install',
+                  description:
+                    'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
+                  button: <InstallMetamaskButton />,
+                }}
+                fullWidth
+              />
+            )}
+            {!state.installedSnap && (
+              <Card
+                content={{
+                  title: 'Connect',
+                  description:
+                    'Get started by connecting to and installing the example snap.',
+                  button: (
+                    <ConnectButton
+                      onClick={handleConnectClick}
+                      disabled={!isMetaMaskReady}
+                    />
+                  ),
+                }}
+                disabled={!isMetaMaskReady}
+              />
+            )}
+            {shouldDisplayReconnectButton(state.installedSnap) && (
+              <Card
+                content={{
+                  title: 'Reconnect',
+                  description:
+                    'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
+                  button: (
+                    <ReconnectButton
+                      onClick={handleConnectClick}
+                      disabled={!state.installedSnap}
+                    />
+                  ),
+                }}
                 disabled={!state.installedSnap}
               />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <Card
-          content={{
-            title: 'Reset Snap',
-            description: 'Remove all your tracks from the snap and start over.',
-            button: (
-              <ResetButton
-                onClick={handleResetClick}
-                disabled={!state.installedSnap}
+            )}
+            <Card
+              content={{
+                title: 'Add transaction to monitor',
+                description:
+                  'Add new transaction to monitor right from the snap.',
+                button: (
+                  <SendAddButton
+                    onClick={handleSendAddClick}
+                    disabled={!state.installedSnap}
+                  />
+                ),
+              }}
+              disabled={!state.installedSnap}
+              fullWidth={
+                isMetaMaskReady &&
+                Boolean(state.installedSnap) &&
+                !shouldDisplayReconnectButton(state.installedSnap)
+              }
+            />
+            <Card
+              content={{
+                title: 'Reset Snap',
+                description:
+                  'Remove all your tracks from the snap and start over.',
+                button: (
+                  <ResetButton
+                    onClick={handleResetClick}
+                    disabled={!state.installedSnap}
+                  />
+                ),
+              }}
+              disabled={!state.installedSnap}
+              fullWidth={
+                isMetaMaskReady &&
+                Boolean(state.installedSnap) &&
+                !shouldDisplayReconnectButton(state.installedSnap)
+              }
+            />
+            <Card
+              content={{
+                title: 'Reload Data',
+                description: 'Get up to date info from snap.',
+                button: (
+                  <ReloadButton
+                    onClick={handleReloadClick}
+                    disabled={!state.installedSnap}
+                  />
+                ),
+              }}
+              disabled={!state.installedSnap}
+              fullWidth={
+                isMetaMaskReady &&
+                Boolean(state.installedSnap) &&
+                !shouldDisplayReconnectButton(state.installedSnap)
+              }
+            />
+            <TransactionsTable
+              title={'Transactions to monitor'}
+              disabled={!state.installedSnap}
+              data={state?.monitors?.map((item, index) => {
+                return {
+                  id: index + 1,
+                  from: item.from,
+                  to: item.to,
+                  intervalHours: item.intervalHours,
+                };
+              })}
+            />
+            <AlertsTable
+              title={'Alerts'}
+              disabled={!state.installedSnap}
+              data={state?.alerts?.map((item, index) => ({
+                id: index + 1,
+                from: item.monitor.from,
+                to: item.monitor.to,
+                intervalHours: item.monitor.intervalHours,
+                date: item.date,
+              }))}
+            />
+            {showAddWizzard && (
+              <AddWizzard
+                onClose={() => setShowAddWizzard(false)}
+                loadData={loadData}
               />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <Card
-          content={{
-            title: 'Reload Data',
-            description: 'Get up to date info from snap.',
-            button: (
-              <ReloadButton
-                onClick={handleReloadClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <TransactionsTable
-          title={'Transactions to monitor'}
-          disabled={!state.installedSnap}
-          data={state?.monitors?.map((item, index) => {
-            return {
-              id: index + 1,
-              from: item.from,
-              to: item.to,
-              intervalHours: item.intervalHours,
-            };
-          })}
-        />
-        <AlertsTable
-          title={'Alerts'}
-          disabled={!state.installedSnap}
-          data={state?.alerts?.map((item, index) => ({
-            id: index + 1,
-            from: item.monitor.from,
-            to: item.monitor.to,
-            intervalHours: item.monitor.intervalHours,
-            date: item.date,
-          }))}
-        />
-        <Notice>
-          <p>
-            Support <b>ChainTrack</b>: If you've found value in our tool and
-            wish to support our mission to enhance blockchain transparency,
-            consider making a donation. Every contribution, big or small, helps
-            us continue our work and serve you better. Thank you for believing
-            in <b>ChainTrack</b>!
-          </p>
-          <DonateButton onClick={handleDonateClick} />
-        </Notice>
-      </CardContainer>
+            )}
+            <Notice>
+              <p>
+                Support <b>ChainTrack</b>: If you've found value in our tool and
+                wish to support our mission to enhance blockchain transparency,
+                consider making a donation. Every contribution, big or small,
+                helps us continue our work and serve you better. Thank you for
+                believing in <b>ChainTrack</b>!
+              </p>
+              <DonateButton onClick={handleDonateClick} />
+            </Notice>
+          </CardContainer>
+        </>
+      )}
     </Container>
   );
 };

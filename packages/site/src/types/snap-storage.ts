@@ -11,6 +11,7 @@ type BaseMonitor = {
   intervalHours: string;
   intervalMs?: number;
   lastTransaction?: number;
+  contractAddress?: string;
 };
 
 type FromOnlyMonitor = BaseMonitor & {

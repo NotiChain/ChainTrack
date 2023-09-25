@@ -107,24 +107,36 @@ export const sendReset = async (): Promise<void> => {
   });
 };
 
+export type UpdateParams = {
+  index: number;
+  item: Monitor;
+};
+
 // Initiates update process on snap
-export const sendUpdate = async (monitor: Monitor): Promise<void> => {
+export const sendUpdate = async ({
+  index,
+  item,
+}: UpdateParams): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'update', params: monitor },
+      request: { method: 'update', params: { index, item } },
     },
   });
 };
 
 // Initiates delete process on snap
-export const sendDelete = async (monitor: Monitor): Promise<void> => {
+export const sendDelete = async ({
+  index,
+}: {
+  index: number;
+}): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'delete', params: monitor },
+      request: { method: 'delete', params: { index } },
     },
   });
 };
