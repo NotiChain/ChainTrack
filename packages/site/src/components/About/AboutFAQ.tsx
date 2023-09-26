@@ -46,7 +46,7 @@ const Checkbox = styled.input`
     height: auto;
     opacity: 1;
     padding: 14px;
-    color: white;
+    color: ${(props) => props.theme.colors.about.inverse};
   }
   &:checked ~ ${Plus} {
     -webkit-transform: rotate(45deg);
@@ -90,6 +90,10 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 0 120px;
   margin-bottom: 200px;
+
+  ${(props) => props.theme.mediaQueries.small} {
+    padding: 0 20px;
+  }
 `;
 
 export const AboutFaq: FC = () => {

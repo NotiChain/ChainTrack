@@ -8,8 +8,8 @@ import { AboutCTA } from '../components/About/AboutCTA';
 import { AboutFooter } from '../components/About/AboutFooter';
 
 const Container = styled.div`
-  background: black;
-  color: white;
+  background: ${(props) => props.theme.colors.about.default};
+  color: ${(props) => props.theme.colors.about.inverse};
 `;
 
 export const About: FC = () => {

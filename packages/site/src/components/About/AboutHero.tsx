@@ -3,18 +3,23 @@ import styled from 'styled-components';
 
 const HeroButton = styled.button`
   padding: 30px 40px;
-  background-color: white;
-  color: black;
+  background: ${(props) => props.theme.colors.about.default};
+  color: ${(props) => props.theme.colors.about.inverse};
   border-radius: 0px;
 
   margin-top: 100px;
 
   font-size: 32px;
   font-weight: 500;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.about.inverse};
+    color: ${(props) => props.theme.colors.about.default};
+  }
 `;
 
 const H1 = styled.h1`
-  font-size: 80px;
+  font-size: 60px;
   font-weight: bold;
   line-height: 108px;
   margin: 0;

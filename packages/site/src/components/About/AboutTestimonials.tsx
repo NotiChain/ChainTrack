@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const TestimonialCard = styled.div`
   padding: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: ${(props) => props.theme.colors.about.testimonialBorder};
   max-width: 750px;
 
   display: flex;
@@ -39,6 +39,13 @@ const Container = styled.div`
   gap: 20px;
   padding: 0 120px;
   margin-bottom: 180px;
+
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+  ${(props) => props.theme.mediaQueries.small} {
+    padding: 0 20px;
+  }
 `;
 
 export const AboutTestimonials: FC = () => {

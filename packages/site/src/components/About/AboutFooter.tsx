@@ -3,12 +3,17 @@ import styled from 'styled-components';
 
 const HeroButton = styled.button`
   padding: 30px 40px;
-  background-color: white;
-  color: black;
+  background: ${(props) => props.theme.colors.about.default};
+  color: ${(props) => props.theme.colors.about.inverse};
   border-radius: 0px;
 
   font-size: 32px;
   font-weight: 500;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.about.inverse};
+    color: ${(props) => props.theme.colors.about.default};
+  }
 `;
 
 const HeroBox = styled.div`

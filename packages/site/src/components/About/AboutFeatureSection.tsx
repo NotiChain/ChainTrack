@@ -10,8 +10,8 @@ const FeatureCard = styled.div`
   gap: 16px;
   padding: 24px;
   max-width: 544px;
-  color: white;
-  background: #1e2427;
+  color: ${(props) => props.theme.colors.about.inverse};
+  background: ${(props) => props.theme.colors.about.card};
 `;
 
 const SubHeading = styled.p`
@@ -62,6 +62,10 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 0 120px;
   margin-bottom: 180px;
+
+  ${(props) => props.theme.mediaQueries.small} {
+    padding: 0 20px;
+  }
 `;
 
 const Heading4 = styled.h4`
@@ -89,10 +93,8 @@ export const AboutFeatureSection: FC = () => {
       </LeftPart>
       <RightPart>
         <Heading4>
-          In the intricate world of decentralized finance, recurring
-          transactions can easily go unnoticed. ChainTrack is here to change
-          that. Designed exclusively for MetaMask users, we ensure every
-          recurring transaction is right at your fingertips.
+          Designed exclusively for MetaMask users, we ensure every recurring
+          transaction is right at your fingertips.
         </Heading4>
         <BorderLine />
         <FeatureGrid>

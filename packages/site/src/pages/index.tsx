@@ -5,7 +5,6 @@ import {
   connectSnap,
   getSnap,
   isLocalSnap,
-  sendAdd,
   sendReset,
   getAlerts,
   getMonitors,
@@ -235,12 +234,11 @@ const Index = () => {
   };
 
   return (
-    <Container>
+    <>
       {!state.installedSnap ? (
         <About />
       ) : (
-        <>
-          {' '}
+        <Container>
           <Heading>
             Welcome to <Span>ChainTrack</Span>
           </Heading>
@@ -392,9 +390,9 @@ const Index = () => {
               <DonateButton onClick={handleDonateClick} />
             </Notice>
           </CardContainer>
-        </>
+        </Container>
       )}
-    </Container>
+    </>
   );
 };
 

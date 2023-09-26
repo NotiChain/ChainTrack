@@ -70,6 +70,13 @@ export const light: DefaultTheme = {
       alternative: '#b92534',
       muted: '#d73a4919',
     },
+    about: {
+      default: 'white',
+      inverse: 'black',
+      card: '#e1dbd8',
+      inverseCard: '#e1dbd8',
+      testimonialBorder: '1px solid rgba(000, 000, 000, 0.5)',
+    },
   },
   ...theme,
 };
@@ -108,6 +115,13 @@ export const dark: DefaultTheme = {
       default: '#d73a49',
       alternative: '#b92534',
       muted: '#d73a4919',
+    },
+    about: {
+      default: 'black',
+      inverse: 'white',
+      card: '#1e2427',
+      inverseCard: '#e1dbd8',
+      testimonialBorder: '1px solid rgba(255, 255, 255, 0.5)',
     },
   },
   ...theme,
