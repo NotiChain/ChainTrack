@@ -33,6 +33,10 @@ export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
 
 export type Monitors = Monitor[];
 
+export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
+
+export type PredefinedMonitors = PredefinedMonitor[];
+
 export type Alert = {
   monitor: Monitor;
   date: string;
