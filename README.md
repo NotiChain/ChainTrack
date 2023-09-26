@@ -92,7 +92,7 @@ GATSBY_ETHERSCAN_API_KEY="Value"
 ```
 3. Use variables in the code. For example:
 ```shell
-const ETHERSCAN_API_KEY = process?.env?.ETHERSCAN_API_KEY;
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 ```
 
 ## Notes
