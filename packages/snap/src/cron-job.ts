@@ -1,5 +1,6 @@
 import { panel, text } from '@metamask/snaps-ui';
-import storage, { Monitor, monitorEq } from './storage';
+import { Monitor } from '../../shared-types';
+import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
 
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {

@@ -1,5 +1,5 @@
 import { panel, heading, text, copyable } from '@metamask/snaps-ui';
-import { ChainEnum } from '../storage';
+import { ChainEnum } from '../../../shared-types';
 import { create } from './create';
 
 /**

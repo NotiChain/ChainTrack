@@ -5,13 +5,12 @@ export enum ChainEnum {
 }
 
 type BaseMonitor = {
-  name: string;
+  name?: string;
   network: ChainEnum;
-  amount?: number;
   intervalHours: string;
-  intervalMs?: number;
-  lastTransaction?: number;
-  contractAddress?: string;
+  intervalMs: number;
+  contractAddress: string | null;
+  amount?: number;
 };
 
 type FromOnlyMonitor = BaseMonitor & {
@@ -24,18 +23,12 @@ type ToOnlyMonitor = BaseMonitor & {
   to: string;
 };
 
-type FromToMonitor = BaseMonitor & {
+export type FromToMonitor = BaseMonitor & {
   from: string;
   to: string;
 };
 
 export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
-
-export type Monitors = Monitor[];
-
-export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
-
-export type PredefinedMonitors = PredefinedMonitor[];
 
 export type Alert = {
   monitor: Monitor;
@@ -43,4 +36,10 @@ export type Alert = {
   confirmed: boolean;
 };
 
+export type Monitors = Monitor[];
+
 export type Alerts = Alert[];
+
+export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
+
+export type PredefinedMonitors = PredefinedMonitor[];

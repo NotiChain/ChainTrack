@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import { Box, Input, Modal, Typography } from '@mui/material';
-import { Monitor } from '../../types';
+import { Monitor } from '../../../../shared-types';
 import { WizzardFooter } from './FooterWizzard';
 
-export interface ContractAdressStepProps {
+export type ContractAdressStepProps = {
   assemblingData: Monitor;
   handleEnd: () => void;
-}
+};
 
 const style = {
   position: 'absolute',

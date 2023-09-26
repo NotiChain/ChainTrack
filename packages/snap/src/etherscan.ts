@@ -1,4 +1,4 @@
-import { ChainEnum } from './storage';
+import { ChainEnum } from '../../shared-types';
 
 export type Transaction = {
   from: string;
