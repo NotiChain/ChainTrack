@@ -30,7 +30,7 @@ export class Etherscan {
     }
 
     const host = this.chains[chain];
-    const { ETHERSCAN_API_KEY } = process?.env || {};
+    const { ETHERSCAN_API_KEY } = process.env || {};
     const ETHERSCAN_API_KEY_QUERY = ETHERSCAN_API_KEY
       ? `&apiKey=${ETHERSCAN_API_KEY}`
       : '';
