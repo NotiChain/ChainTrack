@@ -6,8 +6,9 @@ import {
   useEffect,
   useReducer,
 } from 'react';
-import { Snap, Monitors, Alerts } from '../types';
+import { Snap } from '../types';
 import { detectSnaps, getSnap, isFlask } from '../utils';
+import { Alerts, Monitors } from '../../../shared-types';
 
 export type MetamaskState = {
   snapsDetected: boolean;
