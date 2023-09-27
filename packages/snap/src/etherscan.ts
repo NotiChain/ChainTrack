@@ -30,16 +30,13 @@ export class Etherscan {
     }
 
     const host = this.chains[chain];
-    const { ETHERSCAN_API_KEY } = process.env || {};
-    const ETHERSCAN_API_KEY_QUERY = ETHERSCAN_API_KEY
-      ? `&apiKey=${ETHERSCAN_API_KEY}`
-      : '';
+    const { ETHERSCAN_API_KEY: etherscanApiKey = '' } = process.env || {};
 
     // TODO: limit with block numbers
     const request =
       contractAddress === '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
-        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc${ETHERSCAN_API_KEY_QUERY}`
-        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc${ETHERSCAN_API_KEY_QUERY}`;
+        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
+        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
 
     try {
       const response = await fetch(request);
