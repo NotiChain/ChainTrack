@@ -1,15 +1,21 @@
-export enum ChainEnum {
+export enum ChainNameToIdEnum {
   'sepolia' = '0xaa36a7',
   'mainnet' = '0x1',
   'goerli' = '0x5',
 }
 
+export enum ChainIdToNameEnum {
+  '0xaa36a7' = 'sepolia',
+  '0x1' = 'mainnet',
+  '0x5' = 'goerli',
+}
+
 type BaseMonitor = {
   name?: string;
-  network: ChainEnum;
+  network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;
   intervalMs: number;
-  contractAddress: string | null;
+  contractAddress: string;
   amount?: number;
 };
 
@@ -71,7 +77,7 @@ export class Storage {
   }
 
   async set(data: Data): Promise<void> {
-    console.log('Storage.set()', data);
+    console.log('Storage.set()', JSON.stringify(data, null, 2));
     await snap.request({
       method: 'snap_manageState',
       params: { operation: 'update', newState: data },
