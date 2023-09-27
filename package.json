@@ -23,9 +23,9 @@
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
+    "prepare": "husky install",
     "start": "yarn workspaces foreach --parallel --interlaced --verbose run start",
-    "test": "echo \"TODO\"",
-    "prepare": "husky install"
+    "test": "echo \"TODO\""
   },
   "devDependencies": {
     "@metamask/eslint-config": "^10.0.0",
