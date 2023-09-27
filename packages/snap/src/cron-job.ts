@@ -129,6 +129,7 @@ export class CronJob {
 
     const monitorAddress: string | null | undefined =
       monitor.to || monitor.from;
+
     if (!monitorAddress) {
       console.log(
         'CronJob.getLastMatchingTransaction from and to are not provided',

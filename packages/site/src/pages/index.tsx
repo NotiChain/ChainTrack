@@ -13,7 +13,7 @@ import {
 } from '../utils';
 import {
   ConnectButton,
-  InstallFlaskButton,
+  InstallMetamaskButton,
   ReconnectButton,
   Card,
   SendAddButton,
@@ -113,9 +113,11 @@ const Index = () => {
   let loadDataInterval: NodeJS.Timeout | null = null;
   const [state, dispatch] = useContext(MetaMaskContext);
 
-  const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
-    ? state.isFlask
-    : state.snapsDetected;
+  // const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
+  //   ? state.isFlask
+  //   : state.snapsDetected;
+
+  const isMetaMaskReady = isLocalSnap(defaultSnapOrigin) && state.snapsDetected;
 
   const handleGetMonitors = async () => {
     try {
@@ -247,8 +249,8 @@ const Index = () => {
             content={{
               title: 'Install',
               description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
-              button: <InstallFlaskButton />,
+                'Snaps is an extensions for MetaMask that allows you extend base functionality.',
+              button: <InstallMetamaskButton />,
             }}
             fullWidth
           />
@@ -279,6 +281,7 @@ const Index = () => {
                 <ReconnectButton
                   onClick={handleConnectClick}
                   disabled={!state.installedSnap}
+                  isFlask={state.isFlask}
                 />
               ),
             }}
@@ -341,30 +344,26 @@ const Index = () => {
         />
         <TransactionsTable
           title={'Transactions to monitor'}
-          data={
-            state?.monitors?.length &&
-            state.monitors.map((item, index) => {
-              return {
-                id: index + 1,
-                from: item.from,
-                to: item.to,
-                intervalHours: item.intervalHours,
-              };
-            })
-          }
+          disabled={!state.installedSnap}
+          data={state?.monitors?.map((item, index) => {
+            return {
+              id: index + 1,
+              from: item.from,
+              to: item.to,
+              intervalHours: item.intervalHours,
+            };
+          })}
         />
         <AlertsTable
           title={'Alerts'}
-          data={
-            state?.alerts?.length &&
-            state.alerts.map((item, index) => ({
-              id: index + 1,
-              from: item.monitor.from,
-              to: item.monitor.to,
-              intervalHours: item.monitor.intervalHours,
-              date: item.date,
-            }))
-          }
+          disabled={!state.installedSnap}
+          data={state?.alerts?.map((item, index) => ({
+            id: index + 1,
+            from: item.monitor.from,
+            to: item.monitor.to,
+            intervalHours: item.monitor.intervalHours,
+            date: item.date,
+          }))}
         />
         <Notice>
           <p>

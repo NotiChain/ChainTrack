@@ -1,8 +1,8 @@
 import { ComponentProps } from 'react';
 import styled from 'styled-components';
 import { MetamaskState } from '../hooks';
-import { ReactComponent as FlaskFox } from '../assets/flask_fox.svg';
-import { shouldDisplayReconnectButton } from '../utils';
+import { ReactComponent as MetamaskFlaskFox } from '../assets/flask_fox.svg';
+import { ReactComponent as MetamaskFox } from '../assets/metamask_fox.svg';
 
 const Link = styled.a`
   display: flex;
@@ -69,17 +69,24 @@ const ConnectedIndicator = styled.div`
   background-color: green;
 `;
 
-export const InstallFlaskButton = () => (
+export const InstallMetamaskFlaskButton = () => (
   <Link href="https://metamask.io/flask/" target="_blank">
-    <FlaskFox />
+    <MetamaskFlaskFox />
     <ButtonText>Install MetaMask Flask</ButtonText>
+  </Link>
+);
+
+export const InstallMetamaskButton = () => (
+  <Link href="https://metamask.io/download/" target="_blank">
+    <MetamaskFox />
+    <ButtonText>Install MetaMask</ButtonText>
   </Link>
 );
 
 export const ConnectButton = (props: ComponentProps<typeof Button>) => {
   return (
     <Button {...props}>
-      <FlaskFox />
+      <MetamaskFox />
       <ButtonText>Connect</ButtonText>
     </Button>
   );
@@ -88,7 +95,7 @@ export const ConnectButton = (props: ComponentProps<typeof Button>) => {
 export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
   return (
     <Button {...props}>
-      <FlaskFox />
+      {props.isFlask ? <MetamaskFlaskFox /> : <MetamaskFox />}
       <ButtonText>Reconnect</ButtonText>
     </Button>
   );
@@ -117,16 +124,8 @@ export const HeaderButtons = ({
   state: MetamaskState;
   onConnectClick(): unknown;
 }) => {
-  if (!state.isFlask && !state.installedSnap) {
-    return <InstallFlaskButton />;
-  }
-
   if (!state.installedSnap) {
     return <ConnectButton onClick={onConnectClick} />;
-  }
-
-  if (shouldDisplayReconnectButton(state.installedSnap)) {
-    return <ReconnectButton onClick={onConnectClick} />;
   }
 
   return (

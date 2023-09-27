@@ -7,13 +7,14 @@ type DataRow = Record<string, string | number | null | undefined>;
 type TableProps = {
   title: string;
   data: DataRow[];
+  disabled?: boolean;
 };
 
 function shortenEthWallet(wallet: string) {
   return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
 }
 
-export const AlertsTable = ({ title, data }: TableProps) => {
+export const AlertsTable = ({ title, data, disabled }: TableProps) => {
   const columns: TableColumn<Record<string, any>>[] = [
     {
       name: 'Id',
@@ -54,5 +55,7 @@ export const AlertsTable = ({ title, data }: TableProps) => {
     },
   ];
 
-  return <Table columns={columns} data={data} title={title} />;
+  return (
+    <Table disabled={disabled} columns={columns} data={data} title={title} />
+  );
 };

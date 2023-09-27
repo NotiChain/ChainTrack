@@ -11,6 +11,7 @@ type TableProps = {
   title: string;
   data: DataRow[];
   columns: TableColumn<Record<string, any>>[];
+  disabled?: boolean;
 };
 
 const Title = styled.p`
@@ -24,17 +25,27 @@ const Title = styled.p`
 `;
 
 const TableWrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.alternative};
-  border: 1px solid ${({ theme }) => theme.colors.border.default};
-  color: ${({ theme }) => theme.colors.text.alternative};
-  border-radius: ${({ theme }) => theme.radii.default};
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: '100%';
+  background-color: ${({ theme }) => theme.colors.card.default};
   margin-top: 2.4rem;
   margin-bottom: 2.4rem;
   padding: 2.4rem;
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.radii.default};
+  box-shadow: ${({ theme }) => theme.shadows.default};
+  filter: opacity(${({ disabled }) => (disabled ? '.4' : '1')});
+  align-self: stretch;
+  ${({ theme }) => theme.mediaQueries.small} {
+    width: 100%;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+    padding: 1.6rem;
+  }
 `;
 
-export const Table = ({ title, data, columns }: TableProps) => {
+export const Table = ({ title, data, columns, disabled }: TableProps) => {
   const themePreference = getThemePreference();
   const theme = useTheme();
 
@@ -69,9 +80,15 @@ export const Table = ({ title, data, columns }: TableProps) => {
   );
 
   return (
-    <TableWrapper>
+    <TableWrapper disabled={disabled}>
       <Title>{title}</Title>
-      <DataTable theme="custom" columns={columns} data={data} selectableRows />
+      <DataTable
+        disabled={disabled}
+        theme="custom"
+        columns={columns}
+        data={data}
+        selectableRows
+      />
     </TableWrapper>
   );
 };

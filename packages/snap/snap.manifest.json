@@ -32,10 +32,7 @@
         {
           "expression": "* * * * *",
           "request": {
-            "method": "everyMinute",
-            "params": {
-              "param1": "foo"
-            }
+            "method": "everyMinute"
           }
         }
       ]
