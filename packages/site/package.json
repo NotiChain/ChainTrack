@@ -25,17 +25,12 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@metamask/providers": "^9.0.0",
-    "@mui/material": "^5.14.10",
-    "@tanstack/react-table": "^8.10.0",
     "dotenv": "^16.3.1",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.4",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
-    "react-use-wizard": "^2.2.3",
     "styled-components": "5.3.3"
   },
   "devDependencies": {

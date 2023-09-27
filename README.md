@@ -80,7 +80,7 @@ The project follows the same release process as the other libraries in the MetaM
 - Once you are confident the release contents are correct, publish the release using `npm publish`.
 
 ### ENV variables
-Application is supported reading from .env file. To be able to create .env file and use variables locally you need:
+Application is supported reading from .env file. To be able to use variables locally you need:
 1. Create .env file in the root of the application
 2. Add content to this file. For example
 ```shell
