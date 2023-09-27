@@ -91,7 +91,11 @@ export class CronJob {
   }
 
   async checkMonitor(monitor: Monitor): Promise<boolean> {
-    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
+    if (
+      !monitor?.network ||
+      (!monitor?.to && !monitor.from) ||
+      !monitor?.intervalMs
+    ) {
       console.log('CronJob process not all data provided');
       return false;
     }
@@ -161,6 +165,8 @@ export class CronJob {
         } else if (monitor.from) {
           return transaction.from === monitor.from;
         }
+        // this should never happen
+        // error in case we accidentally remove one of checks above
         throw new Error('CronJob.getLastMatchingTransaction no address found');
       },
     );
@@ -174,4 +180,5 @@ export class CronJob {
   }
 }
 
-export default new CronJob();
+const cronJob = new CronJob();
+export default cronJob;
