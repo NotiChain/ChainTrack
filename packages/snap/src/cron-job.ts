@@ -175,4 +175,5 @@ export class CronJob {
   }
 }
 
-export default new CronJob();
+const cronJob = new CronJob();
+export default cronJob;

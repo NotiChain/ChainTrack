@@ -49,4 +49,5 @@ export class Etherscan {
   }
 }
 
-export default new Etherscan();
+const etherscan = new Etherscan();
+export default etherscan;

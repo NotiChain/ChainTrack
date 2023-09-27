@@ -24,15 +24,13 @@
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!**/CHANGELOG.md' '**/*.yml' --ignore-path .gitignore",
     "start": "yarn workspaces foreach --parallel --interlaced --verbose run start",
-    "test": "echo \"TODO\""
+    "test": "echo \"TODO\"",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint && yarn build"
     }
-  },
-  "dependencies": {
-    "husky": "^8.0.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
@@ -55,7 +53,8 @@
     "eslint-plugin-jsdoc": "^39.2.9",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.2.1",
+    "husky": "^8.0.0",
+    "prettier": "^3.0.3",
     "prettier-plugin-packagejson": "^2.2.18",
     "typescript": "^4.7.4"
   },
