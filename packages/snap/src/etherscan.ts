@@ -1,4 +1,4 @@
-import { ChainIdToNameEnum, ChainNameToIdEnum } from './storage';
+import { ChainIdToNameEnum, ChainNameToIdEnum } from '../../shared-types';
 
 export type Transaction = {
   from: string;

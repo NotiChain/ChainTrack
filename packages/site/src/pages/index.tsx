@@ -344,25 +344,29 @@ const Index = () => {
         <TransactionsTable
           title={'Transactions to monitor'}
           disabled={!state.installedSnap}
-          data={state?.monitors?.map((item, index) => {
-            return {
-              id: index + 1,
-              from: item.from,
-              to: item.to,
-              intervalHours: item.intervalHours,
-            };
-          })}
+          data={
+            state?.monitors?.map((item, index) => {
+              return {
+                id: index + 1,
+                from: item.from,
+                to: item.to,
+                intervalHours: item.intervalHours,
+              };
+            }) || []
+          }
         />
         <AlertsTable
           title={'Alerts'}
           disabled={!state.installedSnap}
-          data={state?.alerts?.map((item, index) => ({
-            id: index + 1,
-            from: item.monitor.from,
-            to: item.monitor.to,
-            intervalHours: item.monitor.intervalHours,
-            date: item.date,
-          }))}
+          data={
+            state?.alerts?.map((item, index) => ({
+              id: index + 1,
+              from: item.monitor.from,
+              to: item.monitor.to,
+              intervalHours: item.monitor.intervalHours,
+              date: item.date,
+            })) || []
+          }
         />
         <Notice>
           <p>
