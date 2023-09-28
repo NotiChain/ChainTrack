@@ -14,8 +14,9 @@ type BaseMonitor = {
   name?: string;
   network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;
-  intervalMs: number;
-  contractAddress: string;
+  intervalMs?: number;
+  lastTransaction?: number;
+  contractAddress?: string;
   amount?: number;
 };
 
