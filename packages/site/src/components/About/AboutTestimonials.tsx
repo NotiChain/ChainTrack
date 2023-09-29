@@ -8,7 +8,7 @@ const TestimonialCard = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 20px;
 `;
 
 const TestimonialPerson = styled.div`
@@ -63,12 +63,12 @@ export const AboutTestimonials: FC = () => {
       </TestimonialCard>
       <TestimonialCard>
         <Body1>
-          "Simple, effective, and reliable. ChainTrack has made my MetaMask
-          experience so much smoother"
+          "ChainTrack exhibits simplicity, effectiveness, and reliability. It
+          has significantly improved the fluidity of my MetaMask experience."
         </Body1>
         <TestimonialPerson>
-          <Body2>Taylor S.</Body2>
-          <Body2op>Blockchain Analyst</Body2op>
+          <Body2>Dzmitry H.</Body2>
+          <Body2op>Software Engineer</Body2op>
         </TestimonialPerson>
       </TestimonialCard>
     </Container>

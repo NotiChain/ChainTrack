@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 const HeroButton = styled.button`
-  padding: 30px 40px;
-  background: ${(props) => props.theme.colors.about.default};
-  color: ${(props) => props.theme.colors.about.inverse};
-  border-radius: 0px;
+  padding: 20px 40px;
+  background: ${(props) => props.theme.colors.about.inverse};
+  color: ${(props) => props.theme.colors.about.default};
+  border-radius: 8px;
 
   font-size: 32px;
   font-weight: 500;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.about.inverse};
-    color: ${(props) => props.theme.colors.about.default};
+    background-color: ${(props) => props.theme.colors.about.default};
+    color: ${(props) => props.theme.colors.about.inverse};
   }
 `;
 
@@ -35,7 +35,11 @@ const Body2 = styled.p`
   margin: 0;
 `;
 
-export const AboutFooter: FC = () => {
+type AboutFooterProps = {
+  handleDonateClick(): void;
+};
+
+export const AboutFooter: FC<AboutFooterProps> = ({ handleDonateClick }) => {
   return (
     <HeroBox>
       <Body2>
@@ -43,7 +47,7 @@ export const AboutFooter: FC = () => {
         supporting our mission to enhance transparency in recurring
         transactions.
       </Body2>
-      <HeroButton>Donate</HeroButton>
+      <HeroButton onClick={handleDonateClick}>Donate</HeroButton>
     </HeroBox>
   );
 };

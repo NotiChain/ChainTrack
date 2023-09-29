@@ -1,33 +1,29 @@
 import styled, { useTheme } from 'styled-components';
-import { ReactComponent as MetaMaskFox } from '../assets/metamask_fox.svg';
-import { MetaMask } from './MetaMask';
-import { PoweredBy } from './PoweredBy';
+import { SnapLogo } from './SnapLogo';
 
 const FooterWrapper = styled.footer`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  padding-top: 2.4rem;
-  padding-bottom: 2.4rem;
+  justify-content: flex-start;
+  padding: 2.4rem;
   border-top: 1px solid ${(props) => props.theme.colors.border.default};
 `;
 
-const PoweredByButton = styled.a`
+const LogoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  padding: 1.2rem;
-  border-radius: ${({ theme }) => theme.radii.button};
-  box-shadow: ${({ theme }) => theme.shadows.button};
-  background-color: ${({ theme }) => theme.colors.background.alternative};
 `;
 
-const PoweredByContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
+const Title = styled.p`
+  font-size: ${(props) => props.theme.fontSizes.title};
+  font-weight: bold;
+  margin: 0;
+  margin-left: 1.2rem;
+  ${({ theme }) => theme.mediaQueries.small} {
+    display: none;
+  }
 `;
 
 export const Footer = () => {
@@ -35,13 +31,10 @@ export const Footer = () => {
 
   return (
     <FooterWrapper>
-      <PoweredByButton href="https://docs.metamask.io/" target="_blank">
-        <MetaMaskFox />
-        <PoweredByContainer>
-          <PoweredBy color={theme.colors.text.muted} />
-          <MetaMask color={theme.colors.text.default} />
-        </PoweredByContainer>
-      </PoweredByButton>
+      <LogoWrapper>
+        <SnapLogo color={theme.colors.icon.default} size={36} />
+        <Title>ChainTrack</Title>
+      </LogoWrapper>
     </FooterWrapper>
   );
 };

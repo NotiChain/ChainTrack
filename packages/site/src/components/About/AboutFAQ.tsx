@@ -25,7 +25,6 @@ const FaqContent = styled.div`
 const Plus = styled.div`
   position: absolute;
   margin-left: 20px;
-  margin-top: 4px;
   z-index: 5;
   font-size: 42px;
   line-height: 100%;

@@ -25,7 +25,12 @@ import {
 import { defaultSnapOrigin } from '../config';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { TestTransactionTable } from '../components/testTransactionTable';
-import { About } from './about';
+import { AboutFooter } from '../components/About/AboutFooter';
+import { AboutHero } from '../components/About/AboutHero';
+import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
+import { AboutTestimonials } from '../components/About/AboutTestimonials';
+import { AboutCTA } from '../components/About/AboutCTA';
+import { AboutFaq } from '../components/About/AboutFAQ';
 
 const Container = styled.div`
   display: flex;
@@ -41,6 +46,11 @@ const Container = styled.div`
     margin-bottom: 2rem;
     width: auto;
   }
+`;
+
+const LandingContainer = styled.div`
+  background: ${(props) => props.theme.colors.about.default};
+  color: ${(props) => props.theme.colors.about.inverse};
 `;
 
 const Heading = styled.h1`
@@ -237,7 +247,20 @@ const Index = () => {
   return (
     <>
       {!state.installedSnap ? (
-        <About />
+        <LandingContainer>
+          <AboutHero
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady}
+          />
+          <AboutFeatureSection />
+          <AboutTestimonials />
+          <AboutFaq />
+          <AboutCTA
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady}
+          />
+          <AboutFooter handleDonateClick={handleDonateClick} />
+        </LandingContainer>
       ) : (
         <Container>
           <Heading>
