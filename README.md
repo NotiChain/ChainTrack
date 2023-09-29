@@ -80,17 +80,24 @@ The project follows the same release process as the other libraries in the MetaM
 - Once you are confident the release contents are correct, publish the release using `npm publish`.
 
 ### ENV variables
+
 Application is supported reading from .env file. To be able to use variables locally you need:
+
 1. Create .env file in the root of the application
 2. Add content to this file. For example
+
 ```shell
 ETHERSCAN_API_KEY="Value"
 ```
-**!!!Note!!!**: add ``GATSBY_`` prefix if you need to add variable and use it on site package. Example:
+
+**!!!Note!!!**: add `GATSBY_` prefix if you need to add variable and use it on site package. Example:
+
 ```shell
 GATSBY_ETHERSCAN_API_KEY="Value"
 ```
+
 3. Use variables in the code. For example:
+
 ```shell
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 ```
