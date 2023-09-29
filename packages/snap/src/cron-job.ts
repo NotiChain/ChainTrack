@@ -1,11 +1,15 @@
 import { panel, text } from '@metamask/snaps-ui';
-import storage, { Monitor, monitorEq } from './storage';
+import { Monitor } from '../../shared-types';
+import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
 
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
   const date = new Date(alert.date);
   const diff = Date.now() - date.getTime();
-  if (diff < alert.monitor.intervalMs) {
+  if (
+    typeof alert.monitor.intervalMs === 'number' &&
+    diff < alert.monitor.intervalMs
+  ) {
     return false;
   }
   return true;

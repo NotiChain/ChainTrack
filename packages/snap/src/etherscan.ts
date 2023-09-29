@@ -1,4 +1,4 @@
-import { ChainIdToNameEnum, ChainNameToIdEnum } from './storage';
+import { ChainIdToNameEnum, ChainNameToIdEnum } from '../../shared-types';
 
 export type Transaction = {
   from: string;
@@ -22,7 +22,7 @@ export class Etherscan {
   async getTransactions(
     walletAddress: string,
     chain: keyof typeof ChainIdToNameEnum,
-    contractAddress: string,
+    contractAddress?: string,
   ): Promise<Transaction[] | null> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');

@@ -24,10 +24,10 @@ const Title = styled.p`
   }
 `;
 
-const TableWrapper = styled.div`
+const TableWrapper = styled.div<{ disabled?: boolean }>`
   display: flex;
   flex-direction: column;
-  width: '100%';
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.card.default};
   margin-top: 2.4rem;
   margin-bottom: 2.4rem;
@@ -35,7 +35,7 @@ const TableWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.default};
-  filter: opacity(${({ disabled }) => (disabled ? '.4' : '1')});
+  filter: opacity(${({ disabled }) => (disabled ? 0.4 : 1)});
   align-self: stretch;
   ${({ theme }) => theme.mediaQueries.small} {
     width: 100%;

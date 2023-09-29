@@ -1,16 +1,23 @@
-export enum ChainEnum {
+export enum ChainNameToIdEnum {
   'sepolia' = '0xaa36a7',
   'mainnet' = '0x1',
   'goerli' = '0x5',
 }
 
+export enum ChainIdToNameEnum {
+  '0xaa36a7' = 'sepolia',
+  '0x1' = 'mainnet',
+  '0x5' = 'goerli',
+}
+
 type BaseMonitor = {
-  name: string;
-  network: ChainEnum;
-  amount?: number;
+  name?: string;
+  network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;
   intervalMs?: number;
   lastTransaction?: number;
+  contractAddress?: string;
+  amount?: number;
 };
 
 type FromOnlyMonitor = BaseMonitor & {
@@ -23,23 +30,23 @@ type ToOnlyMonitor = BaseMonitor & {
   to: string;
 };
 
-type FromToMonitor = BaseMonitor & {
+export type FromToMonitor = BaseMonitor & {
   from: string;
   to: string;
 };
 
 export type Monitor = FromOnlyMonitor | ToOnlyMonitor | FromToMonitor;
 
-export type Monitors = Monitor[];
-
-export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
-
-export type PredefinedMonitors = PredefinedMonitor[];
-
 export type Alert = {
   monitor: Monitor;
   date: string;
   confirmed: boolean;
 };
+
+export type Monitors = Monitor[];
+
+export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
+
+export type PredefinedMonitors = PredefinedMonitor[];
 
 export type Alerts = Alert[];
