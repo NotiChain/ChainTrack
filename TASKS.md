@@ -20,6 +20,7 @@
 - publish to snap store
 
 # Post MVP
+- add custom alerts for user (to notify about product updates for example)
 - more chains!
 - if it's user's transaction - show popup with transaction confirmation (should be configurable) change network if needed
 

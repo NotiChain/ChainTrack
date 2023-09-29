@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Wizard } from 'react-use-wizard';
 import { addMonitor } from '../../utils';
-import { ChainEnum, Monitor } from '../../../../shared-types';
+import { ChainNameToIdEnum, Monitor } from '../../../../shared-types';
 import { TransactionNameStep } from './TransactionNameStep';
 import { TransactionFromStep } from './TranactionFromStep';
 import { TransactionToStep } from './TransactionToStep';
@@ -34,8 +34,8 @@ export const AddWizzard: FC<WizzardProps> = (props) => {
     to: '',
     intervalHours: '',
     amount: undefined,
-    contractAddress: null,
-    network: ChainEnum.goerli,
+    contractAddress: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+    network: ChainNameToIdEnum.goerli,
     intervalMs: 100000000,
   };
 
