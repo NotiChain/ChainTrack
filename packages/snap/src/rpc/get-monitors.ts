@@ -1,5 +1,5 @@
 import storage from '../storage';
-import { Monitors } from '../../../shared-types';
+import { Monitors } from '../../../shared/types';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.

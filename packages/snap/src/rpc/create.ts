@@ -1,5 +1,5 @@
 import storage, { Data } from '../storage';
-import { Monitor } from '../../../shared-types';
+import { Monitor } from '../../../shared/types';
 
 export type CreateParams = Omit<Monitor, 'intervalMs' | 'lastTransaction'>;
 

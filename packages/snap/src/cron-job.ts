@@ -1,5 +1,5 @@
 import { panel, text } from '@metamask/snaps-ui';
-import { Monitor } from '../../shared-types';
+import { Monitor } from '../../shared/types';
 import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
 

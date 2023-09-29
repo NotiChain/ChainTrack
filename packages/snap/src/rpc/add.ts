@@ -1,5 +1,5 @@
 import { panel, heading, text, copyable, divider } from '@metamask/snaps-ui';
-import { ChainIdToNameEnum } from '../../../shared-types';
+import { ChainIdToNameEnum } from '../../../shared/types';
 import { create } from './create';
 
 /**

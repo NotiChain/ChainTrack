@@ -1,4 +1,4 @@
-import { Alert, Alerts, Monitor, Monitors } from '../../shared-types';
+import { Alert, Alerts, Monitor, Monitors } from '../../shared/types';
 
 export type Data = {
   monitors?: Monitors;
