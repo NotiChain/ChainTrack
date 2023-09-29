@@ -14,9 +14,6 @@ import {
   // createColumnHelper,
 } from '@tanstack/react-table';
 import './test.css';
-import { Input } from '@mui/material';
-import { sendUpdate } from '../utils';
-import { Monitor } from '../../../shared-types';
 
 // type TestTransactionTableProps = {
 //   data: any;
@@ -80,22 +77,6 @@ const defaultColumn: Partial<ColumnDef<TransactionTableColumns>> = {
   },
 };
 
-function useSkipper() {
-  const shouldSkipRef = React.useRef(true);
-  const shouldSkip = shouldSkipRef.current;
-
-  // Wrap a function with this to skip a pagination reset temporarily
-  const skip = React.useCallback(() => {
-    shouldSkipRef.current = false;
-  }, []);
-
-  React.useEffect(() => {
-    shouldSkipRef.current = true;
-  });
-
-  return [shouldSkip, skip] as const;
-}
-
 export function TestTransactionTable(props: any) {
   const { data, state } = props;
 
@@ -121,8 +102,6 @@ export function TestTransactionTable(props: any) {
     [],
   );
 
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
-
   const table = useReactTable({
     data,
     columns,
@@ -130,13 +109,11 @@ export function TestTransactionTable(props: any) {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    autoResetPageIndex,
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value, row) => {
         console.log(value, row);
         // sendUpdate({ index: value.index, item: state[value.index] });
-        skipAutoResetPageIndex();
       },
     },
     debugTable: true,

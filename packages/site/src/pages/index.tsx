@@ -24,8 +24,8 @@ import {
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
-import { About } from './about';
 import { TestTransactionTable } from '../components/testTransactionTable';
+import { About } from './about';
 
 const Container = styled.div`
   display: flex;
