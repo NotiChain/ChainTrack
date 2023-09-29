@@ -10,3 +10,4 @@
 - semver
 - fix tests
 - logo
+- predefined monitors

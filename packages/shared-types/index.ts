@@ -1,15 +1,22 @@
-export enum ChainEnum {
+export enum ChainNameToIdEnum {
   'sepolia' = '0xaa36a7',
   'mainnet' = '0x1',
   'goerli' = '0x5',
 }
 
+export enum ChainIdToNameEnum {
+  '0xaa36a7' = 'sepolia',
+  '0x1' = 'mainnet',
+  '0x5' = 'goerli',
+}
+
 type BaseMonitor = {
   name?: string;
-  network: ChainEnum;
+  network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;
-  intervalMs: number;
-  contractAddress: string | null;
+  intervalMs?: number;
+  lastTransaction?: number;
+  contractAddress?: string;
   amount?: number;
 };
 

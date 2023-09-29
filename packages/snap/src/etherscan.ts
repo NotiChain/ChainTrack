@@ -1,4 +1,4 @@
-import { ChainEnum } from '../../shared-types';
+import { ChainIdToNameEnum, ChainNameToIdEnum } from '../../shared-types';
 
 export type Transaction = {
   from: string;
@@ -8,21 +8,21 @@ export type Transaction = {
 };
 
 export class Etherscan {
-  readonly chains: Record<ChainEnum, string>;
+  readonly chains: Record<ChainNameToIdEnum, string>;
 
   constructor() {
     console.log('Etherscan constructor');
     this.chains = {
-      [ChainEnum.sepolia]: 'api-sepolia.etherscan.io',
-      [ChainEnum.goerli]: 'api-goerli.etherscan.io',
-      [ChainEnum.mainnet]: 'api.etherscan.io',
+      [ChainNameToIdEnum.sepolia]: 'api-sepolia.etherscan.io',
+      [ChainNameToIdEnum.goerli]: 'api-goerli.etherscan.io',
+      [ChainNameToIdEnum.mainnet]: 'api.etherscan.io',
     };
   }
 
   async getTransactions(
     walletAddress: string,
-    chain: ChainEnum,
-    contractAddress: string | null,
+    chain: keyof typeof ChainIdToNameEnum,
+    contractAddress?: string,
   ): Promise<Transaction[] | null> {
     if (!this.chains[chain]) {
       console.log('Etherscan.getTransactions chain is not found');
@@ -30,27 +30,30 @@ export class Etherscan {
     }
 
     const host = this.chains[chain];
-    const { ETHERSCAN_API_KEY } = process?.env || {};
-    const ETHERSCAN_API_KEY_QUERY = ETHERSCAN_API_KEY
-      ? `&apiKey=${ETHERSCAN_API_KEY}`
-      : '';
+    const { ETHERSCAN_API_KEY: etherscanApiKey = '' } = process.env || {};
 
     // TODO: limit with block numbers
     const request =
-      contractAddress === null
-        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc${ETHERSCAN_API_KEY_QUERY}`
-        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc${ETHERSCAN_API_KEY_QUERY}`;
+      contractAddress === '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
+        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
+        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
 
-    const response = await fetch(request);
+    try {
+      const response = await fetch(request);
 
-    const data = await response.json();
-    console.log('Etherscan.getTransactions', data);
-    if (data.status !== '1') {
-      console.log('Etherscan.getTransactions status is not 1');
+      const data = await response.json();
+      console.log('Etherscan.getTransactions', data);
+      if (data.status !== '1') {
+        console.log('Etherscan.getTransactions status is not 1');
+        return null;
+      }
+      return data.result;
+    } catch (e) {
+      console.error('Etherscan.getTransactions', e);
       return null;
     }
-    return data.result;
   }
 }
 
-export default new Etherscan();
+const etherscan = new Etherscan();
+export default etherscan;

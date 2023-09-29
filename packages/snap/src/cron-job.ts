@@ -6,7 +6,10 @@ import etherscan, { Transaction } from './etherscan';
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
   const date = new Date(alert.date);
   const diff = Date.now() - date.getTime();
-  if (diff < alert.monitor.intervalMs) {
+  if (
+    typeof alert.monitor.intervalMs === 'number' &&
+    diff < alert.monitor.intervalMs
+  ) {
     return false;
   }
   return true;
@@ -92,15 +95,23 @@ export class CronJob {
   }
 
   async checkMonitor(monitor: Monitor): Promise<boolean> {
-    if (!monitor?.network || !monitor?.to || !monitor?.intervalMs) {
+    if (
+      !monitor?.network ||
+      (!monitor?.to && !monitor.from) ||
+      !monitor?.intervalMs
+    ) {
       console.log('CronJob process not all data provided');
       return false;
     }
 
     const transaction = await this.getLastMatchingTransaction(monitor);
 
-    if (!transaction) {
+    if (transaction === undefined) {
       return false;
+    }
+
+    if (!transaction) {
+      return true;
     }
 
     console.log('CronJob.checkMonitor transaction found');
@@ -118,7 +129,7 @@ export class CronJob {
 
   async getLastMatchingTransaction(
     monitor: Monitor,
-  ): Promise<Transaction | undefined> {
+  ): Promise<Transaction | undefined | null> {
     if (!monitor?.network) {
       console.log('CronJob.getLastMatchingTransaction network is not provided');
       return undefined;
@@ -158,17 +169,20 @@ export class CronJob {
         } else if (monitor.from) {
           return transaction.from === monitor.from;
         }
+        // this should never happen
+        // error in case we accidentally remove one of checks above
         throw new Error('CronJob.getLastMatchingTransaction no address found');
       },
     );
 
     if (!filteredTransactions.length) {
       console.log('CronJob.getLastMatchingTransaction no transactions found');
-      return undefined;
+      return null;
     }
 
     return filteredTransactions[0];
   }
 }
 
-export default new CronJob();
+const cronJob = new CronJob();
+export default cronJob;

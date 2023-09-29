@@ -1,4 +1,4 @@
-import { Monitors, Alerts, Monitor, Alert } from '../../shared-types';
+import { Alert, Alerts, Monitor, Monitors } from '../../shared-types';
 
 export type Data = {
   monitors?: Monitors;
@@ -31,7 +31,7 @@ export class Storage {
   }
 
   async set(data: Data): Promise<void> {
-    console.log('Storage.set()', data);
+    console.log('Storage.set()', JSON.stringify(data, null, 2));
     await snap.request({
       method: 'snap_manageState',
       params: { operation: 'update', newState: data },
@@ -80,4 +80,5 @@ export class Storage {
   }
 }
 
-export default new Storage();
+const storage = new Storage();
+export default storage;
