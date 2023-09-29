@@ -25,6 +25,7 @@ import {
 import { defaultSnapOrigin } from '../config';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { About } from './about';
+import { TestTransactionTable } from '../components/testTransactionTable';
 
 const Container = styled.div`
   display: flex;
@@ -348,6 +349,20 @@ const Index = () => {
                 isMetaMaskReady &&
                 Boolean(state.installedSnap) &&
                 !shouldDisplayReconnectButton(state.installedSnap)
+              }
+            />
+
+            <TestTransactionTable
+              state={state}
+              data={
+                state?.monitors?.map((item, index) => {
+                  return {
+                    id: index + 1,
+                    from: item.from,
+                    to: item.to,
+                    intervalHours: item.intervalHours,
+                  };
+                }) || []
               }
             />
             <TransactionsTable
