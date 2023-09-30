@@ -163,7 +163,8 @@ const Index = () => {
       });
 
       if (!loadDataInterval) {
-        loadDataInterval = setInterval(loadData, 10000);
+        await loadData();
+        loadDataInterval = setInterval(loadData, 5 * 60 * 1000);
       }
     } catch (e) {
       console.error(e);
