@@ -20,7 +20,9 @@ const config: SnapConfig = {
     return merge(webpackConfig, {
       plugins: [
         new webpack.DefinePlugin({
-          'process.env': JSON.stringify(process.env),
+          'process.env': JSON.stringify({
+            ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY,
+          }),
         }),
       ],
     });
