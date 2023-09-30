@@ -15,34 +15,25 @@ type TableProps = {
 };
 
 const Title = styled.p`
-  font-size: ${(props) => props.theme.fontSizes.title};
+  //font-size: ${(props) => props.theme.fontSizes.title};
   font-weight: bold;
   margin: 0;
   margin-left: 1.2rem;
-  ${({ theme }) => theme.mediaQueries.small} {
-    display: none;
-  }
 `;
 
 const TableWrapper = styled.div<{ disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.card.default};
+  //background-color: ${({ theme }) => theme.colors.card.default};
   margin-top: 2.4rem;
   margin-bottom: 2.4rem;
   padding: 2.4rem;
-  border: 1px solid ${({ theme }) => theme.colors.border.default};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.default};
+  //border: 1px solid ${({ theme }) => theme.colors.border.default};
+  //border-radius: ${({ theme }) => theme.radii.default};
+  //box-shadow: ${({ theme }) => theme.shadows.default};
   filter: opacity(${({ disabled }) => (disabled ? 0.4 : 1)});
   align-self: stretch;
-  ${({ theme }) => theme.mediaQueries.small} {
-    width: 100%;
-    margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
-    padding: 1.6rem;
-  }
 `;
 
 export const Table = ({ title, data, columns, disabled }: TableProps) => {
@@ -53,18 +44,18 @@ export const Table = ({ title, data, columns, disabled }: TableProps) => {
     'custom',
     {
       text: {
-        primary: theme.colors.text.alternative,
-        secondary: theme.colors.text.alternative,
+        // primary: theme.colors.text.alternative,
+        // secondary: theme.colors.text.alternative,
       },
       background: {
-        default: theme.colors.background.alternative,
+        // default: theme.colors.background.alternative,
       },
       context: {
         background: '#cb4b16',
         text: '#FFFFFF',
       },
       divider: {
-        default: theme.colors.border.default,
+        // default: theme.colors.border.default,
       },
       button: {
         default: '#2aa198',

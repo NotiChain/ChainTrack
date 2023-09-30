@@ -20,9 +20,6 @@ const ToggleWrapper = styled.div`
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
   margin-right: 2.4rem;
-  ${({ theme }) => theme.mediaQueries.small} {
-    margin-right: 2.4rem;
-  }
 `;
 
 const ToggleInput = styled.input`
@@ -72,7 +69,7 @@ const ToggleContainer = styled.div`
   height: 36px;
   padding: 0;
   border-radius: 36px;
-  background-color: ${({ theme }) => theme.colors.background.alternative};
+  //background-color: ${({ theme }) => theme.colors.background.alternative};
   transition: all 0.2s ease;
 `;
 const ToggleCircle = styled.div<CheckedProps>`
@@ -99,6 +96,7 @@ export const Toggle = ({
   const [checked, setChecked] = useState(defaultChecked);
 
   const handleChange = () => {
+    console.log(onToggle);
     onToggle();
     setChecked(!checked);
   };

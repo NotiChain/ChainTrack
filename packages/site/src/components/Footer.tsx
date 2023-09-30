@@ -7,7 +7,7 @@ const FooterWrapper = styled.footer`
   align-items: center;
   justify-content: flex-start;
   padding: 2.4rem;
-  border-top: 1px solid ${(props) => props.theme.colors.border.default};
+  //border-top: 1px solid ${(props) => props.theme.colors.border.default};
 `;
 
 const LogoWrapper = styled.div`
@@ -17,13 +17,10 @@ const LogoWrapper = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: ${(props) => props.theme.fontSizes.title};
+  //font-size: ${(props) => props.theme.fontSizes.title};
   font-weight: bold;
   margin: 0;
   margin-left: 1.2rem;
-  ${({ theme }) => theme.mediaQueries.small} {
-    display: none;
-  }
 `;
 
 export const Footer = () => {
@@ -32,7 +29,7 @@ export const Footer = () => {
   return (
     <FooterWrapper>
       <LogoWrapper>
-        <SnapLogo color={theme.colors.icon.default} size={36} />
+        <SnapLogo color="black" size={36} />
         <Title>ChainTrack</Title>
       </LogoWrapper>
     </FooterWrapper>

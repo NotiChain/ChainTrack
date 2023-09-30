@@ -2,9 +2,9 @@ import { useWizard } from 'react-use-wizard';
 import { Box } from '@mui/material';
 import { FC } from 'react';
 
-interface WizzardFooterProps {
+type WizzardFooterProps = {
   nextClick: () => void;
-}
+};
 
 const style = {
   display: 'flex',
@@ -24,7 +24,7 @@ export const WizzardFooter: FC<WizzardFooterProps> = (props) => {
             Previous
           </button>
         )}
-        {!isLastStep && (
+        {isLastStep && (
           <button onClick={() => nextClick()} disabled={isLoading}>
             Next
           </button>

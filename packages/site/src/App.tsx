@@ -19,12 +19,13 @@ export type AppProps = {
 
 export const App: FunctionComponent<AppProps> = ({ children }) => {
   const toggleTheme = useContext(ToggleThemeContext);
+  console.log(toggleTheme);
 
   return (
     <>
       <GlobalStyle />
       <Wrapper>
-        <Header handleToggleClick={toggleTheme} />
+        <Header handleToggleClick={toggleTheme.toggleColorMode} />
         {children}
         <Footer />
       </Wrapper>

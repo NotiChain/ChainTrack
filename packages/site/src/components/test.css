@@ -17,3 +17,11 @@ tr {
 table {
   border-collapse: collapse;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.select-none {
+  user-select: none;
+}

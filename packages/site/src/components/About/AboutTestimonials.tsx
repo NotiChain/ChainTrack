@@ -1,76 +1,29 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
-
-const TestimonialCard = styled.div`
-  padding: 32px;
-  border: ${(props) => props.theme.colors.about.testimonialBorder};
-  max-width: 750px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const TestimonialPerson = styled.div`
-  width: 40%;
-`;
-
-const Body2 = styled.p`
-  font-weight: 400;
-  font-size: 20px;
-  margin: 0;
-`;
-
-const Body1 = styled.p`
-  font-weight: 500;
-  font-size: 32px;
-  margin: 0;
-`;
-
-const Body2op = styled.p`
-  font-weight: 400;
-  font-size: 20px;
-  opacity: 40%;
-  margin: 0;
-`;
-
-const Container = styled.div`
-  display: flex;
-  gap: 20px;
-  padding: 0 120px;
-  margin-bottom: 180px;
-
-  @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
-  }
-  ${(props) => props.theme.mediaQueries.small} {
-    padding: 0 20px;
-  }
-`;
+import { Box, Stack, Typography } from '@mui/material';
 
 export const AboutTestimonials: FC = () => {
   return (
-    <Container>
-      <TestimonialCard>
-        <Body1>
+    <Stack>
+      <Stack>
+        <Typography variant="h4">
           "Simple, effective, and reliable. ChainTrack has made my MetaMask
           experience so much smoother"
-        </Body1>
-        <TestimonialPerson>
-          <Body2>Taylor S.</Body2>
-          <Body2op>Blockchain Analyst</Body2op>
-        </TestimonialPerson>
-      </TestimonialCard>
-      <TestimonialCard>
-        <Body1>
+        </Typography>
+        <Box>
+          <Typography>Taylor S.</Typography>
+          <Typography>Blockchain Analyst</Typography>
+        </Box>
+      </Stack>
+      <Stack>
+        <Typography variant="h4">
           "ChainTrack exhibits simplicity, effectiveness, and reliability. It
           has significantly improved the fluidity of my MetaMask experience."
-        </Body1>
-        <TestimonialPerson>
-          <Body2>Dzmitry H.</Body2>
-          <Body2op>Software Engineer</Body2op>
-        </TestimonialPerson>
-      </TestimonialCard>
-    </Container>
+        </Typography>
+        <Box>
+          <Typography>Dzmitry H.</Typography>
+          <Typography>Software Engineer</Typography>
+        </Box>
+      </Stack>
+    </Stack>
   );
 };

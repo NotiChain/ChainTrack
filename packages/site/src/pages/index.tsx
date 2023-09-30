@@ -31,6 +31,8 @@ import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
 import { AboutTestimonials } from '../components/About/AboutTestimonials';
 import { AboutCTA } from '../components/About/AboutCTA';
 import { AboutFaq } from '../components/About/AboutFAQ';
+import TransactionTable from '../components/TransactionTable';
+import TransactionTableMaterialUi from '../components/TransactionTableMaterialUi';
 
 const Container = styled.div`
   display: flex;
@@ -39,18 +41,12 @@ const Container = styled.div`
   flex: 1;
   margin-top: 7.6rem;
   margin-bottom: 7.6rem;
-  ${({ theme }) => theme.mediaQueries.small} {
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    width: auto;
-  }
 `;
 
 const LandingContainer = styled.div`
-  background: ${(props) => props.theme.colors.about.default};
-  color: ${(props) => props.theme.colors.about.inverse};
+  // background: ${(props) => props.theme.colors.about.default};
+  // color: ${(props) => props.theme.colors.about.inverse};
+  background: linear-gradient(to top right, #2f2727, #1a82f7);
 `;
 
 const Heading = styled.h1`
@@ -60,17 +56,14 @@ const Heading = styled.h1`
 `;
 
 const Span = styled.span`
-  color: ${(props) => props.theme.colors.primary.default};
+  //color: ${(props) => props.theme.colors.primary.default};
 `;
 
 const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.large};
+  //font-size: ${({ theme }) => theme.fontSizes.large};
   font-weight: 500;
   margin-top: 0;
   margin-bottom: 0;
-  ${({ theme }) => theme.mediaQueries.small} {
-    font-size: ${({ theme }) => theme.fontSizes.text};
-  }
 `;
 
 const CardContainer = styled.div`
@@ -78,17 +71,17 @@ const CardContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  max-width: 64.8rem;
+  max-width: 70.8rem;
   width: 100%;
   height: 100%;
   margin-top: 1.5rem;
 `;
 
 const Notice = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.alternative};
-  border: 1px solid ${({ theme }) => theme.colors.border.default};
-  color: ${({ theme }) => theme.colors.text.alternative};
-  border-radius: ${({ theme }) => theme.radii.default};
+  //background-color: ${({ theme }) => theme.colors.background.alternative};
+  //border: 1px solid ${({ theme }) => theme.colors.border.default};
+  //color: ${({ theme }) => theme.colors.text.alternative};
+  //border-radius: ${({ theme }) => theme.radii.default};
   padding: 2.4rem;
   margin-top: 2.4rem;
   max-width: 60rem;
@@ -97,28 +90,18 @@ const Notice = styled.div`
   & > * {
     margin: 0;
   }
-  ${({ theme }) => theme.mediaQueries.small} {
-    margin-top: 1.2rem;
-    padding: 1.6rem;
-  }
 `;
 
 const ErrorMessage = styled.div`
-  background-color: ${({ theme }) => theme.colors.error.muted};
-  border: 1px solid ${({ theme }) => theme.colors.error.default};
-  color: ${({ theme }) => theme.colors.error.alternative};
-  border-radius: ${({ theme }) => theme.radii.default};
+  //background-color: ${({ theme }) => theme.colors.error.muted};
+  //border: 1px solid ${({ theme }) => theme.colors.error.default};
+  //color: ${({ theme }) => theme.colors.error.alternative};
+  //border-radius: ${({ theme }) => theme.radii.default};
   padding: 2.4rem;
   margin-bottom: 2.4rem;
   margin-top: 2.4rem;
   max-width: 60rem;
   width: 100%;
-  ${({ theme }) => theme.mediaQueries.small} {
-    padding: 1.6rem;
-    margin-bottom: 1.2rem;
-    margin-top: 1.2rem;
-    max-width: 100%;
-  }
 `;
 
 const Index = () => {
@@ -388,6 +371,20 @@ const Index = () => {
                 }) || []
               }
             />
+
+            <TransactionTableMaterialUi
+              monitors={
+                state?.monitors?.map((item, index) => {
+                  return {
+                    id: index + 1,
+                    ...item,
+                  };
+                }) || []
+              }
+            />
+
+            <TransactionTable />
+
             <TransactionsTable
               title={'Transactions to monitor'}
               disabled={!state.installedSnap}

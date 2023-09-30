@@ -9,11 +9,11 @@ const Link = styled.a`
   align-self: flex-start;
   align-items: center;
   justify-content: center;
-  font-size: ${(props) => props.theme.fontSizes.small};
-  border-radius: ${(props) => props.theme.radii.button};
-  border: 1px solid ${(props) => props.theme.colors.background.inverse};
-  background-color: ${(props) => props.theme.colors.background.inverse};
-  color: ${(props) => props.theme.colors.text.inverse};
+  //font-size: ${(props) => props.theme.fontSizes.small};
+  //border-radius: ${(props) => props.theme.radii.button};
+  // border: 1px solid ${(props) => props.theme.colors.background.inverse};
+  // background-color: ${(props) => props.theme.colors.background.inverse};
+  //color: ${(props) => props.theme.colors.text.inverse};
   text-decoration: none;
   font-weight: bold;
   padding: 1rem;
@@ -22,13 +22,8 @@ const Link = styled.a`
 
   &:hover {
     background-color: transparent;
-    border: 1px solid ${(props) => props.theme.colors.background.inverse};
-    color: ${(props) => props.theme.colors.text.default};
-  }
-
-  ${({ theme }) => theme.mediaQueries.small} {
-    width: 100%;
-    box-sizing: border-box;
+    //border: 1px solid ${(props) => props.theme.colors.background.inverse};
+    //color: ${(props) => props.theme.colors.text.default};
   }
 `;
 
@@ -38,9 +33,6 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   margin-top: auto;
-  ${({ theme }) => theme.mediaQueries.small} {
-    width: 100%;
-  }
 `;
 
 const ButtonText = styled.span`
@@ -52,11 +44,11 @@ const ConnectedContainer = styled.div`
   align-self: flex-start;
   align-items: center;
   justify-content: center;
-  font-size: ${(props) => props.theme.fontSizes.small};
-  border-radius: ${(props) => props.theme.radii.button};
-  border: 1px solid ${(props) => props.theme.colors.background.inverse};
-  background-color: ${(props) => props.theme.colors.background.inverse};
-  color: ${(props) => props.theme.colors.text.inverse};
+  //font-size: ${(props) => props.theme.fontSizes.small};
+  //border-radius: ${(props) => props.theme.radii.button};
+  // border: 1px solid ${(props) => props.theme.colors.background.inverse};
+  // background-color: ${(props) => props.theme.colors.background.inverse};
+  //color: ${(props) => props.theme.colors.text.inverse};
   font-weight: bold;
   padding: 1.2rem;
 `;
