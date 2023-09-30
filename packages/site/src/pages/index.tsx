@@ -22,8 +22,10 @@ import {
   TransactionsTable,
   AlertsTable,
   DonateButton,
+  PredefinedMonitorsTable,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
+import { Alert, Monitor } from '../../../shared/types';
 
 const Container = styled.div`
   display: flex;
@@ -345,12 +347,20 @@ const Index = () => {
           title={'Transactions to monitor'}
           disabled={!state.installedSnap}
           data={
-            state?.monitors?.map((item, index) => {
+            state?.monitors?.map((item: Monitor, index: number) => {
               return {
                 id: index + 1,
+                name: item.name,
                 from: item.from,
                 to: item.to,
                 intervalHours: item.intervalHours,
+                lastTransaction: item.lastTransaction,
+                url: item.url,
+                contractAddress: item.contractAddress,
+                amount: item.amount,
+                network: item.network,
+                precondition: item.precondition,
+                category: item.category,
               };
             }) || []
           }
@@ -359,15 +369,18 @@ const Index = () => {
           title={'Alerts'}
           disabled={!state.installedSnap}
           data={
-            state?.alerts?.map((item, index) => ({
+            state?.alerts?.map((item: Alert, index: number) => ({
               id: index + 1,
+              name: item.monitor.name,
               from: item.monitor.from,
               to: item.monitor.to,
               intervalHours: item.monitor.intervalHours,
               date: item.date,
+              url: item.monitor.url,
             })) || []
           }
         />
+        <PredefinedMonitorsTable disabled={!state.installedSnap} />
         <Notice>
           <p>
             Support <b>ChainTrack</b>: If you've found value in our tool and

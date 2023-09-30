@@ -10,6 +10,20 @@ export enum ChainIdToNameEnum {
   '0x5' = 'goerli',
 }
 
+export enum Preconditions {
+  'BrightID' = 'BrightID',
+  'MainnetBalance' = 'Mainnet Balance',
+  'AlchemyAccount' = 'Alchemy Account',
+  'ENS' = 'ENS',
+}
+
+export enum MonitorCategory {
+  'Faucet' = 'Faucet',
+  'Bridge' = 'Bridge',
+  'DEX' = 'DEX',
+  'DAPP' = 'DAPP',
+}
+
 type BaseMonitor = {
   name?: string;
   network: keyof typeof ChainIdToNameEnum;
@@ -18,6 +32,9 @@ type BaseMonitor = {
   lastTransaction?: number;
   contractAddress?: string;
   amount?: number;
+  url?: string;
+  precondition?: Preconditions;
+  category?: MonitorCategory;
 };
 
 type FromOnlyMonitor = BaseMonitor & {

@@ -1,5 +1,5 @@
 import storage from '../storage';
-import { Alerts } from '../../../shared-types';
+import { Alerts } from '../../../shared/types';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
