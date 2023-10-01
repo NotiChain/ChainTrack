@@ -13,3 +13,4 @@ export * from './ActionCard';
 export * from './AddMonitorActionCard';
 export * from './DebugActionCard';
 export * from './TableTabs';
+export * from './PredefinedMonitors';

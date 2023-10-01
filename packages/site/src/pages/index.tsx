@@ -9,6 +9,7 @@ import {
   connectSnap,
   getSnap,
   isLocalSnap,
+  sendAdd,
   sendReset,
   getAlerts,
   getMonitors,
@@ -29,6 +30,7 @@ import {
   AddMonitorActionCard,
   DebugActionCard,
   TableTabs,
+  PredefinedMonitorsTable,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
@@ -42,6 +44,7 @@ import { AboutFaq } from '../components/About/AboutFAQ';
 import TransactionTable from '../components/TransactionTable';
 import TransactionTableMaterialUi from '../components/TransactionTableMaterialUi';
 import { MonitorsTable } from '../components/MonitorsTable';
+import { Alert, Monitor } from '../../../shared/types';
 
 const Container = styled.div`
   display: flex;
@@ -51,8 +54,8 @@ const Container = styled.div`
 `;
 
 const LandingContainer = styled.div`
-  // background: ${(props) => props.theme.colors.about.default};
-  // color: ${(props) => props.theme.colors.about.inverse};
+    // background: ${(props) => props.theme.colors.about.default};
+    // color: ${(props) => props.theme.colors.about.inverse};
   background: linear-gradient(to top right, #2f2727, #1a82f7);
 `;
 
@@ -150,7 +153,8 @@ const Index = () => {
       });
 
       if (!loadDataInterval) {
-        loadDataInterval = setInterval(loadData, 10000);
+        await loadData();
+        loadDataInterval = setInterval(loadData, 5 * 60 * 1000);
       }
     } catch (e) {
       console.error(e);
@@ -160,9 +164,8 @@ const Index = () => {
 
   const handleSendAddClick = async () => {
     try {
-      setShowAddWizzard(true);
-      // await sendAdd();
-      // await loadData();
+      await sendAdd();
+      await loadData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });

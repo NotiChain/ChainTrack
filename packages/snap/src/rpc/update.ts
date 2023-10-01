@@ -1,5 +1,5 @@
 import storage from '../storage';
-import { Monitor } from '../../../shared-types';
+import { Monitor } from '../../../shared/types';
 
 export type UpdateParams = {
   index: number;
