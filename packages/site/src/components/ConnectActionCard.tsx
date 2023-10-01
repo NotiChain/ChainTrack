@@ -7,7 +7,7 @@ import { ConnectButton, ReconnectButton } from './Buttons';
 
 type ConnectActionCardProps = {
   isMetaMaskReady: boolean;
-  installedSnap: Snap;
+  installedSnap?: Snap;
   handleConnectClick: () => void;
 };
 

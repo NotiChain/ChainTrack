@@ -5,7 +5,7 @@ import { ActionCard } from './ActionCard';
 import { SendAddButton } from './Buttons';
 
 type ConnectActionCardProps = {
-  installedSnap: Snap;
+  installedSnap?: Snap;
   handleSendAddClick: () => void;
 };
 

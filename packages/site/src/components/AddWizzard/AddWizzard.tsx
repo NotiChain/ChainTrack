@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Wizard } from 'react-use-wizard';
 import { addMonitor } from '../../utils';
-import { ChainNameToIdEnum, Monitor } from '../../../../shared-types';
+import { ChainNameToIdEnum, Monitor } from '../../../../shared/types';
 import { TransactionNameStep } from './TransactionNameStep';
 import { TransactionFromStep } from './TranactionFromStep';
 import { TransactionToStep } from './TransactionToStep';
@@ -13,8 +13,6 @@ export type WizzardProps = {
   onClose: () => void;
   loadData: () => void;
 };
-
-const Meme = () => <div>haha</div>;
 
 export type addParams = {
   name?: string;

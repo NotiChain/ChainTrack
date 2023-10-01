@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Box, Button, Input, Modal, Typography } from '@mui/material';
 import { useWizard } from 'react-use-wizard';
-import { Monitor } from '../../../../shared-types';
+import { Monitor } from '../../../../shared/types';
 import { addParams } from './AddWizzard';
 import { WizzardFooter } from './FooterWizzard';
 

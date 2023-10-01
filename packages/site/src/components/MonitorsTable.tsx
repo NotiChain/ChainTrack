@@ -1,18 +1,69 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Monitors } from '../../../shared-types';
+import { Link } from '@mui/material';
+import { Monitors, ChainIdToNameEnum } from '../../../shared/types';
 
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' },
-  { field: 'name', headerName: 'Name' },
-  { field: 'network', headerName: 'Network' },
-  { field: 'from', headerName: 'From' },
-  { field: 'to', headerName: 'To' },
-  { field: 'intervalHours', headerName: 'Interval' },
-  { field: 'lastTransaction', headerName: 'Last Transaction' },
-  { field: 'contractAddress', headerName: 'ContractAddress' },
-  { field: 'amount', headerName: 'Amount' },
-  { field: 'url', headerName: 'URL' },
+export function shortenEthWallet(wallet?: string) {
+  return wallet ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}` : wallet;
+}
+
+export const column: Record<string, GridColDef> = {
+  id: { field: 'id', headerName: 'Id' },
+  name: { field: 'name', headerName: 'Name' },
+  network: {
+    field: 'network',
+    headerName: 'Network',
+    valueFormatter: (params) =>
+      ChainIdToNameEnum[params.value as keyof typeof ChainIdToNameEnum],
+  },
+  category: { field: 'category', headerName: 'Category' },
+  date: { field: 'date', headerName: 'Date' },
+  from: {
+    field: 'from',
+    headerName: 'From',
+    valueFormatter: (params) => shortenEthWallet(params.value),
+  },
+  to: {
+    field: 'to',
+    headerName: 'To',
+    valueFormatter: (params) => shortenEthWallet(params.value),
+  },
+  intervalHours: {
+    field: 'intervalHours',
+    headerName: 'Interval',
+    valueFormatter: (params) => `${params.value} hours`,
+  },
+  lastTransaction: { field: 'lastTransaction', headerName: 'Last Transaction' },
+  contractAddress: {
+    field: 'contractAddress',
+    headerName: 'Contract Address',
+    valueFormatter: (params) => shortenEthWallet(params.value),
+  },
+  amount: { field: 'amount', headerName: 'Amount' },
+  url: {
+    field: 'url',
+    headerName: 'URL',
+    renderCell: (params) => (
+      <Link href={params.value} target="_blank">
+        {params.value}
+      </Link>
+    ),
+  },
+  confirmed: { field: 'confirmed', headerName: 'Confirmed' },
+  precondition: { field: 'precondition', headerName: 'Precondition' },
+};
+
+export const columns: GridColDef[] = [
+  column.id,
+  column.name,
+  column.network,
+  column.from,
+  column.to,
+  column.intervalHours,
+  column.lastTransaction,
+  column.contractAddress,
+  column.amount,
+  column.url,
 ];
 
 type MonitorsTableProps = {
