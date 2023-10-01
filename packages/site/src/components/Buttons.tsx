@@ -94,7 +94,7 @@ export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
 };
 
 export const SendAddButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Add</Button>;
+  return <Button {...props}>Add Transaction</Button>;
 };
 
 export const ResetButton = (props: ComponentProps<typeof Button>) => {

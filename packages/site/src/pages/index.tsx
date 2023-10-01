@@ -1,5 +1,9 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
@@ -14,13 +18,17 @@ import {
   ConnectButton,
   InstallMetamaskButton,
   ReconnectButton,
-  Card,
+  ActionCard,
   SendAddButton,
   ReloadButton,
   ResetButton,
   TransactionsTable,
   AlertsTable,
   DonateButton,
+  ConnectActionCard,
+  AddMonitorActionCard,
+  DebugActionCard,
+  TableTabs,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
@@ -33,14 +41,13 @@ import { AboutCTA } from '../components/About/AboutCTA';
 import { AboutFaq } from '../components/About/AboutFAQ';
 import TransactionTable from '../components/TransactionTable';
 import TransactionTableMaterialUi from '../components/TransactionTableMaterialUi';
+import { MonitorsTable } from '../components/MonitorsTable';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
-  margin-top: 7.6rem;
-  margin-bottom: 7.6rem;
 `;
 
 const LandingContainer = styled.div`
@@ -49,21 +56,8 @@ const LandingContainer = styled.div`
   background: linear-gradient(to top right, #2f2727, #1a82f7);
 `;
 
-const Heading = styled.h1`
-  margin-top: 0;
-  margin-bottom: 2.4rem;
-  text-align: center;
-`;
-
 const Span = styled.span`
   //color: ${(props) => props.theme.colors.primary.default};
-`;
-
-const Subtitle = styled.p`
-  //font-size: ${({ theme }) => theme.fontSizes.large};
-  font-weight: 500;
-  margin-top: 0;
-  margin-bottom: 0;
 `;
 
 const CardContainer = styled.div`
@@ -229,189 +223,69 @@ const Index = () => {
 
   return (
     <>
-      {!state.installedSnap ? (
-        <LandingContainer>
-          <AboutHero
-            handleConnectClick={handleConnectClick}
-            disabled={!isMetaMaskReady}
-          />
-          <AboutFeatureSection />
-          <AboutTestimonials />
-          <AboutFaq />
-          <AboutCTA
-            handleConnectClick={handleConnectClick}
-            disabled={!isMetaMaskReady}
-          />
-          <AboutFooter handleDonateClick={handleDonateClick} />
-        </LandingContainer>
-      ) : (
+      {state.installedSnap ? (
         <Container>
-          <Heading>
+          <Typography variant="h2" gutterBottom>
             Welcome to <Span>ChainTrack</Span>
-          </Heading>
-          <Subtitle>
+          </Typography>
+          <Typography variant="h4" gutterBottom>
             Get started by adding a new transaction to monitor!
-          </Subtitle>
+          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="flex-start"
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 3, sm: 8, md: 12 }}
+            >
+              {state.error && (
+                <Grid item xs={12}>
+                  <ErrorMessage>
+                    <b>An error happened:</b> {state.error.message}
+                  </ErrorMessage>
+                </Grid>
+              )}
+              <Grid item xs={2} sm={4} md={4}>
+                <ConnectActionCard
+                  installedSnap={state.installedSnap}
+                  handleConnectClick={handleConnectClick}
+                  isMetaMaskReady={isMetaMaskReady}
+                />
+              </Grid>
+              <Grid item xs={2} sm={4} md={4}>
+                <AddMonitorActionCard
+                  installedSnap={state.installedSnap}
+                  handleSendAddClick={handleSendAddClick}
+                />
+              </Grid>
+              {shouldDisplayReconnectButton(state.installedSnap) && (
+                <Grid item xs={2} sm={4} md={4}>
+                  <DebugActionCard
+                    handleResetClick={handleResetClick}
+                    handleReloadClick={handleReloadClick}
+                  />
+                </Grid>
+              )}
+              <Grid item xs={11}>
+                <TableTabs />
+              </Grid>
+              <Grid item xs={11}>
+                <MonitorsTable
+                  monitors={
+                    state?.monitors?.map((item, index) => {
+                      return {
+                        id: index + 1,
+                        ...item,
+                      };
+                    }) || []
+                  }
+                />
+              </Grid>
+            </Grid>
+          </Box>
           <CardContainer>
-            {state.error && (
-              <ErrorMessage>
-                <b>An error happened:</b> {state.error.message}
-              </ErrorMessage>
-            )}
-            {!isMetaMaskReady && (
-              <Card
-                content={{
-                  title: 'Install',
-                  description:
-                    'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
-                  button: <InstallMetamaskButton />,
-                }}
-                fullWidth
-              />
-            )}
-            {!state.installedSnap && (
-              <Card
-                content={{
-                  title: 'Connect',
-                  description:
-                    'Get started by connecting to and installing the example snap.',
-                  button: (
-                    <ConnectButton
-                      onClick={handleConnectClick}
-                      disabled={!isMetaMaskReady}
-                    />
-                  ),
-                }}
-                disabled={!isMetaMaskReady}
-              />
-            )}
-            {shouldDisplayReconnectButton(state.installedSnap) && (
-              <Card
-                content={{
-                  title: 'Reconnect',
-                  description:
-                    'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
-                  button: (
-                    <ReconnectButton
-                      onClick={handleConnectClick}
-                      disabled={!state.installedSnap}
-                    />
-                  ),
-                }}
-                disabled={!state.installedSnap}
-              />
-            )}
-            <Card
-              content={{
-                title: 'Add transaction to monitor',
-                description:
-                  'Add new transaction to monitor right from the snap.',
-                button: (
-                  <SendAddButton
-                    onClick={handleSendAddClick}
-                    disabled={!state.installedSnap}
-                  />
-                ),
-              }}
-              disabled={!state.installedSnap}
-              fullWidth={
-                isMetaMaskReady &&
-                Boolean(state.installedSnap) &&
-                !shouldDisplayReconnectButton(state.installedSnap)
-              }
-            />
-            <Card
-              content={{
-                title: 'Reset Snap',
-                description:
-                  'Remove all your tracks from the snap and start over.',
-                button: (
-                  <ResetButton
-                    onClick={handleResetClick}
-                    disabled={!state.installedSnap}
-                  />
-                ),
-              }}
-              disabled={!state.installedSnap}
-              fullWidth={
-                isMetaMaskReady &&
-                Boolean(state.installedSnap) &&
-                !shouldDisplayReconnectButton(state.installedSnap)
-              }
-            />
-            <Card
-              content={{
-                title: 'Reload Data',
-                description: 'Get up to date info from snap.',
-                button: (
-                  <ReloadButton
-                    onClick={handleReloadClick}
-                    disabled={!state.installedSnap}
-                  />
-                ),
-              }}
-              disabled={!state.installedSnap}
-              fullWidth={
-                isMetaMaskReady &&
-                Boolean(state.installedSnap) &&
-                !shouldDisplayReconnectButton(state.installedSnap)
-              }
-            />
-
-            <TestTransactionTable
-              state={state}
-              data={
-                state?.monitors?.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    from: item.from,
-                    to: item.to,
-                    intervalHours: item.intervalHours,
-                  };
-                }) || []
-              }
-            />
-
-            <TransactionTableMaterialUi
-              monitors={
-                state?.monitors?.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    ...item,
-                  };
-                }) || []
-              }
-            />
-
-            <TransactionTable />
-
-            <TransactionsTable
-              title={'Transactions to monitor'}
-              disabled={!state.installedSnap}
-              data={
-                state?.monitors?.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    from: item.from,
-                    to: item.to,
-                    intervalHours: item.intervalHours,
-                  };
-                }) || []
-              }
-            />
-            <AlertsTable
-              title={'Alerts'}
-              disabled={!state.installedSnap}
-              data={
-                state?.alerts?.map((item, index) => ({
-                  id: index + 1,
-                  from: item.monitor.from,
-                  to: item.monitor.to,
-                  intervalHours: item.monitor.intervalHours,
-                  date: item.date,
-                })) || []
-              }
-            />
             {showAddWizzard && (
               <AddWizzard
                 onClose={() => setShowAddWizzard(false)}
@@ -430,6 +304,21 @@ const Index = () => {
             </Notice>
           </CardContainer>
         </Container>
+      ) : (
+        <LandingContainer>
+          <AboutHero
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady}
+          />
+          <AboutFeatureSection />
+          <AboutTestimonials />
+          <AboutFaq />
+          <AboutCTA
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady}
+          />
+          <AboutFooter handleDonateClick={handleDonateClick} />
+        </LandingContainer>
       )}
     </>
   );
