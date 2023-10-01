@@ -1,4 +1,4 @@
-import { panel, text } from '@metamask/snaps-ui';
+import { copyable, panel, text } from '@metamask/snaps-ui';
 import { Monitor } from '../../shared/types';
 import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
@@ -53,6 +53,7 @@ export class CronJob {
       return;
     }
 
+    console.log(`CronJob process ${data.monitors.length} monitors found`);
     for (const monitor of data.monitors) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
@@ -74,14 +75,19 @@ export class CronJob {
             });
           }
         } else if (found && alertExpired(found) && !found.confirmed) {
+          const panelData = [
+            text(`You didn't receive transaction from ${monitor.name}`),
+            text('Would you like to NOT receive another notification?'),
+          ];
+          if (monitor.url) {
+            panelData.push(copyable(monitor.url));
+          }
+
           const confirm = await snap.request({
             method: 'snap_dialog',
             params: {
               type: 'confirmation',
-              content: panel([
-                text(`You didn't receive transaction from ${monitor.name}`),
-                text('Would you like to NOT receive another notification?'),
-              ]),
+              content: panel(panelData),
             },
           });
 
