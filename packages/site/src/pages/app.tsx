@@ -93,7 +93,9 @@ export const AppPage = ({
     useState<PredefinedMonitor>();
 
   return (
-    <Container>
+    <Container
+      style={{ background: 'linear-gradient(to top right, #2f2727, #1a82f7)' }}
+    >
       <Typography variant="h2" gutterBottom>
         Welcome to <Span>ChainTrack</Span>!
       </Typography>
@@ -198,7 +200,6 @@ export const AppPage = ({
         )}
         <Box
           padding="2.4rem"
-          marginTop="2.4rem"
           maxWidth="60rem"
           display="flex"
           flexDirection="column"
