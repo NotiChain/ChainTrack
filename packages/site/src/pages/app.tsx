@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import styled from 'styled-components';
 import { useContext, useState } from 'react';
 import { Button } from '@mui/material';
+import purple from '@mui/material/colors/purple';
+import red from '@mui/material/colors/red';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
@@ -19,55 +20,6 @@ import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { MetaMaskContext } from '../hooks';
 import predefinedMonitors from '../../../shared/predefined-monitors';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-`;
-
-const Span = styled.span`
-  //color: ${(props) => props.theme.colors.primary.default};
-`;
-
-const Notice = styled.div`
-  //background-color: ${({ theme }) => theme.colors.background.alternative};
-  //border: 1px solid ${({ theme }) => theme.colors.border.default};
-  //color: ${({ theme }) => theme.colors.text.alternative};
-  //border-radius: ${({ theme }) => theme.radii.default};
-  padding: 2.4rem;
-  margin-top: 2.4rem;
-  max-width: 60rem;
-  width: 100%;
-
-  & > * {
-    margin: 0;
-  }
-`;
-
-const ErrorMessage = styled.div`
-  //background-color: ${({ theme }) => theme.colors.error.muted};
-  //border: 1px solid ${({ theme }) => theme.colors.error.default};
-  //color: ${({ theme }) => theme.colors.error.alternative};
-  //border-radius: ${({ theme }) => theme.radii.default};
-  padding: 2.4rem;
-  margin-bottom: 2.4rem;
-  margin-top: 2.4rem;
-  max-width: 60rem;
-  width: 100%;
-`;
-
-const CardContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 70.8rem;
-  width: 100%;
-  height: 100%;
-  margin-top: 1.5rem;
-`;
 
 type AppPageProps = {
   handleConnectClick: () => void;
@@ -93,12 +45,33 @@ export const AppPage = ({
     useState<PredefinedMonitor>();
 
   return (
-    <Container
-      style={{ background: 'linear-gradient(to top right, #2f2727, #1a82f7)' }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      flex="1"
+      sx={{
+        background: 'linear-gradient(to top right, #2f2727, #1a82f7)',
+      }}
     >
-      <Typography variant="h2" gutterBottom>
-        Welcome to <Span>ChainTrack</Span>!
-      </Typography>
+      <Box display="flex" gap="6px">
+        <Typography variant="h2" gutterBottom>
+          Welcome to
+        </Typography>
+        <Typography
+          sx={{
+            color: purple[500],
+            fontWeight: 'bold',
+          }}
+          variant="h2"
+          gutterBottom
+        >
+          ChainTrack
+        </Typography>
+        <Typography variant="h2" gutterBottom>
+          !
+        </Typography>
+      </Box>
       <Typography variant="h4" gutterBottom>
         Get started by adding a new transaction to monitor!
       </Typography>
@@ -112,10 +85,17 @@ export const AppPage = ({
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {state.error && (
-            <Grid item xs={12}>
-              <ErrorMessage>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              justifyContent="center"
+              padding="2.4rem"
+              marginTop="2.4rem"
+            >
+              <Typography variant="h4" color={red.A700}>
                 <b>An error happened:</b> {state.error.message}
-              </ErrorMessage>
+              </Typography>
             </Grid>
           )}
           <Grid item xs={2.5}>
@@ -191,7 +171,7 @@ export const AppPage = ({
           setOpenAddTransactionModal(false);
         }}
       />
-      <CardContainer>
+      <Box display="flex" justifyContent="space-between" marginTop="1.5rem">
         {showAddWizzard && (
           <AddWizzard
             onClose={() => setShowAddWizzard(false)}
@@ -217,7 +197,7 @@ export const AppPage = ({
             </Button>
           </Box>
         </Box>
-      </CardContainer>
-    </Container>
+      </Box>
+    </Box>
   );
 };
