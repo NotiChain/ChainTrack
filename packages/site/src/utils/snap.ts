@@ -63,6 +63,7 @@ export const sendAdd = async (): Promise<void> => {
 
 // Adds monitor to snap
 export const addMonitor = async (monitor: Monitor): Promise<void> => {
+  console.log(monitor);
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {

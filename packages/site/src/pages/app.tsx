@@ -185,6 +185,7 @@ export const AppPage = ({
         predefinedMonitor={selectedPredefinedMonitor}
         handleAddMonitor={(monitor: Monitor) => {
           addMonitor(monitor);
+          setSelectedPredefinedMonitor(undefined);
           setOpenAddTransactionModal(false);
         }}
       />

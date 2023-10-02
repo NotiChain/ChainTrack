@@ -8,49 +8,59 @@ export function shortenEthWallet(wallet?: string) {
 }
 
 export const column: Record<string, GridColDef> = {
-  id: { field: 'id', headerName: 'Id' },
-  name: { field: 'name', headerName: 'Name' },
+  id: { field: 'id', headerName: 'Id', flex: 1 },
+  name: { field: 'name', headerName: 'Name', flex: 1 },
   network: {
     field: 'network',
     headerName: 'Network',
+    flex: 1,
     valueFormatter: (params) =>
       ChainIdToNameEnum[params.value as keyof typeof ChainIdToNameEnum],
   },
-  category: { field: 'category', headerName: 'Category' },
-  date: { field: 'date', headerName: 'Date' },
+  category: { field: 'category', headerName: 'Category', flex: 1 },
+  date: { field: 'date', headerName: 'Date', flex: 1 },
   from: {
     field: 'from',
     headerName: 'From',
+    flex: 1,
     valueFormatter: (params) => shortenEthWallet(params.value),
   },
   to: {
     field: 'to',
     headerName: 'To',
+    flex: 1,
     valueFormatter: (params) => shortenEthWallet(params.value),
   },
   intervalHours: {
     field: 'intervalHours',
     headerName: 'Interval',
+    flex: 1,
     valueFormatter: (params) => `${params.value} hours`,
   },
-  lastTransaction: { field: 'lastTransaction', headerName: 'Last Transaction' },
+  lastTransaction: {
+    field: 'lastTransaction',
+    headerName: 'Last Transaction',
+    flex: 1,
+  },
   contractAddress: {
     field: 'contractAddress',
     headerName: 'Contract Address',
+    flex: 1,
     valueFormatter: (params) => shortenEthWallet(params.value),
   },
-  amount: { field: 'amount', headerName: 'Amount' },
+  amount: { field: 'amount', headerName: 'Amount', flex: 1 },
   url: {
     field: 'url',
     headerName: 'URL',
+    flex: 1,
     renderCell: (params) => (
       <Link href={params.value} target="_blank">
         {params.value}
       </Link>
     ),
   },
-  confirmed: { field: 'confirmed', headerName: 'Confirmed' },
-  precondition: { field: 'precondition', headerName: 'Precondition' },
+  confirmed: { field: 'confirmed', headerName: 'Confirmed', flex: 1 },
+  precondition: { field: 'precondition', headerName: 'Precondition', flex: 1 },
 };
 
 export const columns: GridColDef[] = [
@@ -76,7 +86,7 @@ export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
-        autoHeight={true}
+        autoHeight
         rows={monitors || []}
         columns={columns}
         initialState={{
@@ -86,7 +96,6 @@ export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
         }}
         pageSizeOptions={[10]}
         rowSelection={false}
-        getRowHeight={() => 'auto'}
       />
     </div>
   );

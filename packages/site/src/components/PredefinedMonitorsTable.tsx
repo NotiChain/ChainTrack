@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { PredefinedMonitors, PredefinedMonitor } from '../../../shared/types';
 import { column } from './MonitorsTable';
@@ -51,9 +51,8 @@ export const PredefinedMonitorsTable = ({
   ];
 
   return (
-    <div style={{ width: '100%' }}>
+    <Box style={{ width: '100%' }}>
       <DataGrid
-        autoHeight={true}
         rows={predefinedMonitors || []}
         columns={columns}
         initialState={{
@@ -65,6 +64,6 @@ export const PredefinedMonitorsTable = ({
         rowSelection={false}
         autoHeight
       />
-    </div>
+    </Box>
   );
 };

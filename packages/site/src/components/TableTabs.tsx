@@ -69,6 +69,7 @@ export function TableTabs({
     <Paper
       elevation={3}
       sx={{
+        width: '100%',
         border: 1,
         borderRadius: '16px',
         borderColor: purple[500],
@@ -130,14 +131,6 @@ export function TableTabs({
           }}
         />
       </CustomTabPanel>
-    </Paper
-      elevation={3}
-      sx={{
-        border: 1,
-        borderRadius: '16px',
-        borderColor: purple[500],
-        backgroundColor: 'background.paper',
-      }}
-    >
+    </Paper>
   );
 }

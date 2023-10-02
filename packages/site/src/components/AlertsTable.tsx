@@ -26,7 +26,6 @@ export const AlertsTable = ({ alerts }: MonitorsTableProps) => {
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
-        autoHeight={true}
         rows={alerts || []}
         columns={columns}
         initialState={{

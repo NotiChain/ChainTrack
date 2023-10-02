@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box, Button, InputLabel } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 
 import TextField from '@mui/material/TextField';
@@ -53,7 +53,7 @@ export const AddTransactionModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={style} flexDirection="column" display="flex">
         <FormControl>
           <TextField
             id="add-transaction-network"
@@ -65,29 +65,36 @@ export const AddTransactionModal = ({
             }}
           />
 
-          <Select
-            labelId="network"
-            id="network-simple-select"
-            value={monitor.network ?? ''}
-            label="Network"
-            onChange={(event) => {
-              setMonitor({
-                ...monitor,
-                network: event.target.value as ChainIds,
-              });
-            }}
-          >
-            {Object.keys(ChainNameToIdEnum).map((name) => (
-              <MenuItem
-                value={
-                  ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
-                }
-                key={ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]}
+          <Box marginTop="20px" width="100%">
+            <FormControl fullWidth>
+              <InputLabel id="network-select-label">Network</InputLabel>
+              <Select
+                labelId="network-select-label"
+                id="network-select"
+                value={monitor.network ?? ''}
+                label="Network"
+                onChange={(event) => {
+                  setMonitor({
+                    ...monitor,
+                    network: event.target.value as ChainIds,
+                  });
+                }}
               >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+                {Object.keys(ChainNameToIdEnum).map((name) => (
+                  <MenuItem
+                    value={
+                      ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
+                    }
+                    key={
+                      ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
+                    }
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
 
           <TextField
             id="add-transaction-from"
@@ -154,9 +161,17 @@ export const AddTransactionModal = ({
             }}
           />
         </FormControl>
-        <Button onClick={() => handleAddMonitor(monitor as Monitor)}>
-          Add
-        </Button>
+
+        <Box marginTop="20px" alignSelf="center" width="100%">
+          <Button
+            onClick={() => handleAddMonitor(monitor as Monitor)}
+            variant="outlined"
+            size="large"
+            fullWidth
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );
