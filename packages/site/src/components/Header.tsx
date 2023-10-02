@@ -5,6 +5,7 @@ import { connectSnap, getThemePreference, getSnap } from '../utils';
 import { HeaderButtons } from './Buttons';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
+import { SnapName } from './SnapName';
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -63,7 +64,7 @@ export const Header = ({
     <HeaderWrapper>
       <LogoWrapper>
         <SnapLogo color="black" size={36} />
-        <Title>ChainTrack</Title>
+        <SnapName />
       </LogoWrapper>
       <RightContainer>
         <Toggle

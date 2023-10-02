@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import * as React from 'react';
 import Card from '@mui/material/Card';
+import purple from '@mui/material/colors/purple';
 
 type CardProps = {
   content: {
@@ -23,11 +24,20 @@ export const ActionCard = ({
   fullWidth,
 }: CardProps) => {
   const { title, description, button, buttons } = content;
+
   return (
-    <Card sx={fullWidth ? {} : { width: 256, height: 256 }}>
+    <Card
+      sx={{
+        width: 256,
+        height: 256,
+        border: 1,
+        borderRadius: '16px',
+        borderColor: purple[500],
+      }}
+    >
       {title && <CardHeader title={title} />}
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="h4" color="text.secondary">
           {description}
         </Typography>
       </CardContent>

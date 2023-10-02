@@ -12,14 +12,13 @@ import {
   DebugActionCard,
   DonateButton,
   TableTabs,
-  PredefinedMonitorsTable,
-  AlertsTable,
+  AddTransactionModal,
 } from '../components';
-import { shouldDisplayReconnectButton } from '../utils';
-import { MonitorsTable } from '../components/MonitorsTable';
+import { shouldDisplayReconnectButton, addMonitor } from '../utils';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { MetaMaskContext } from '../hooks';
 import predefinedMonitors from '../../../shared/predefined-monitors';
+import { Monitor, PredefinedMonitor } from '../../../shared/types';
 
 const Container = styled.div`
   display: flex;
@@ -89,11 +88,14 @@ export const AppPage = ({
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
+  const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
+  const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
+    useState<PredefinedMonitor>();
 
   return (
     <Container>
       <Typography variant="h2" gutterBottom>
-        Welcome to <Span>ChainTrack</Span>
+        Welcome to <Span>ChainTrack</Span>!
       </Typography>
       <Typography variant="h4" gutterBottom>
         Get started by adding a new transaction to monitor!
@@ -147,6 +149,17 @@ export const AppPage = ({
               monitors={state?.monitors || []}
               alerts={state?.alerts || []}
               predefinedMonitors={predefinedMonitors}
+              openAddTransactionModal={(
+                predefinedMonitor: PredefinedMonitor,
+              ) => {
+                console.log(
+                  '!!!!!!! openAddTransactionModal !!!!!!!',
+                  'predefinedMonitor',
+                  predefinedMonitor,
+                );
+                setSelectedPredefinedMonitor(predefinedMonitor);
+                setOpenAddTransactionModal(true);
+              }}
             />
           </Grid>
           <Grid item xs={11}>
@@ -156,6 +169,15 @@ export const AppPage = ({
           </Grid>
         </Grid>
       </Box>
+      <AddTransactionModal
+        open={openAddTransactionModal}
+        handleClose={() => setOpenAddTransactionModal(false)}
+        predefinedMonitor={selectedPredefinedMonitor}
+        handleAddMonitor={(monitor: Monitor) => {
+          addMonitor(monitor);
+          setOpenAddTransactionModal(false);
+        }}
+      />
       <CardContainer>
         {showAddWizzard && (
           <AddWizzard

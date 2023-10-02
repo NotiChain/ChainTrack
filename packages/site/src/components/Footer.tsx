@@ -1,5 +1,6 @@
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { SnapLogo } from './SnapLogo';
+import { SnapName } from './SnapName';
 
 const FooterWrapper = styled.footer`
   display: flex;
@@ -16,21 +17,12 @@ const LogoWrapper = styled.div`
   align-items: center;
 `;
 
-const Title = styled.p`
-  //font-size: ${(props) => props.theme.fontSizes.title};
-  font-weight: bold;
-  margin: 0;
-  margin-left: 1.2rem;
-`;
-
 export const Footer = () => {
-  const theme = useTheme();
-
   return (
     <FooterWrapper>
       <LogoWrapper>
         <SnapLogo color="black" size={36} />
-        <Title>ChainTrack</Title>
+        <SnapName />
       </LogoWrapper>
     </FooterWrapper>
   );

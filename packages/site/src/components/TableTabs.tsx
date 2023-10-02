@@ -4,7 +4,14 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import { Alerts, Monitors, PredefinedMonitors } from '../../../shared/types';
+import purple from '@mui/material/colors/purple';
+import { Paper } from '@mui/material';
+import {
+  Alerts,
+  Monitors,
+  PredefinedMonitors,
+  PredefinedMonitor,
+} from '../../../shared/types';
 
 import { MonitorsTable } from './MonitorsTable';
 import { AlertsTable } from './AlertsTable';
@@ -47,12 +54,14 @@ type TableTabsProps = {
   monitors: Monitors;
   alerts: Alerts;
   predefinedMonitors: PredefinedMonitors;
+  openAddTransactionModal: (predefinedMonitor: PredefinedMonitor) => void;
 };
 
 export function TableTabs({
   monitors,
   alerts,
   predefinedMonitors,
+  openAddTransactionModal,
 }: TableTabsProps) {
   const [value, setValue] = React.useState(0);
 
@@ -61,12 +70,26 @@ export function TableTabs({
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Paper
+      elevation={3}
+      sx={{
+        width: '100%',
+        border: 1,
+        borderRadius: '16px',
+        borderColor: purple[500],
+        backgroundColor: 'background.paper',
+      }}
+    >
+      <Box sx={{ borderBottom: 1, borderColor: purple[500] }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          sx={{
+            '& .MuiTabs-indicator': {
+              backgroundColor: purple[500],
+            },
+          }}
         >
           <Tab label="Transactions" {...a11yProps(0)} />
           <Tab label="Alerts" {...a11yProps(1)} />
@@ -101,8 +124,11 @@ export function TableTabs({
               ...item,
             };
           })}
+          openAddTransactionModal={(predefinedMonitor: PredefinedMonitor) => {
+            openAddTransactionModal(predefinedMonitor);
+          }}
         />
       </CustomTabPanel>
-    </Box>
+    </Paper>
   );
 }

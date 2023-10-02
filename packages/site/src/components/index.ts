@@ -13,3 +13,4 @@ export * from './TableTabs';
 export * from './PredefinedMonitorsTable';
 export * from './AlertsTable';
 export * from './StatsActionCard';
+export * from './AddTransactionModal';
