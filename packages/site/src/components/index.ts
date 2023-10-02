@@ -12,3 +12,4 @@ export * from './DebugActionCard';
 export * from './TableTabs';
 export * from './PredefinedMonitorsTable';
 export * from './AlertsTable';
+export * from './StatsActionCard';

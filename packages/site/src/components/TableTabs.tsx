@@ -1,67 +1,108 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
-function samePageLinkNavigation(
-  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-) {
-  if (
-    event.defaultPrevented ||
-    event.button !== 0 || // ignore everything but left-click
-    event.metaKey ||
-    event.ctrlKey ||
-    event.altKey ||
-    event.shiftKey
-  ) {
-    return false;
-  }
-  return true;
-}
+import { Alerts, Monitors, PredefinedMonitors } from '../../../shared/types';
 
-type LinkTabProps = {
-  label?: string;
-  href?: string;
+import { MonitorsTable } from './MonitorsTable';
+import { AlertsTable } from './AlertsTable';
+import { PredefinedMonitorsTable } from './PredefinedMonitorsTable';
+
+type TabPanelProps = {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
 };
 
-function LinkTab(props: LinkTabProps) {
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
   return (
-    <Tab
-      component="a"
-      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        // Routing libraries handle this, you can remove the onClick handle when using them.
-        if (samePageLinkNavigation(event)) {
-          event.preventDefault();
-        }
-      }}
-      {...props}
-    />
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
   );
 }
 
-export function TableTabs() {
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+type TableTabsProps = {
+  monitors: Monitors;
+  alerts: Alerts;
+  predefinedMonitors: PredefinedMonitors;
+};
+
+export function TableTabs({
+  monitors,
+  alerts,
+  predefinedMonitors,
+}: TableTabsProps) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    // event.type can be equal to focus with selectionFollowsFocus.
-    if (
-      event.type !== 'click' ||
-      (event.type === 'click' &&
-        samePageLinkNavigation(
-          event as React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-        ))
-    ) {
-      setValue(newValue);
-    }
+    setValue(newValue);
   };
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Tabs value={value} onChange={handleChange} aria-label="nav tabs example">
-        <LinkTab label="Transactions" href="/transactions" />
-        <LinkTab label="Alerts" href="/alerts" />
-        <LinkTab label="Catalog" href="/catalog" />
-      </Tabs>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Transactions" {...a11yProps(0)} />
+          <Tab label="Alerts" {...a11yProps(1)} />
+          <Tab label="Catalog" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <MonitorsTable
+          monitors={monitors.map((item, index) => {
+            return {
+              id: index + 1,
+              ...item,
+            };
+          })}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <AlertsTable
+          alerts={alerts.map((item, index) => {
+            return {
+              id: index + 1,
+              ...item,
+            };
+          })}
+        />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <PredefinedMonitorsTable
+          predefinedMonitors={predefinedMonitors.map((item, index) => {
+            return {
+              id: index + 1,
+              ...item,
+            };
+          })}
+        />
+      </CustomTabPanel>
     </Box>
   );
 }

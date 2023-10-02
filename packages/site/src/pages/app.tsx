@@ -1,11 +1,14 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 import { useContext, useState } from 'react';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
+  StatsActionCard,
   DebugActionCard,
   DonateButton,
   TableTabs,
@@ -101,7 +104,7 @@ export const AppPage = ({
           direction="row"
           justifyContent="center"
           alignItems="flex-start"
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 2, md: 4 }}
           columns={{ xs: 3, sm: 8, md: 12 }}
         >
           {state.error && (
@@ -111,21 +114,28 @@ export const AppPage = ({
               </ErrorMessage>
             </Grid>
           )}
-          <Grid item xs={2} sm={4} md={4}>
-            <ConnectActionCard
-              installedSnap={state.installedSnap}
-              handleConnectClick={handleConnectClick}
-              isMetaMaskReady={isMetaMaskReady}
-            />
+          <Grid item xs={3}>
+            {state.installedSnap ? (
+              <StatsActionCard
+                alerts={state?.alerts || []}
+                monitors={state?.monitors || []}
+              />
+            ) : (
+              <ConnectActionCard
+                installedSnap={state.installedSnap}
+                handleConnectClick={handleConnectClick}
+                isMetaMaskReady={isMetaMaskReady}
+              />
+            )}
           </Grid>
-          <Grid item xs={2} sm={4} md={4}>
+          <Grid item xs={3}>
             <AddMonitorActionCard
               installedSnap={state.installedSnap}
               handleSendAddClick={handleSendAddClick}
             />
           </Grid>
           {shouldDisplayReconnectButton(state.installedSnap) && (
-            <Grid item xs={2} sm={4} md={4}>
+            <Grid item xs={3}>
               <DebugActionCard
                 handleResetClick={handleResetClick}
                 handleReloadClick={handleReloadClick}
@@ -133,41 +143,16 @@ export const AppPage = ({
             </Grid>
           )}
           <Grid item xs={11}>
-            <TableTabs />
-          </Grid>
-          <Grid item xs={11}>
-            <MonitorsTable
-              monitors={
-                state?.monitors?.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    ...item,
-                  };
-                }) || []
-              }
+            <TableTabs
+              monitors={state?.monitors || []}
+              alerts={state?.alerts || []}
+              predefinedMonitors={predefinedMonitors}
             />
           </Grid>
           <Grid item xs={11}>
-            <AlertsTable
-              alerts={
-                state?.alerts?.map((item, index) => {
-                  return {
-                    id: index + 1,
-                    ...item,
-                  };
-                }) || []
-              }
-            />
-          </Grid>
-          <Grid item xs={11}>
-            <PredefinedMonitorsTable
-              predefinedMonitors={predefinedMonitors.map((item, index) => {
-                return {
-                  id: index + 1,
-                  ...item,
-                };
-              })}
-            />
+            <Fab color="secondary" aria-label="add">
+              <AddIcon />
+            </Fab>
           </Grid>
         </Grid>
       </Box>
