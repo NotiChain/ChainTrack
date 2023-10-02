@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import styled, { useTheme } from 'styled-components';
+import { Box } from '@mui/material';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getThemePreference, getSnap } from '../utils';
 import { HeaderButtons } from './Buttons';
@@ -7,40 +7,11 @@ import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
 
-const HeaderWrapper = styled.header`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2.4rem;
-  //border-bottom: 1px solid ${(props) => props.theme.colors.border.default};
-`;
-
-const Title = styled.p`
-  //font-size: ${(props) => props.theme.fontSizes.title};
-  font-weight: bold;
-  margin: 0;
-  margin-left: 1.2rem;
-`;
-
-const LogoWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
 export const Header = ({
   handleToggleClick,
 }: {
   handleToggleClick(): void;
 }) => {
-  const theme = useTheme();
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const handleConnectClick = async () => {
@@ -58,21 +29,24 @@ export const Header = ({
     }
   };
 
-  console.log(theme);
-
   return (
-    <HeaderWrapper>
-      <LogoWrapper>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      padding="2.4rem"
+    >
+      <Box display="flex" alignItems="center">
         <SnapLogo color="black" size={36} />
         <SnapName />
-      </LogoWrapper>
-      <RightContainer>
+      </Box>
+      <Box display="flex" alignItems="center">
         <Toggle
           onToggle={handleToggleClick}
           defaultChecked={getThemePreference()}
         />
         <HeaderButtons state={state} onConnectClick={handleConnectClick} />
-      </RightContainer>
-    </HeaderWrapper>
+      </Box>
+    </Box>
   );
 };

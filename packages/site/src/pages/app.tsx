@@ -5,12 +5,12 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import styled from 'styled-components';
 import { useContext, useState } from 'react';
+import { Button } from '@mui/material';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
   StatsActionCard,
   DebugActionCard,
-  DonateButton,
   TableTabs,
   AddTransactionModal,
 } from '../components';
@@ -196,7 +196,13 @@ export const AppPage = ({
             loadData={() => {}}
           />
         )}
-        <Notice>
+        <Box
+          padding="2.4rem"
+          marginTop="2.4rem"
+          maxWidth="60rem"
+          display="flex"
+          flexDirection="column"
+        >
           <p>
             Support <b>ChainTrack</b>: If you've found value in our tool and
             wish to support our mission to enhance blockchain transparency,
@@ -204,8 +210,12 @@ export const AppPage = ({
             us continue our work and serve you better. Thank you for believing
             in <b>ChainTrack</b>!
           </p>
-          <DonateButton onClick={handleDonateClick} />
-        </Notice>
+          <Box alignSelf="center">
+            <Button onClick={handleDonateClick} variant="outlined" size="large">
+              Donate
+            </Button>
+          </Box>
+        </Box>
       </CardContainer>
     </Container>
   );

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import purple from '@mui/material/colors/purple';
@@ -16,6 +15,7 @@ import {
 import { MonitorsTable } from './MonitorsTable';
 import { AlertsTable } from './AlertsTable';
 import { PredefinedMonitorsTable } from './PredefinedMonitorsTable';
+import './styles.css';
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -70,13 +70,11 @@ export function TableTabs({
       elevation={3}
       sx={{
         width: '100%',
-        border: 1,
-        borderRadius: '16px',
-        borderColor: purple[500],
-        backgroundColor: 'background.paper',
       }}
     >
-      <Box sx={{ borderBottom: 1, borderColor: purple[500] }}>
+      <Box
+      // sx={{ borderBottom: 1, borderColor: purple[500] }}
+      >
         <Tabs
           centered
           value={value}
@@ -95,42 +93,56 @@ export function TableTabs({
           <Tab label="Catalog" {...handleTabs(2)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <MonitorsTable
-          monitors={monitors.map((item, index) => {
-            return {
-              id: index + 1,
-              key: index + 1,
-              ...item,
-            };
-          })}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <AlertsTable
-          alerts={alerts.map((item, index) => {
-            return {
-              id: index + 1,
-              key: index + 1,
-              ...item,
-            };
-          })}
-        />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <PredefinedMonitorsTable
-          predefinedMonitors={predefinedMonitors.map((item, index) => {
-            return {
-              id: index + 1,
-              key: index + 1,
-              ...item,
-            };
-          })}
-          openAddTransactionModal={(predefinedMonitor: PredefinedMonitor) => {
-            openAddTransactionModal(predefinedMonitor);
+      <Box padding="12px 20px 20px 20px">
+        <Box
+          sx={{
+            border: 1,
+            borderRadius: '16px',
+            borderColor: purple[500],
+            backgroundColor: 'background.paper',
           }}
-        />
-      </CustomTabPanel>
+          className="tabs-table-container"
+        >
+          <CustomTabPanel value={value} index={0}>
+            <MonitorsTable
+              monitors={monitors.map((item, index) => {
+                return {
+                  id: index + 1,
+                  key: index + 1,
+                  ...item,
+                };
+              })}
+            />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            <AlertsTable
+              alerts={alerts.map((item, index) => {
+                return {
+                  id: index + 1,
+                  key: index + 1,
+                  ...item,
+                };
+              })}
+            />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
+            <PredefinedMonitorsTable
+              predefinedMonitors={predefinedMonitors.map((item, index) => {
+                return {
+                  id: index + 1,
+                  key: index + 1,
+                  ...item,
+                };
+              })}
+              openAddTransactionModal={(
+                predefinedMonitor: PredefinedMonitor,
+              ) => {
+                openAddTransactionModal(predefinedMonitor);
+              }}
+            />
+          </CustomTabPanel>
+        </Box>
+      </Box>
     </Paper>
   );
 }

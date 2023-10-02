@@ -105,10 +105,6 @@ export const ReloadButton = (props: ComponentProps<typeof Button>) => {
   return <Button {...props}>Reload</Button>;
 };
 
-export const DonateButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Donate</Button>;
-};
-
 export const HeaderButtons = ({
   state,
   onConnectClick,
