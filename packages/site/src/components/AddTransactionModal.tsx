@@ -9,6 +9,7 @@ import {
   PredefinedMonitor,
   Monitor,
   ChainNameToIdEnum,
+  ChainIds,
 } from '../../../shared/types';
 
 type AddTransactionModalProps = {
@@ -66,7 +67,10 @@ export const AddTransactionModal = ({
             value={monitor?.network}
             label="Network"
             onChange={(event) => {
-              setMonitor({ ...monitor, network: event.target.value });
+              setMonitor({
+                ...monitor,
+                network: event.target.value as ChainIds,
+              });
             }}
           >
             {Object.keys(ChainNameToIdEnum).map((name) => (

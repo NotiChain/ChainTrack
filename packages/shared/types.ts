@@ -10,6 +10,9 @@ export enum ChainIdToNameEnum {
   '0x5' = 'goerli',
 }
 
+export type ChainIds = keyof typeof ChainIdToNameEnum;
+export type ChainNames = keyof typeof ChainNameToIdEnum;
+
 export enum Preconditions {
   'BrightID' = 'BrightID',
   'MainnetBalance' = 'Mainnet Balance',
