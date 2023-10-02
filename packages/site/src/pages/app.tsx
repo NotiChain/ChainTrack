@@ -163,7 +163,14 @@ export const AppPage = ({
             />
           </Grid>
           <Grid item xs={11}>
-            <Fab color="secondary" aria-label="add">
+            <Fab
+              color="secondary"
+              aria-label="add"
+              onClick={() => {
+                setSelectedPredefinedMonitor(undefined);
+                setOpenAddTransactionModal(true);
+              }}
+            >
               <AddIcon />
             </Fab>
           </Grid>
@@ -171,7 +178,10 @@ export const AppPage = ({
       </Box>
       <AddTransactionModal
         open={openAddTransactionModal}
-        handleClose={() => setOpenAddTransactionModal(false)}
+        handleClose={() => {
+          setSelectedPredefinedMonitor(undefined);
+          setOpenAddTransactionModal(false);
+        }}
         predefinedMonitor={selectedPredefinedMonitor}
         handleAddMonitor={(monitor: Monitor) => {
           addMonitor(monitor);

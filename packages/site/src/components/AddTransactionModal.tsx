@@ -37,10 +37,14 @@ export const AddTransactionModal = ({
   handleAddMonitor,
   predefinedMonitor,
 }: AddTransactionModalProps) => {
-  console.log('!!!!!!! predefinedMonitor', predefinedMonitor);
-  const [monitor, setMonitor] = React.useState<Partial<Monitor>>(
+  console.log('!!!!!!! predefinedMonitor from modal', predefinedMonitor);
+  const [monitor, setMonitor] = React.useState<Partial<PredefinedMonitor>>(
     predefinedMonitor || {},
   );
+
+  React.useEffect(() => {
+    setMonitor(predefinedMonitor || {});
+  }, [predefinedMonitor]);
 
   return (
     <Modal
@@ -64,7 +68,7 @@ export const AddTransactionModal = ({
           <Select
             labelId="network"
             id="network-simple-select"
-            value={monitor?.network}
+            value={monitor.network ?? ''}
             label="Network"
             onChange={(event) => {
               setMonitor({
@@ -78,6 +82,7 @@ export const AddTransactionModal = ({
                 value={
                   ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
                 }
+                key={ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]}
               >
                 {name}
               </MenuItem>

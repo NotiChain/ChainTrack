@@ -39,7 +39,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+function handleTabs(index: number) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
@@ -69,7 +69,6 @@ export function TableTabs({
     <Paper
       elevation={3}
       sx={{
-        width: '100%',
         border: 1,
         borderRadius: '16px',
         borderColor: purple[500],
@@ -90,9 +89,9 @@ export function TableTabs({
             },
           }}
         >
-          <Tab label="Transactions" {...a11yProps(0)} />
-          <Tab label="Alerts" {...a11yProps(1)} />
-          <Tab label="Catalog" {...a11yProps(2)} />
+          <Tab label="Transactions" {...handleTabs(0)} />
+          <Tab label="Alerts" {...handleTabs(1)} />
+          <Tab label="Catalog" {...handleTabs(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -100,6 +99,7 @@ export function TableTabs({
           monitors={monitors.map((item, index) => {
             return {
               id: index + 1,
+              key: index + 1,
               ...item,
             };
           })}
@@ -110,6 +110,7 @@ export function TableTabs({
           alerts={alerts.map((item, index) => {
             return {
               id: index + 1,
+              key: index + 1,
               ...item,
             };
           })}
@@ -120,6 +121,7 @@ export function TableTabs({
           predefinedMonitors={predefinedMonitors.map((item, index) => {
             return {
               id: index + 1,
+              key: index + 1,
               ...item,
             };
           })}
@@ -128,6 +130,14 @@ export function TableTabs({
           }}
         />
       </CustomTabPanel>
-    </Paper>
+    </Paper
+      elevation={3}
+      sx={{
+        border: 1,
+        borderRadius: '16px',
+        borderColor: purple[500],
+        backgroundColor: 'background.paper',
+      }}
+    >
   );
 }
