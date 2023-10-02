@@ -53,6 +53,7 @@ export const PredefinedMonitorsTable = ({
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
+        autoHeight={true}
         rows={predefinedMonitors || []}
         columns={columns}
         initialState={{

@@ -34,11 +34,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && children}
     </div>
   );
 }
@@ -82,9 +78,12 @@ export function TableTabs({
     >
       <Box sx={{ borderBottom: 1, borderColor: purple[500] }}>
         <Tabs
+          centered
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          textColor="secondary"
+          indicatorColor="secondary"
           sx={{
             '& .MuiTabs-indicator': {
               backgroundColor: purple[500],

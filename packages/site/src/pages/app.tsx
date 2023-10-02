@@ -104,10 +104,10 @@ export const AppPage = ({
         <Grid
           container
           direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={{ xs: 2, md: 4 }}
-          columns={{ xs: 3, sm: 8, md: 12 }}
+          justifyContent="space-evenly"
+          alignItems="stretch"
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {state.error && (
             <Grid item xs={12}>
@@ -116,7 +116,7 @@ export const AppPage = ({
               </ErrorMessage>
             </Grid>
           )}
-          <Grid item xs={3}>
+          <Grid item xs={2.5}>
             {state.installedSnap ? (
               <StatsActionCard
                 alerts={state?.alerts || []}
@@ -130,14 +130,14 @@ export const AppPage = ({
               />
             )}
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2.5}>
             <AddMonitorActionCard
               installedSnap={state.installedSnap}
               handleSendAddClick={handleSendAddClick}
             />
           </Grid>
           {shouldDisplayReconnectButton(state.installedSnap) && (
-            <Grid item xs={3}>
+            <Grid item xs={2.5}>
               <DebugActionCard
                 handleResetClick={handleResetClick}
                 handleReloadClick={handleReloadClick}

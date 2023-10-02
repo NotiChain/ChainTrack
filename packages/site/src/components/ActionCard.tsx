@@ -28,14 +28,22 @@ export const ActionCard = ({
   return (
     <Card
       sx={{
-        width: 256,
-        height: 256,
+        width: '100%',
+        height: '100%',
         border: 1,
         borderRadius: '16px',
         borderColor: purple[500],
       }}
     >
-      {title && <CardHeader title={title} />}
+      {title && (
+        <CardHeader
+          title={
+            <Typography variant="h3" color="secondary">
+              {title}
+            </Typography>
+          }
+        ></CardHeader>
+      )}
       <CardContent>
         <Typography variant="h4" color="text.secondary">
           {description}
