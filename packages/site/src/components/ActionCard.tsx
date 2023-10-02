@@ -18,11 +18,7 @@ type CardProps = {
   fullWidth?: boolean;
 };
 
-export const ActionCard = ({
-  content,
-  disabled = false,
-  fullWidth,
-}: CardProps) => {
+export const ActionCard = ({ content }: CardProps) => {
   const { title, description, button, buttons } = content;
 
   return (

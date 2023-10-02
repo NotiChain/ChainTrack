@@ -93,18 +93,6 @@ export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
   );
 };
 
-export const SendAddButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Add Transaction</Button>;
-};
-
-export const ResetButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Reset</Button>;
-};
-
-export const ReloadButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Reload</Button>;
-};
-
 export const HeaderButtons = ({
   state,
   onConnectClick,

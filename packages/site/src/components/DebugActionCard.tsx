@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { Button } from '@mui/material';
 import { ActionCard } from './ActionCard';
-import { ReloadButton, ResetButton } from './Buttons';
 
 type DebugActionCardProps = {
   handleResetClick: () => void;
@@ -12,8 +12,12 @@ export function DebugActionCard({
   handleReloadClick,
 }: DebugActionCardProps) {
   const buttons = [
-    <ResetButton key="reset" onClick={handleResetClick} />,
-    <ReloadButton key="reload" onClick={handleReloadClick} />,
+    <Button key="reset" onClick={handleResetClick} size="large">
+      Reset
+    </Button>,
+    <Button key="reload" onClick={handleReloadClick} size="large">
+      Reload
+    </Button>,
   ];
 
   const content = {

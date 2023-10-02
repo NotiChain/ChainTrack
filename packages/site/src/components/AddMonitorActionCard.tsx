@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { Button } from '@mui/material';
 import { Snap } from '../types';
 import { ActionCard } from './ActionCard';
-import { SendAddButton } from './Buttons';
 
 type ConnectActionCardProps = {
   installedSnap?: Snap;
@@ -27,7 +27,9 @@ export function AddMonitorActionCard({
   handleSendAddClick,
 }: ConnectActionCardProps) {
   const button = (
-    <SendAddButton onClick={handleSendAddClick} disabled={!installedSnap} />
+    <Button onClick={handleSendAddClick} disabled={!installedSnap} size="large">
+      Add Transaction
+    </Button>
   );
 
   const description = phrases[Math.floor(Math.random() * phrases.length)];

@@ -100,7 +100,7 @@ export const AppPage = ({
       <Typography variant="h4" gutterBottom>
         Get started by adding a new transaction to monitor!
       </Typography>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1 }} marginTop="12px">
         <Grid
           container
           direction="row"
