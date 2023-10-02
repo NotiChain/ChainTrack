@@ -203,14 +203,14 @@ export const AppPage = ({
           display="flex"
           flexDirection="column"
         >
-          <p>
+          <Typography variant="h5">
             Support <b>ChainTrack</b>: If you've found value in our tool and
             wish to support our mission to enhance blockchain transparency,
             consider making a donation. Every contribution, big or small, helps
             us continue our work and serve you better. Thank you for believing
             in <b>ChainTrack</b>!
-          </p>
-          <Box alignSelf="center">
+          </Typography>
+          <Box alignSelf="center" marginTop="12px">
             <Button onClick={handleDonateClick} variant="outlined" size="large">
               Donate
             </Button>

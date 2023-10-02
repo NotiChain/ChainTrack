@@ -1,5 +1,17 @@
 .tabs-table-container {
     .MuiDataGrid-root {
         border: none;
+
+        .MuiDataGrid-columnHeaderTitle, .MuiDataGrid-cellContent {
+            font-size: 16px;
+        }
+
+        .MuiDataGrid-columnHeaderTitle {
+            font-weight: bold;
+        }
+
+        .MuiDataGrid-cell:focus {
+            outline: none;
+        }
     }
 }
