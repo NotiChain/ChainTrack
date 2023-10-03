@@ -2,12 +2,24 @@ export enum ChainNameToIdEnum {
   'sepolia' = '0xaa36a7',
   'mainnet' = '0x1',
   'goerli' = '0x5',
+  'arbitrum' = '0xa4b1',
+  'arbitrum-goerli' = '0x66eed',
+  'matic' = '0x89',
+  'maticum' = '0x13881',
+  'optimism' = '0xa',
+  'optimism-goerli' = '0x7a',
 }
 
 export enum ChainIdToNameEnum {
   '0xaa36a7' = 'sepolia',
   '0x1' = 'mainnet',
   '0x5' = 'goerli',
+  '0xa4b1' = 'arbitrum',
+  '0x66eed' = 'arbitrum-goerli',
+  '0x89' = 'matic',
+  '0x13881' = 'maticum',
+  '0xa' = 'optimism',
+  '0x7a' = 'optimism-goerli',
 }
 
 export enum Preconditions {
