@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Box, Button, InputLabel } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 
@@ -11,6 +11,7 @@ import {
   ChainNameToIdEnum,
   ChainIds,
 } from '../../../shared/types';
+import { MetaMaskContext } from '../hooks';
 
 type AddTransactionModalProps = {
   open: boolean;
@@ -37,7 +38,8 @@ export const AddTransactionModal = ({
   handleAddMonitor,
   predefinedMonitor,
 }: AddTransactionModalProps) => {
-  console.log('!!!!!!! predefinedMonitor from modal', predefinedMonitor);
+  const [state] = useContext(MetaMaskContext);
+
   const [monitor, setMonitor] = React.useState<Partial<PredefinedMonitor>>(
     predefinedMonitor || {},
   );
@@ -45,6 +47,19 @@ export const AddTransactionModal = ({
   React.useEffect(() => {
     setMonitor(predefinedMonitor || {});
   }, [predefinedMonitor]);
+
+  const from = monitor?.from || (state.wallets ? state.wallets[0] : undefined);
+  if (from !== monitor.from) {
+    setMonitor({ ...monitor, from });
+  }
+  const to = monitor?.to || (state.wallets ? state.wallets[0] : undefined);
+  if (to !== monitor.to) {
+    setMonitor({ ...monitor, to });
+  }
+  const chainId = monitor?.network || (state?.chainId as ChainIds);
+  if (chainId !== monitor.network) {
+    setMonitor({ ...monitor, network: chainId });
+  }
 
   return (
     <Modal
@@ -169,7 +184,7 @@ export const AddTransactionModal = ({
             size="large"
             fullWidth
           >
-            Add
+            Start Monitoring
           </Button>
         </Box>
       </Box>

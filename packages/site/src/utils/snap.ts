@@ -144,3 +144,19 @@ export const sendDelete = async ({
 };
 
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
+
+const snap = {
+  getSnaps,
+  connectSnap,
+  getSnap,
+  sendAdd,
+  addMonitor,
+  getMonitors,
+  getAlerts,
+  sendReset,
+  sendUpdate,
+  sendDelete,
+  isLocalSnap,
+};
+
+export default snap;

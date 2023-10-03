@@ -27,6 +27,7 @@ type AppPageProps = {
   handleResetClick: () => void;
   handleReloadClick: () => void;
   handleDonateClick: () => void;
+  loadSnapData: () => void;
   isMetaMaskReady: boolean;
 };
 
@@ -37,6 +38,7 @@ export const AppPage = ({
   handleReloadClick,
   isMetaMaskReady,
   handleDonateClick,
+  loadSnapData,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
@@ -123,6 +125,7 @@ export const AppPage = ({
               <DebugActionCard
                 handleResetClick={handleResetClick}
                 handleReloadClick={handleReloadClick}
+                handleConnectClick={handleConnectClick}
               />
             </Grid>
           )}
@@ -163,12 +166,15 @@ export const AppPage = ({
         handleClose={() => {
           setSelectedPredefinedMonitor(undefined);
           setOpenAddTransactionModal(false);
+          loadSnapData();
         }}
         predefinedMonitor={selectedPredefinedMonitor}
         handleAddMonitor={(monitor: Monitor) => {
-          addMonitor(monitor);
-          setSelectedPredefinedMonitor(undefined);
-          setOpenAddTransactionModal(false);
+          addMonitor(monitor).then(() => {
+            setSelectedPredefinedMonitor(undefined);
+            setOpenAddTransactionModal(false);
+            loadSnapData();
+          });
         }}
       />
       <Box display="flex" justifyContent="space-between" marginTop="1.5rem">

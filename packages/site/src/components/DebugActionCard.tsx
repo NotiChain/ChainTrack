@@ -5,11 +5,13 @@ import { ActionCard } from './ActionCard';
 type DebugActionCardProps = {
   handleResetClick: () => void;
   handleReloadClick: () => void;
+  handleConnectClick: () => void;
 };
 
 export function DebugActionCard({
   handleResetClick,
   handleReloadClick,
+  handleConnectClick,
 }: DebugActionCardProps) {
   const buttons = [
     <Button key="reset" onClick={handleResetClick} size="large">
@@ -17,6 +19,9 @@ export function DebugActionCard({
     </Button>,
     <Button key="reload" onClick={handleReloadClick} size="large">
       Reload
+    </Button>,
+    <Button key="reconnect" onClick={handleConnectClick} size="large">
+      Reconnect
     </Button>,
   ];
 

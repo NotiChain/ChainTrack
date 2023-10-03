@@ -31,11 +31,16 @@ export class Storage {
   }
 
   async set(data: Data): Promise<void> {
-    console.log('Storage.set()', JSON.stringify(data, null, 2));
-    await snap.request({
-      method: 'snap_manageState',
-      params: { operation: 'update', newState: data },
-    });
+    console.log('Storage.set()', data);
+    try {
+      await snap.request({
+        method: 'snap_manageState',
+        params: { operation: 'update', newState: data },
+      });
+    } catch (err) {
+      console.error('Storage.set() error', err);
+      throw err;
+    }
   }
 
   async clear(): Promise<void> {
@@ -54,6 +59,13 @@ export class Storage {
 
   async addMonitor(monitor: Monitor): Promise<void> {
     console.log('Storage.addMonitor()', monitor);
+    // remove all undefined keys
+    for (const key of Object.keys(monitor)) {
+      const prop = key as keyof Monitor;
+      if (monitor[prop] === undefined) {
+        delete monitor[prop];
+      }
+    }
     const data = await this.get();
     if (!data.monitors) {
       data.monitors = [];
