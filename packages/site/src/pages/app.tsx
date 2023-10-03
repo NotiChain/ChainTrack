@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useContext, useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import purple from '@mui/material/colors/purple';
 import red from '@mui/material/colors/red';
 import {
@@ -40,6 +40,7 @@ export const AppPage = ({
   handleDonateClick,
   loadSnapData,
 }: AppPageProps) => {
+  const theme = useTheme();
   const [state, dispatch] = useContext(MetaMaskContext);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
@@ -53,7 +54,10 @@ export const AppPage = ({
       alignItems="center"
       flex="1"
       sx={{
-        background: 'linear-gradient(to top right, #2f2727, #1a82f7)',
+        background:
+          theme?.palette?.mode === 'dark'
+            ? 'linear-gradient(to top right, #2f2727, #1a82f7)'
+            : '',
       }}
     >
       <Box display="flex" gap="6px">

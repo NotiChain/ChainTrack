@@ -13,5 +13,19 @@
         .MuiDataGrid-cell:focus {
             outline: none;
         }
+
+        .MuiDataGrid-cell[data-field="url"] {
+            cursor: auto;
+        }
+
+        .MuiDataGrid-row:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.add-transactions-modal {
+    .MuiFormLabel-root {
+        font-size: 16px;
     }
 }

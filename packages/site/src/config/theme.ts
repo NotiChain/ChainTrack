@@ -1,11 +1,11 @@
-import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { Theme } from '@mui/material';
 
 const breakpoints = ['600px', '768px', '992px'];
 
 /**
  * Common theme properties.
  */
-const theme = {
+const commonThemeProps = {
   fonts: {
     default:
       'Inter, sans-serif, -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
@@ -78,7 +78,7 @@ export const light: any = {
       testimonialBorder: '1px solid rgba(000, 000, 000, 0.5)',
     },
   },
-  ...theme,
+  ...commonThemeProps,
 };
 
 /**
@@ -124,80 +124,32 @@ export const dark: any = {
       testimonialBorder: '1px solid rgba(255, 255, 255, 0.5)',
     },
   },
-  ...theme,
+  ...commonThemeProps,
 };
 
-type Test = {
-  theme: {
-    palette: any;
-  };
-};
-
-/**
- * Default style applied to the app.
- *
- * @param props - Styled Components props.
- * @returns Global style React component.
- */
-export const GlobalStyle = createGlobalStyle<Test>`
-  html {
-    /* 62.5% of the base size of 16px = 10px.*/
-    font-size: 62.5%;
-  }
-
-  body {
-    //background-color: ${(props) => props.theme.palette.background.default};
-    //color: ${(props) => props.theme.colors.text.default};
-    //font-family: ${(props) => props.theme.fonts.default};
-    //font-size: ${(props) => props.theme.fontSizes.text};
-    margin: 0;
-  }
-
-  * {
-    transition: background-color .1s linear;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    //font-size: ${(props) => props.theme.fontSizes.heading};
-  }
-
-  code {
-    //background-color: ${(props) => props.theme.colors.background.alternative};
-    //font-family: ${(props) => props.theme.fonts.code};
-    padding: 1.2rem;
-    font-weight: normal;
-    //font-size: ${(props) => props.theme.fontSizes.text};
-  }
-
-  button {
-    //font-size: ${(props) => props.theme.fontSizes.small};
-    //border-radius: ${(props) => props.theme.radii.button};
-    // background-color: ${(props) => props.theme.colors.background.inverse};
-    //color: ${(props) => props.theme.colors.text.inverse};
-    // border: 1px solid ${(props) => props.theme.colors.background.inverse};
-    font-weight: bold;
-    padding: 1rem;
-    min-height: 4.2rem;
-    cursor: pointer;
-    transition: all .2s ease-in-out;
-
-    &:hover {
-      background-color: transparent;
-      //border: 1px solid ${(props) => props.theme.colors.background.inverse};
-      //color: ${(props) => props.theme.colors.text.default};
-    }
-
-    &:disabled,
-    &[disabled] {
-      //border: 1px solid ${(props) => props.theme.colors.background.inverse};
-      cursor: not-allowed;
-    }
-
-    &:disabled:hover,
-    &[disabled]:hover {
-      //background-color: ${(props) => props.theme.colors.background.inverse};
-      //color: ${(props) => props.theme.colors.text.inverse};
-      // border: 1px solid ${(props) => props.theme.colors.background.inverse};
-    }
-  }
-`;
+export const getGlobalStyles = (theme: Theme) => ({
+  html: { fontSize: '62.5%' },
+  body: {
+    color: theme?.custom?.colors?.text?.default,
+    fontFamily: theme?.custom?.fonts?.default,
+    fontSize: theme?.custom?.fontSizes?.text,
+    margin: 0,
+  },
+  '*': {
+    transition: 'background-color .1s linear',
+  },
+  button: {
+    fontSize: theme?.custom?.fontSizes?.small,
+    borderRadius: theme?.custom?.radii?.button,
+    border: `1[x solid ${theme?.custom?.colors?.background?.inverse}`,
+    fontWeight: 'bold',
+    padding: '1rem',
+    minHeight: '4.2rem',
+    cursor: 'pointer',
+    transition: 'all .2s ease-in-out',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      border: `1px solid ${theme?.custom?.colors?.background?.inverse}`,
+    },
+  },
+});

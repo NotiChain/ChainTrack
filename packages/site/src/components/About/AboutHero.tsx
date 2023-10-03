@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Button, Typography, styled } from '@mui/material';
+import purple from '@mui/material/colors/purple';
 
 type AboutHeroProps = {
   handleConnectClick(): void;
@@ -24,7 +25,7 @@ export const AboutHero: FC<AboutHeroProps> = ({
       justifyContent="center"
       flexDirection="column"
     >
-      <Typography fontSize="80px" fontWeight="bold">
+      <Typography fontSize="80px" fontWeight="bold" color={purple[500]}>
         ChainTrack
       </Typography>
       <Typography

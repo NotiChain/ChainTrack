@@ -1,17 +1,9 @@
 import { FunctionComponent, ReactNode, useContext } from 'react';
-import styled from 'styled-components';
+import { Box, GlobalStyles } from '@mui/material';
 import { Footer, Header } from './components';
 
-import { GlobalStyle } from './config/theme';
+import { getGlobalStyles } from './config/theme';
 import { ToggleThemeContext } from './Root';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100vh;
-  max-width: 100vw;
-`;
 
 export type AppProps = {
   children: ReactNode;
@@ -23,12 +15,18 @@ export const App: FunctionComponent<AppProps> = ({ children }) => {
 
   return (
     <>
-      <GlobalStyle />
-      <Wrapper>
+      <GlobalStyles styles={getGlobalStyles} />
+      <Box
+        display="flex"
+        flexDirection="column"
+        width="100%"
+        minHeight="100vh"
+        maxWidth="100vw"
+      >
         <Header handleToggleClick={toggleTheme.toggleColorMode} />
         {children}
         <Footer />
-      </Wrapper>
+      </Box>
     </>
   );
 };

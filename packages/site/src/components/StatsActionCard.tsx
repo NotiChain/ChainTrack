@@ -29,7 +29,7 @@ export function StatsActionCard({ monitors, alerts }: StatsActionCardProps) {
     <Typography
       variant="h4"
       color="text.secondary"
-      key="time"
+      key="checks"
     >{`Background checks: 123456 times`}</Typography>,
   ];
   const content = {

@@ -1,17 +1,27 @@
 import { useContext } from 'react';
-import { Box } from '@mui/material';
+import { Box, Button, useTheme, styled } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import { connectSnap, getThemePreference, getSnap } from '../utils';
-import { HeaderButtons } from './Buttons';
+import { connectSnap, getSnap } from '../utils';
+import { ReactComponent as MetamaskFox } from '../assets/metamask_fox.svg';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
+
+const ConnectedIndicator = styled('div')(() => ({
+  width: '10px',
+  height: '10px',
+  borderRadius: '50%',
+  backgroundColor: 'green',
+  marginRight: '6px',
+}));
 
 export const Header = ({
   handleToggleClick,
 }: {
   handleToggleClick(): void;
 }) => {
+  const theme = useTheme();
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const handleConnectClick = async () => {
@@ -37,15 +47,35 @@ export const Header = ({
       padding="2.4rem"
     >
       <Box display="flex" alignItems="center">
-        <SnapLogo color="black" size={36} />
+        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
         <SnapName />
       </Box>
       <Box display="flex" alignItems="center">
-        <Toggle
-          onToggle={handleToggleClick}
-          defaultChecked={getThemePreference()}
-        />
-        <HeaderButtons state={state} onConnectClick={handleConnectClick} />
+        <Toggle onToggle={handleToggleClick} />
+        {state.installedSnap ? (
+          <Box
+            display="flex"
+            alignSelf="flex-start"
+            alignItems="center"
+            justifyContent="center"
+            padding="1.2rem"
+            fontWeight="bold"
+          >
+            <ConnectedIndicator />
+            <Typography variant="h5">Connected</Typography>
+          </Box>
+        ) : (
+          <Box marginLeft="12px">
+            <Button
+              startIcon={<MetamaskFox />}
+              onClick={handleConnectClick}
+              variant="outlined"
+              size="large"
+            >
+              Connect
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

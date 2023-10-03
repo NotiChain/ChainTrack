@@ -12,6 +12,7 @@ import {
   ChainIds,
 } from '../../../shared/types';
 import { MetaMaskContext } from '../hooks';
+import './styles.css';
 
 type AddTransactionModalProps = {
   open: boolean;
@@ -64,15 +65,20 @@ export const AddTransactionModal = ({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        setMonitor({});
+        handleClose();
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className="add-transactions-modal"
     >
       <Box sx={style} flexDirection="column" display="flex">
-        <FormControl>
+        <FormControl sx={{ gap: '24px' }} onInvalid={() => console.log('qwer')}>
           <TextField
             id="add-transaction-network"
             label="Name"
+            focused
             variant="standard"
             value={monitor?.name}
             onChange={(event) => {
@@ -80,40 +86,56 @@ export const AddTransactionModal = ({
             }}
           />
 
-          <Box marginTop="20px" width="100%">
-            <FormControl fullWidth>
-              <InputLabel id="network-select-label">Network</InputLabel>
-              <Select
-                labelId="network-select-label"
-                id="network-select"
-                value={monitor.network ?? ''}
-                label="Network"
-                onChange={(event) => {
-                  setMonitor({
-                    ...monitor,
-                    network: event.target.value as ChainIds,
-                  });
-                }}
-              >
-                {Object.keys(ChainNameToIdEnum).map((name) => (
-                  <MenuItem
-                    value={
-                      ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
-                    }
-                    key={
-                      ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
-                    }
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+          <FormControl
+            fullWidth
+            error={!monitor?.network}
+            focused
+            variant="standard"
+            required
+          >
+            <InputLabel
+              id="network-select-label"
+              error={!monitor?.network}
+              focused
+              required
+            >
+              Network
+            </InputLabel>
+            <Select
+              labelId="network-select-label"
+              id="network-select"
+              error={!monitor?.network}
+              value={monitor.network ?? ''}
+              required
+              label="Network"
+              onChange={(event) => {
+                setMonitor({
+                  ...monitor,
+                  network: event.target.value as ChainIds,
+                });
+              }}
+            >
+              {Object.keys(ChainNameToIdEnum).map((name) => (
+                <MenuItem
+                  value={
+                    ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
+                  }
+                  key={
+                    ChainNameToIdEnum[name as keyof typeof ChainNameToIdEnum]
+                  }
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <TextField
             id="add-transaction-from"
             label="From"
+            focused
+            required
+            error={!monitor?.from}
             variant="standard"
             value={monitor?.from}
             onChange={(event) => {
@@ -124,6 +146,9 @@ export const AddTransactionModal = ({
           <TextField
             id="add-transaction-to"
             label="To"
+            focused
+            required
+            error={!monitor?.to}
             variant="standard"
             value={monitor?.to}
             onChange={(event) => {
@@ -134,6 +159,13 @@ export const AddTransactionModal = ({
           <TextField
             id="add-transaction-intervalHours"
             label="Interval Hours"
+            focused
+            required
+            type="number"
+            InputProps={{
+              inputProps: { min: 0 },
+            }}
+            error={!monitor?.intervalHours}
             variant="standard"
             value={monitor?.intervalHours}
             onChange={(event) => {
@@ -144,6 +176,7 @@ export const AddTransactionModal = ({
           <TextField
             id="add-transaction-contractAddress"
             label="Contract Address"
+            focused
             variant="standard"
             value={monitor?.contractAddress}
             onChange={(event) => {
@@ -154,7 +187,12 @@ export const AddTransactionModal = ({
           <TextField
             id="add-transaction-amount"
             label="Amount"
+            focused
             variant="standard"
+            type="number"
+            InputProps={{
+              inputProps: { min: 0 },
+            }}
             value={monitor?.amount}
             onChange={(event) => {
               setMonitor({
@@ -169,6 +207,7 @@ export const AddTransactionModal = ({
           <TextField
             id="add-transaction-url"
             label="URL"
+            focused
             variant="standard"
             value={monitor?.url}
             onChange={(event) => {
@@ -183,6 +222,12 @@ export const AddTransactionModal = ({
             variant="outlined"
             size="large"
             fullWidth
+            disabled={
+              !monitor?.from ||
+              !monitor?.to ||
+              !monitor?.network ||
+              !monitor?.intervalHours
+            }
           >
             Start Monitoring
           </Button>

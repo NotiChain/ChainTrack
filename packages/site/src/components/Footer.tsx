@@ -1,8 +1,10 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { SnapLogo } from './SnapLogo';
 import { SnapName } from './SnapName';
 
 export const Footer = () => {
+  const theme = useTheme();
+
   return (
     <Box
       display="flex"
@@ -10,7 +12,7 @@ export const Footer = () => {
       justifyContent="flex-start"
       padding="2.4rem"
     >
-      <SnapLogo color="black" size={36} />
+      <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
       <SnapName />
     </Box>
   );

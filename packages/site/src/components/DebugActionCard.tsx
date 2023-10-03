@@ -14,13 +14,28 @@ export function DebugActionCard({
   handleConnectClick,
 }: DebugActionCardProps) {
   const buttons = [
-    <Button key="reset" onClick={handleResetClick} size="large">
+    <Button
+      key="reset"
+      onClick={handleResetClick}
+      size="large"
+      variant="outlined"
+    >
       Reset
     </Button>,
-    <Button key="reload" onClick={handleReloadClick} size="large">
+    <Button
+      key="reload"
+      onClick={handleReloadClick}
+      size="large"
+      variant="outlined"
+    >
       Reload
     </Button>,
-    <Button key="reconnect" onClick={handleConnectClick} size="large">
+    <Button
+      key="reconnect"
+      onClick={handleConnectClick}
+      size="large"
+      variant="outlined"
+    >
       Reconnect
     </Button>,
   ];

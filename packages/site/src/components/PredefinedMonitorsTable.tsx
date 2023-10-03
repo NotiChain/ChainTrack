@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/material';
 import { PredefinedMonitors, PredefinedMonitor } from '../../../shared/types';
 import { column } from './MonitorsTable';
 
@@ -15,29 +14,10 @@ export const PredefinedMonitorsTable = ({
   openAddTransactionModal,
 }: MonitorsTableProps) => {
   const handleAdd = (predefinedMonitor: PredefinedMonitor) => {
-    console.log('!!!!!! handleAdd', predefinedMonitor);
     openAddTransactionModal(predefinedMonitor);
   };
 
-  const AddIconButton = ({
-    predefinedMonitor,
-  }: {
-    predefinedMonitor: PredefinedMonitor;
-  }) => (
-    <IconButton color="secondary" onClick={() => handleAdd(predefinedMonitor)}>
-      <AddIcon />
-    </IconButton>
-  );
-
   const columns: GridColDef[] = [
-    {
-      field: 'add',
-      headerName: 'Add',
-      width: 100,
-      renderCell: (params) => (
-        <AddIconButton predefinedMonitor={params.row as PredefinedMonitor} />
-      ),
-    },
     column.network,
     column.category,
     column.name,
@@ -63,6 +43,11 @@ export const PredefinedMonitorsTable = ({
         pageSizeOptions={[10]}
         rowSelection={false}
         autoHeight
+        onCellClick={(cell) => {
+          if (cell?.field !== column.url.field) {
+            handleAdd(cell?.row);
+          }
+        }}
       />
     </Box>
   );

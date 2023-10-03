@@ -2,39 +2,41 @@ import {
   createContext,
   FunctionComponent,
   ReactNode,
-  useContext,
   useMemo,
   useState,
 } from 'react';
-import {
-  ThemeProvider,
-  useTheme,
-  createTheme,
-  IconButton,
-  Box,
-  Button,
-  CssBaseline,
-} from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { MetaMaskProvider } from './hooks';
 import { getThemePreference, setLocalStorage } from './utils';
 import { dark, light } from './config/theme';
-import { MetaMaskProvider } from './hooks';
+
+declare module '@mui/material/styles' {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  interface ThemeOptions {
+    custom: any;
+  }
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-interface
+  interface Theme extends ThemeOptions {}
+}
 
 export type RootProps = {
   children: ReactNode;
 };
-
-type ToggleTheme = () => void;
 
 export const ToggleThemeContext = createContext({
   toggleColorMode: () => {},
 });
 
 export const Root: FunctionComponent<RootProps> = ({ children }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const [mode, setMode] = useState<'light' | 'dark'>(getThemePreference());
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => {
+          const newTheme = prevMode === 'light' ? 'dark' : 'light';
+          setLocalStorage('theme', newTheme);
+          return newTheme;
+        });
       },
     }),
     [],
@@ -44,9 +46,8 @@ export const Root: FunctionComponent<RootProps> = ({ children }) => {
     palette: {
       mode,
     },
+    custom: mode === 'dark' ? { ...dark } : { ...light },
   });
-
-  console.log(theme);
 
   return (
     <ToggleThemeContext.Provider value={colorMode}>

@@ -1,16 +1,10 @@
-import styled from 'styled-components';
+import { Box, useTheme } from '@mui/material';
 import { AboutHero } from '../components/About/AboutHero';
 import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
 import { AboutTestimonials } from '../components/About/AboutTestimonials';
 import { AboutFaq } from '../components/About/AboutFAQ';
 import { AboutCTA } from '../components/About/AboutCTA';
 import { AboutFooter } from '../components/About/AboutFooter';
-
-const LandingContainer = styled.div`
-  // background: ${(props) => props.theme.colors.about.default};
-  // color: ${(props) => props.theme.colors.about.inverse};
-  background: linear-gradient(to top right, #2f2727, #1a82f7);
-`;
 
 type LandingPageProps = {
   handleConnectClick: () => void;
@@ -23,8 +17,17 @@ export const LandingPage = ({
   isMetaMaskReady,
   handleDonateClick,
 }: LandingPageProps) => {
+  const theme = useTheme();
+
   return (
-    <LandingContainer>
+    <Box
+      sx={{
+        background:
+          theme?.palette?.mode === 'dark'
+            ? 'linear-gradient(to top right, #2f2727, #1a82f7)'
+            : '',
+      }}
+    >
       <AboutHero
         handleConnectClick={handleConnectClick}
         disabled={!isMetaMaskReady}
@@ -37,6 +40,6 @@ export const LandingPage = ({
         disabled={!isMetaMaskReady}
       />
       <AboutFooter handleDonateClick={handleDonateClick} />
-    </LandingContainer>
+    </Box>
   );
 };
