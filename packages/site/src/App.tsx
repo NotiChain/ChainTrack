@@ -27,7 +27,7 @@ export const App: FunctionComponent<AppProps> = ({ children }) => {
           background:
             theme?.palette?.mode === 'dark'
               ? 'linear-gradient(315deg, #000000 0%, #5e5368 50%)'
-              : '',
+              : 'linear-gradient(315deg, #ffffff 0%, #5899e2 74%)',
         }}
       >
         <Header handleToggleClick={toggleTheme.toggleColorMode} />

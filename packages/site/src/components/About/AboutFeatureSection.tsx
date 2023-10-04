@@ -8,7 +8,7 @@ const BorderLine = styled('div')(() => ({
   minHeight: '25px',
   margin: '60px 0 40px 0',
   background:
-    'linear-gradient(90deg, #ffffff -1.56%, #61a1dd 24.89%, #3864d3 100%)',
+    'linear-gradient(90deg, rgba(238,174,202,1) 2%, rgba(195,180,217,1) 100%, rgba(148,187,233,1) 100%)',
 }));
 
 export const AboutFeatureSection: FC = () => {

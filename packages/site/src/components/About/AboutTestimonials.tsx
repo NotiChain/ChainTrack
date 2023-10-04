@@ -7,15 +7,15 @@ export const AboutTestimonials: FC = () => {
     <Grid container spacing={8} marginBottom="180px">
       <Grid container item xs={4} flexDirection="column" gap="12px">
         <Typography variant="h3" fontWeight="500">
-          "Simple, effective, and reliable. ChainTrack has made my MetaMask
-          experience so much smoother"
+          "ChainTrack is one of my first dives into the web3 world. Hope you dig
+          it!"
         </Typography>
         <Box>
           <Typography fontWeight="400" variant="h4">
-            Taylor S.
+            Nikolay S.
           </Typography>
           <Typography fontWeight="400" variant="h4" sx={{ opacity: '40%' }}>
-            Blockchain Analyst
+            Software Engineer
           </Typography>
         </Box>
       </Grid>

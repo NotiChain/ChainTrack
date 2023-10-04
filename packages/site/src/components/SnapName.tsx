@@ -1,15 +1,18 @@
 import { Typography } from '@mui/material';
-import purple from '@mui/material/colors/purple';
+import { useTheme } from '@mui/material/styles';
 
-export const SnapName = () => (
-  <Typography
-    sx={{
-      color: purple[500],
-      fontWeight: 'bold',
-      marginLeft: '1rem',
-    }}
-    variant="h4"
-  >
-    ChainTrack
-  </Typography>
-);
+export const SnapName = () => {
+  const theme = useTheme();
+  return (
+    <Typography
+      sx={{
+        color: theme.palette.secondary.main,
+        fontWeight: 'bold',
+        marginLeft: '1rem',
+      }}
+      variant="h4"
+    >
+      ChainTrack
+    </Typography>
+  );
+};

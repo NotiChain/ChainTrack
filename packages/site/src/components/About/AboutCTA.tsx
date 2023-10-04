@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { MyButton } from '../Button';
 
 type AboutCTAProps = {
   handleConnectClick(): void;
@@ -25,14 +26,18 @@ export const AboutCTA: FC<AboutCTAProps> = ({
         Experience the ChainTrack difference today.
       </Typography>
       <Box padding="30px 40px">
-        <Button
+        <MyButton
           disabled={disabled}
           onClick={handleConnectClick}
-          variant="outlined"
           size="large"
+          sx={{
+            fontSize: '25x',
+            fontWeight: 400,
+            padding: '15px 30px',
+          }}
         >
           Get Started with ChainTrack
-        </Button>
+        </MyButton>
       </Box>
     </Box>
   );

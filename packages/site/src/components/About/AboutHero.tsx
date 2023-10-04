@@ -1,17 +1,12 @@
 import React, { FC } from 'react';
-import { Box, Button, Typography, styled } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { MyButton } from '../Button';
 
 type AboutHeroProps = {
   handleConnectClick(): void;
   disabled: boolean;
 };
-
-const HeroButton = styled(Button)(() => ({
-  fontSize: '32px',
-  fontWeight: 500,
-  padding: '20px 40px',
-}));
 
 export const AboutHero: FC<AboutHeroProps> = ({
   handleConnectClick,
@@ -42,14 +37,19 @@ export const AboutHero: FC<AboutHeroProps> = ({
       >
         Never Miss a Transaction Again.
       </Typography>
-      <HeroButton
+      <MyButton
         disabled={disabled}
         onClick={handleConnectClick}
         variant="outlined"
         size="large"
+        sx={{
+          fontSize: '32px',
+          fontWeight: 500,
+          padding: '20px 40px',
+        }}
       >
-        GET IN TOUCH
-      </HeroButton>
+        Start Tracking
+      </MyButton>
     </Box>
   );
 };
