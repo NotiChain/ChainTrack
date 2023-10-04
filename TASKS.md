@@ -1,9 +1,5 @@
 - ui look and feel
-- add monitor from ui
-- ui description
-- ui wizard
 - logo
-- predefined monitors
 
 - readme
 - conventional commits

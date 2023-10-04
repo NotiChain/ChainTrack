@@ -80,7 +80,7 @@ export class CronJob {
               type: 'confirmation',
               content: panel([
                 text(`You didn't receive transaction from ${monitor.name}`),
-                text('Would you like to NOT receive another notification?'),
+                text('Would you want us to stop sending notifications?'),
               ]),
             },
           });

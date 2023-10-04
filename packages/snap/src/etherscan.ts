@@ -37,13 +37,17 @@ export class Etherscan {
       ? `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
       : `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
 
+    console.log('Etherscan.getTransactions request', request);
     try {
       const response = await fetch(request);
-
       const data = await response.json();
       console.log('Etherscan.getTransactions', data);
-      if (data.status !== '1') {
-        console.log('Etherscan.getTransactions status is not 1');
+      // if (data.status !== '1') {
+      //   console.log('Etherscan.getTransactions status is not 1');
+      //   return null;
+      // }
+      if (!data.result && !Array.isArray(data.result)) {
+        console.log('Etherscan.getTransactions result is not array');
         return null;
       }
       return data.result;
