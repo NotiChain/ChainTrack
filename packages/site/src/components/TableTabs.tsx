@@ -15,6 +15,7 @@ import {
 import { MonitorsTable } from './MonitorsTable';
 import { AlertsTable } from './AlertsTable';
 import { PredefinedMonitorsTable } from './PredefinedMonitorsTable';
+// eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
 
 type TabPanelProps = {

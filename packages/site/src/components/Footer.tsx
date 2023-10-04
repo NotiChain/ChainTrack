@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme, Typography } from '@mui/material';
+import { IconButton, useTheme, Typography } from '@mui/material';
 import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TelegramIcon from '@mui/icons-material/Telegram';

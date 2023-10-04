@@ -12,14 +12,13 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   ChainIdToNameEnum,
   Monitor,
   Monitors,
   PredefinedMonitor,
 } from '../../../shared/types';
-import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { sendDelete } from '../utils';
 
 export function shortenEthWallet(wallet?: string) {

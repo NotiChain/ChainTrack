@@ -19,10 +19,6 @@ import { AppPage } from './app';
 const Index = () => {
   let loadDataInterval: NodeJS.Timeout | null = null;
   const [state, dispatch] = useContext(MetaMaskContext);
-  // const isMetaMaskReady = isLocalSnap(defaultSnapOrigin)
-  //   ? state.isFlask
-  //   : state.snapsDetected;
-
   const isMetaMaskReady = isLocalSnap(defaultSnapOrigin) && state.snapsDetected;
 
   const getWallets = async () => {
@@ -78,6 +74,7 @@ const Index = () => {
   async function startLoadingSnapData() {
     if (!loadDataInterval) {
       await loadSnapData();
+      // eslint-disable-next-line require-atomic-updates
       loadDataInterval = setInterval(loadSnapData, 5 * 60 * 1000);
     }
   }
@@ -98,16 +95,6 @@ const Index = () => {
       });
 
       await startLoadingSnapData();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleSendAddClick = async () => {
-    try {
-      await sendAdd();
-      await loadSnapData();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });

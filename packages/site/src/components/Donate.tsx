@@ -18,7 +18,7 @@ export const Donate = () => {
         throw new Error('Wallet not connected');
       }
 
-      const transactionHash = await window.ethereum.request<string>({
+      const hash = await window.ethereum.request<string>({
         method: 'eth_sendTransaction',
         params: [
           {
@@ -29,11 +29,11 @@ export const Donate = () => {
         ],
       });
 
-      if (!transactionHash) {
+      if (!hash) {
         return;
       }
 
-      setTransactionHash(transactionHash);
+      setTransactionHash(hash);
       setOpenThanks(true);
     } catch (e) {
       console.error(e);

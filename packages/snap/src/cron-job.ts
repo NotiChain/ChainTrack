@@ -6,13 +6,10 @@ import etherscan, { Transaction } from './etherscan';
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
   const date = new Date(alert.date);
   const diff = Date.now() - date.getTime();
-  if (
+  return !(
     typeof alert.monitor.intervalMs === 'number' &&
     diff < alert.monitor.intervalMs
-  ) {
-    return false;
-  }
-  return true;
+  );
 }
 
 type NotificationType = 'inApp' | 'native';

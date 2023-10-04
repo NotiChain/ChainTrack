@@ -8,8 +8,7 @@ export const getLocalStorage = (key: string) => {
   const { localStorage: ls } = window;
 
   if (ls !== null) {
-    const data = ls.getItem(key);
-    return data;
+    return ls.getItem(key);
   }
 
   throw new Error('Local storage is not available.');

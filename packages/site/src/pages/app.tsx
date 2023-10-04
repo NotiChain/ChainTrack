@@ -15,7 +15,6 @@ import {
   TableTabs,
 } from '../components';
 import { shouldDisplayReconnectButton, addMonitor, sendUpdate } from '../utils';
-import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
 import predefinedMonitors from '../../../shared/predefined-monitors';
@@ -44,7 +43,6 @@ export const AppPage = ({
   console.log(state);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
   const [editTransaction, setEditTransaction] = useState<boolean>(false);
-  const [showAddWizzard, setShowAddWizzard] = useState(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
   const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
     useState<PredefinedMonitor>();
@@ -226,14 +224,6 @@ export const AppPage = ({
           <Typography variant="h4">{successSnackbarText}</Typography>
         </Alert>
       </Snackbar>
-      <Box display="flex" justifyContent="space-between" marginTop="1.5rem">
-        {showAddWizzard && (
-          <AddWizzard
-            onClose={() => setShowAddWizzard(false)}
-            loadData={() => {}}
-          />
-        )}
-      </Box>
     </Box>
   );
 };

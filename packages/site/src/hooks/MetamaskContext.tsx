@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { Snap } from '../types';
 import { detectSnaps, getSnap, isFlask } from '../utils';
-import { Alerts, ChainIdToNameEnum, Monitors } from '../../../shared/types';
+import { Alerts, Monitors } from '../../../shared/types';
 
 export type MetamaskState = {
   snapsDetected: boolean;
