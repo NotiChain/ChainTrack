@@ -1,0 +1,5 @@
+.snackbar {
+  .MuiAlert-action {
+    padding: 0;
+  }
+}

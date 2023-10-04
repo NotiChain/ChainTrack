@@ -55,7 +55,9 @@ export const Header = ({
             padding="1.2rem"
             fontWeight="bold"
           >
-            <MyButton startIcon={<CheckCircleOutlineOutlinedIcon />}>
+            <MyButton
+              startIcon={<CheckCircleOutlineOutlinedIcon color="success" />}
+            >
               Connected
             </MyButton>
           </Box>

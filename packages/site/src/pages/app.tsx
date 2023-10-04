@@ -4,7 +4,8 @@ import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useContext, useState } from 'react';
-import red from '@mui/material/colors/red';
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, IconButton, Slide, Snackbar } from '@mui/material';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
@@ -15,9 +16,10 @@ import {
 } from '../components';
 import { shouldDisplayReconnectButton, addMonitor } from '../utils';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
-import { MetaMaskContext } from '../hooks';
+import { MetamaskActions, MetaMaskContext } from '../hooks';
 import predefinedMonitors from '../../../shared/predefined-monitors';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
+import './styles.css';
 
 type AppPageProps = {
   handleConnectClick: () => void;
@@ -35,6 +37,8 @@ export const AppPage = ({
   loadSnapData,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] =
+    useState<boolean>(false);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
   const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
@@ -42,61 +46,84 @@ export const AppPage = ({
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" flex="1">
-      <Box sx={{ flexGrow: 1 }} marginTop="12px">
+      <Box sx={{ flexGrow: 1 }} marginTop="24px">
         <Grid
           container
           direction="row"
           justifyContent="space-evenly"
-          alignItems="stretch"
           spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
+          gap="24px"
         >
-          {state.error && (
-            <Grid
-              item
-              xs={12}
-              display="flex"
-              justifyContent="center"
-              padding="2.4rem"
-              marginTop="2.4rem"
+          <Snackbar
+            open={Boolean(state?.error)}
+            autoHideDuration={6000}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            onClose={() =>
+              dispatch({
+                type: MetamaskActions.SetError,
+                payload: undefined,
+              })
+            }
+            TransitionComponent={(props) => <Slide {...props} direction="up" />}
+          >
+            <Alert
+              severity="error"
+              sx={{ width: '100%', alignItems: 'center' }}
+              elevation={6}
+              className="snackbar"
+              action={
+                <IconButton
+                  size="large"
+                  onClick={() =>
+                    dispatch({
+                      type: MetamaskActions.SetError,
+                      payload: undefined,
+                    })
+                  }
+                >
+                  <CloseIcon />
+                </IconButton>
+              }
             >
-              <Typography variant="h4" color={red.A700}>
-                <b>An error happened:</b> {state.error.message}
+              <Typography variant="h4">
+                <b>An error happened:</b> {state?.error?.message}
               </Typography>
-            </Grid>
-          )}
-          <Grid item xs={2.5}>
-            {state.installedSnap ? (
-              <StatsActionCard
-                alerts={state?.alerts || []}
-                monitors={state?.monitors || []}
-              />
-            ) : (
-              <ConnectActionCard
+            </Alert>
+          </Snackbar>
+          <Box display="flex" justifyContent="space-between">
+            <Box width="20%">
+              {state.installedSnap ? (
+                <StatsActionCard
+                  alerts={state?.alerts || []}
+                  monitors={state?.monitors || []}
+                />
+              ) : (
+                <ConnectActionCard
+                  installedSnap={state.installedSnap}
+                  handleConnectClick={handleConnectClick}
+                  isMetaMaskReady={isMetaMaskReady}
+                />
+              )}
+            </Box>
+            <Box width="20%">
+              <AddMonitorActionCard
                 installedSnap={state.installedSnap}
-                handleConnectClick={handleConnectClick}
-                isMetaMaskReady={isMetaMaskReady}
+                handleSendAddClick={() => {
+                  setSelectedPredefinedMonitor(undefined);
+                  setOpenAddTransactionModal(true);
+                }}
               />
+            </Box>
+            {shouldDisplayReconnectButton(state.installedSnap) && (
+              <Box width="20%">
+                <DebugActionCard
+                  handleResetClick={handleResetClick}
+                  handleReloadClick={handleReloadClick}
+                  handleConnectClick={handleConnectClick}
+                />
+              </Box>
             )}
-          </Grid>
-          <Grid item xs={2.5}>
-            <AddMonitorActionCard
-              installedSnap={state.installedSnap}
-              handleSendAddClick={() => {
-                setSelectedPredefinedMonitor(undefined);
-                setOpenAddTransactionModal(true);
-              }}
-            />
-          </Grid>
-          {shouldDisplayReconnectButton(state.installedSnap) && (
-            <Grid item xs={2.5}>
-              <DebugActionCard
-                handleResetClick={handleResetClick}
-                handleReloadClick={handleReloadClick}
-                handleConnectClick={handleConnectClick}
-              />
-            </Grid>
-          )}
+          </Box>
           <Grid item xs={11}>
             <TableTabs
               monitors={state?.monitors || []}
@@ -131,6 +158,7 @@ export const AppPage = ({
       </Fab>
       <AddTransactionModal
         open={openAddTransactionModal}
+        setOpenAddTransactionModal={setOpenAddTransactionModal}
         handleClose={() => {
           setSelectedPredefinedMonitor(undefined);
           setOpenAddTransactionModal(false);
@@ -141,10 +169,36 @@ export const AppPage = ({
           addMonitor(monitor).then(() => {
             setSelectedPredefinedMonitor(undefined);
             setOpenAddTransactionModal(false);
+            setShowSuccessSnackbar(true);
             loadSnapData();
           });
         }}
       />
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        onClose={() => setShowSuccessSnackbar(false)}
+        TransitionComponent={(props) => <Slide {...props} direction="up" />}
+      >
+        <Alert
+          severity="success"
+          sx={{ width: '100%', alignItems: 'center' }}
+          elevation={6}
+          onClose={() => setShowSuccessSnackbar(false)}
+          className="snackbar"
+          action={
+            <IconButton
+              size="large"
+              onClick={() => setShowSuccessSnackbar(false)}
+            >
+              <CloseIcon />
+            </IconButton>
+          }
+        >
+          <Typography variant="h4">New transaction has been added!</Typography>
+        </Alert>
+      </Snackbar>
       <Box display="flex" justifyContent="space-between" marginTop="1.5rem">
         {showAddWizzard && (
           <AddWizzard

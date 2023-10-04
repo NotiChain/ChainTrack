@@ -43,7 +43,8 @@ export const PredefinedMonitorsTable = ({
         pageSizeOptions={[10]}
         rowSelection={false}
         autoHeight
-        onCellClick={(cell) => {
+        onCellClick={(cell, value, test) => {
+          console.log(cell, value, test);
           if (cell?.field !== column.url.field) {
             handleAdd(cell?.row);
           }

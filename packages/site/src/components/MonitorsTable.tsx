@@ -108,6 +108,11 @@ export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
         }}
         pageSizeOptions={[10]}
         rowSelection={false}
+        // onCellClick={(cell) => {
+        //   if (cell?.field !== column.url.field) {
+        //     handleAdd(cell?.row);
+        //   }
+        // }}
       />
     </div>
   );

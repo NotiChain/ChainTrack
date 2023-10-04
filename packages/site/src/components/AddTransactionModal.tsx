@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Modal, Box, Button, InputLabel } from '@mui/material';
+import { Modal, Box, InputLabel } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 
 import TextField from '@mui/material/TextField';
@@ -13,11 +13,11 @@ import {
 } from '../../../shared/types';
 import { MetaMaskContext } from '../hooks';
 import './styles.css';
-import { useTheme } from '@mui/material/styles';
 import { MyButton } from './Button';
 
 type AddTransactionModalProps = {
   open: boolean;
+  setOpenAddTransactionModal: (value: boolean) => void;
   handleClose: () => void;
   handleAddMonitor: (monitor: Monitor) => void;
   predefinedMonitor?: PredefinedMonitor;
@@ -37,11 +37,11 @@ const style = {
 
 export const AddTransactionModal = ({
   open,
+  setOpenAddTransactionModal,
   handleClose,
   handleAddMonitor,
   predefinedMonitor,
 }: AddTransactionModalProps) => {
-  const theme = useTheme();
   const [state] = useContext(MetaMaskContext);
   const [monitor, setMonitor] = React.useState<Partial<PredefinedMonitor>>(
     predefinedMonitor || {},
@@ -220,7 +220,11 @@ export const AddTransactionModal = ({
 
         <Box marginTop="20px" alignSelf="center" width="100%">
           <MyButton
-            onClick={() => handleAddMonitor(monitor as Monitor)}
+            onClick={() => {
+              handleAddMonitor(monitor as Monitor);
+              setOpenAddTransactionModal(false);
+              setMonitor({});
+            }}
             fullWidth
             disabled={
               !monitor?.from ||
