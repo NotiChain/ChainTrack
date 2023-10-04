@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Link } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import { Monitors, ChainIdToNameEnum } from '../../../shared/types';
 
 export function shortenEthWallet(wallet?: string) {
@@ -53,11 +53,16 @@ export const column: Record<string, GridColDef> = {
     field: 'url',
     headerName: 'URL',
     flex: 1,
-    renderCell: (params) => (
-      <Link href={params.value} target="_blank">
-        {params.value}
-      </Link>
-    ),
+    renderCell: (params) => {
+      const domainName = params.value
+        ? new URL(params.value).hostname
+        : params.value;
+      return (
+        <Link href={params.value} target="_blank">
+          <Typography variant="h5">{domainName}</Typography>
+        </Link>
+      );
+    },
   },
   confirmed: { field: 'confirmed', headerName: 'Confirmed', flex: 1 },
   precondition: { field: 'precondition', headerName: 'Precondition', flex: 1 },
