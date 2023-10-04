@@ -21,7 +21,6 @@ import { Monitor, PredefinedMonitor } from '../../../shared/types';
 
 type AppPageProps = {
   handleConnectClick: () => void;
-  handleSendAddClick: () => void;
   handleResetClick: () => void;
   handleReloadClick: () => void;
   loadSnapData: () => void;
@@ -30,7 +29,6 @@ type AppPageProps = {
 
 export const AppPage = ({
   handleConnectClick,
-  handleSendAddClick,
   handleResetClick,
   handleReloadClick,
   isMetaMaskReady,
@@ -84,7 +82,10 @@ export const AppPage = ({
           <Grid item xs={2.5}>
             <AddMonitorActionCard
               installedSnap={state.installedSnap}
-              handleSendAddClick={handleSendAddClick}
+              handleSendAddClick={() => {
+                setSelectedPredefinedMonitor(undefined);
+                setOpenAddTransactionModal(true);
+              }}
             />
           </Grid>
           {shouldDisplayReconnectButton(state.installedSnap) && (

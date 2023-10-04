@@ -146,7 +146,6 @@ const Index = () => {
           handleConnectClick={handleConnectClick}
           handleReloadClick={handleReloadClick}
           handleResetClick={handleResetClick}
-          handleSendAddClick={handleSendAddClick}
           isMetaMaskReady={isMetaMaskReady}
           loadSnapData={loadSnapData}
         />
