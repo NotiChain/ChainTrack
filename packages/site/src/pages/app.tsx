@@ -11,14 +11,13 @@ import {
   ConnectActionCard,
   StatsActionCard,
   DebugActionCard,
-  TableTabs,
   AddTransactionModal,
 } from '../components';
-import { shouldDisplayReconnectButton, addMonitor } from '../utils';
+import { shouldDisplayReconnectButton, addMonitor, sendUpdate } from '../utils';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import predefinedMonitors from '../../../shared/predefined-monitors';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
+// eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
 
 type AppPageProps = {
@@ -29,6 +28,9 @@ type AppPageProps = {
   isMetaMaskReady: boolean;
 };
 
+const transactionAddedText = 'New transaction has been added!';
+const transactionUpdatedText = 'Transaction has been updated!';
+
 export const AppPage = ({
   handleConnectClick,
   handleResetClick,
@@ -37,8 +39,9 @@ export const AppPage = ({
   loadSnapData,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
-  const [showSuccessSnackbar, setShowSuccessSnackbar] =
-    useState<boolean>(false);
+  console.log(state);
+  const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
+  const [editTransaction, setEditTransaction] = useState<boolean>(false);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
   const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
@@ -125,17 +128,20 @@ export const AppPage = ({
             )}
           </Box>
           <Grid item xs={11}>
-            <TableTabs
-              monitors={state?.monitors || []}
-              alerts={state?.alerts || []}
-              predefinedMonitors={predefinedMonitors}
-              openAddTransactionModal={(
-                predefinedMonitor: PredefinedMonitor,
-              ) => {
-                setSelectedPredefinedMonitor(predefinedMonitor);
-                setOpenAddTransactionModal(true);
-              }}
-            />
+            {/* <TableTabs*/}
+            {/*  monitors={state?.monitors || []}*/}
+            {/*  loadSnapData={loadSnapData}*/}
+            {/*  alerts={state?.alerts || []}*/}
+            {/*  predefinedMonitors={predefinedMonitors}*/}
+            {/*  openAddTransactionModal={(*/}
+            {/*    predefinedMonitor: PredefinedMonitor,*/}
+            {/*    isEditTransaction?: boolean,*/}
+            {/*  ) => {*/}
+            {/*    setSelectedPredefinedMonitor(predefinedMonitor);*/}
+            {/*    setOpenAddTransactionModal(true);*/}
+            {/*    setEditTransaction(Boolean(isEditTransaction));*/}
+            {/*  }}*/}
+            {/* />*/}
           </Grid>
         </Grid>
       </Box>
@@ -158,10 +164,12 @@ export const AppPage = ({
       </Fab>
       <AddTransactionModal
         open={openAddTransactionModal}
+        editTransaction={editTransaction}
         setOpenAddTransactionModal={setOpenAddTransactionModal}
         handleClose={() => {
           setSelectedPredefinedMonitor(undefined);
           setOpenAddTransactionModal(false);
+          setEditTransaction(false);
           loadSnapData();
         }}
         predefinedMonitor={selectedPredefinedMonitor}
@@ -169,34 +177,51 @@ export const AppPage = ({
           addMonitor(monitor).then(() => {
             setSelectedPredefinedMonitor(undefined);
             setOpenAddTransactionModal(false);
-            setShowSuccessSnackbar(true);
+            setSuccessSnackbarText(transactionAddedText);
+            loadSnapData();
+          });
+        }}
+        handleUpdateMonitor={(editableMonitor: Monitor) => {
+          let indexOfEditableMonitor = -1;
+          console.log(state.monitors, editableMonitor);
+          state?.monitors?.forEach((monitor, index) => {
+            if (monitor?.id === editableMonitor?.id) {
+              indexOfEditableMonitor = index;
+            }
+          });
+
+          sendUpdate({
+            index: indexOfEditableMonitor as number,
+            item: editableMonitor,
+          }).then(() => {
+            setSelectedPredefinedMonitor(undefined);
+            setOpenAddTransactionModal(false);
+            setEditTransaction(false);
+            setSuccessSnackbarText(transactionUpdatedText);
             loadSnapData();
           });
         }}
       />
       <Snackbar
-        open={showSuccessSnackbar}
+        open={Boolean(successSnackbarText)}
         autoHideDuration={6000}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        onClose={() => setShowSuccessSnackbar(false)}
+        onClose={() => setSuccessSnackbarText('')}
         TransitionComponent={(props) => <Slide {...props} direction="up" />}
       >
         <Alert
           severity="success"
           sx={{ width: '100%', alignItems: 'center' }}
           elevation={6}
-          onClose={() => setShowSuccessSnackbar(false)}
+          onClose={() => setSuccessSnackbarText('')}
           className="snackbar"
           action={
-            <IconButton
-              size="large"
-              onClick={() => setShowSuccessSnackbar(false)}
-            >
+            <IconButton size="large" onClick={() => setSuccessSnackbarText('')}>
               <CloseIcon />
             </IconButton>
           }
         >
-          <Typography variant="h4">New transaction has been added!</Typography>
+          <Typography variant="h4">{successSnackbarText}</Typography>
         </Alert>
       </Snackbar>
       <Box display="flex" justifyContent="space-between" marginTop="1.5rem">

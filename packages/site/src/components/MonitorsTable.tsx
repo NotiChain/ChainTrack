@@ -1,7 +1,26 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Link, Typography } from '@mui/material';
-import { Monitors, ChainIdToNameEnum } from '../../../shared/types';
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  IconButton,
+  Link,
+  Typography,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { useContext, useEffect, useState } from 'react';
+import {
+  ChainIdToNameEnum,
+  Monitor,
+  Monitors,
+  PredefinedMonitor,
+} from '../../../shared/types';
+import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { sendDelete } from '../utils';
 
 export function shortenEthWallet(wallet?: string) {
   return wallet ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}` : wallet;
@@ -78,23 +97,48 @@ export const column: Record<string, GridColDef> = {
   precondition: { field: 'precondition', headerName: 'Precondition', flex: 1 },
 };
 
-export const columns: GridColDef[] = [
-  column.name,
-  column.network,
-  column.from,
-  column.to,
-  column.intervalHours,
-  column.lastTransaction,
-  column.contractAddress,
-  column.amount,
-  column.url,
-];
-
 type MonitorsTableProps = {
-  monitors?: Monitors;
+  monitors: Monitors;
+  loadSnapData: () => void;
+  openAddTransactionModal: (
+    predefinedMonitor: PredefinedMonitor,
+    isEditTransaction?: boolean,
+  ) => void;
 };
 
-export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
+export const MonitorsTable = ({
+  loadSnapData,
+  monitors,
+  openAddTransactionModal,
+}: MonitorsTableProps) => {
+  const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>();
+
+  const columns: GridColDef[] = [
+    {
+      renderCell: (params) => (
+        <ButtonGroup variant="outlined" aria-label="outlined button group">
+          <IconButton onClick={() => openAddTransactionModal(params.row, true)}>
+            <EditIcon color="primary" />
+          </IconButton>
+          <IconButton onClick={() => setMonitorToDelete(params.row)}>
+            <DeleteIcon color="error" />
+          </IconButton>
+        </ButtonGroup>
+      ),
+      field: 'actions',
+      renderHeader: () => null,
+    },
+    column.name,
+    column.network,
+    column.from,
+    column.to,
+    column.intervalHours,
+    column.lastTransaction,
+    column.contractAddress,
+    column.amount,
+    column.url,
+  ];
+
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
@@ -108,12 +152,38 @@ export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
         }}
         pageSizeOptions={[10]}
         rowSelection={false}
-        // onCellClick={(cell) => {
-        //   if (cell?.field !== column.url.field) {
-        //     handleAdd(cell?.row);
-        //   }
-        // }}
       />
+      <Dialog
+        open={Boolean(monitorToDelete)}
+        onClose={() => setMonitorToDelete(null)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to delete <b>{monitorToDelete?.name}</b>{' '}
+          monitor?
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setMonitorToDelete(null)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              let indexOfMonitorToDelete = -1;
+              monitors?.forEach((monitor, index) => {
+                if (monitor?.id === monitorToDelete?.id) {
+                  indexOfMonitorToDelete = index;
+                }
+              });
+
+              sendDelete({ index: indexOfMonitorToDelete }).then(() => {
+                setMonitorToDelete(null);
+                loadSnapData();
+              });
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

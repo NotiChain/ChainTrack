@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 type CardProps = {
   content: {
@@ -44,9 +45,7 @@ export const ActionCard = ({ content }: CardProps) => {
         ></CardHeader>
       )}
       <CardContent>
-        <Typography variant="h4" color="text.secondary">
-          {description}
-        </Typography>
+        <Box>{description}</Box>
       </CardContent>
       {button && <CardActions sx={{ mt: 'auto' }}>{button}</CardActions>}
       {buttons && <CardActions sx={{ mt: 'auto' }}>{buttons}</CardActions>}

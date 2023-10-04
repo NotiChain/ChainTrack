@@ -12,14 +12,17 @@ import {
   ChainIds,
 } from '../../../shared/types';
 import { MetaMaskContext } from '../hooks';
+// eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
 import { MyButton } from './Button';
 
 type AddTransactionModalProps = {
   open: boolean;
+  editTransaction: boolean;
   setOpenAddTransactionModal: (value: boolean) => void;
   handleClose: () => void;
   handleAddMonitor: (monitor: Monitor) => void;
+  handleUpdateMonitor: (monitor: Monitor) => void;
   predefinedMonitor?: PredefinedMonitor;
 };
 
@@ -37,16 +40,17 @@ const style = {
 
 export const AddTransactionModal = ({
   open,
+  editTransaction,
   setOpenAddTransactionModal,
   handleClose,
   handleAddMonitor,
+  handleUpdateMonitor,
   predefinedMonitor,
 }: AddTransactionModalProps) => {
   const [state] = useContext(MetaMaskContext);
   const [monitor, setMonitor] = React.useState<Partial<PredefinedMonitor>>(
     predefinedMonitor || {},
   );
-
   React.useEffect(() => {
     setMonitor(predefinedMonitor || {});
   }, [predefinedMonitor]);
@@ -221,7 +225,11 @@ export const AddTransactionModal = ({
         <Box marginTop="20px" alignSelf="center" width="100%">
           <MyButton
             onClick={() => {
-              handleAddMonitor(monitor as Monitor);
+              if (editTransaction) {
+                handleUpdateMonitor(monitor as Monitor);
+              } else {
+                handleAddMonitor(monitor as Monitor);
+              }
               setOpenAddTransactionModal(false);
               setMonitor({});
             }}
@@ -233,7 +241,7 @@ export const AddTransactionModal = ({
               !monitor?.intervalHours
             }
           >
-            Start Monitoring
+            {editTransaction ? 'Update transaction' : 'Start Monitoring'}
           </MyButton>
         </Box>
       </Box>

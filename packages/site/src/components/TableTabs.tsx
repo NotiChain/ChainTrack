@@ -50,7 +50,11 @@ type TableTabsProps = {
   monitors: Monitors;
   alerts: Alerts;
   predefinedMonitors: PredefinedMonitors;
-  openAddTransactionModal: (predefinedMonitor: PredefinedMonitor) => void;
+  openAddTransactionModal: (
+    predefinedMonitor: PredefinedMonitor,
+    isEditTransaction?: boolean,
+  ) => void;
+  loadSnapData: () => void;
 };
 
 export function TableTabs({
@@ -58,6 +62,7 @@ export function TableTabs({
   alerts,
   predefinedMonitors,
   openAddTransactionModal,
+  loadSnapData,
 }: TableTabsProps) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -76,9 +81,7 @@ export function TableTabs({
         borderColor: theme.palette.secondary.main,
       }}
     >
-      <Box
-      // sx={{ borderBottom: 1, borderColor: purple[500] }}
-      >
+      <Box>
         <Tabs
           centered
           value={value}
@@ -118,21 +121,26 @@ export function TableTabs({
         >
           <CustomTabPanel value={value} index={0}>
             <MonitorsTable
-              monitors={monitors.map((item, index) => {
+              loadSnapData={loadSnapData}
+              monitors={monitors.map((item) => {
                 return {
-                  id: index + 1,
-                  key: index + 1,
+                  key: item.id,
                   ...item,
                 };
               })}
+              openAddTransactionModal={(
+                predefinedMonitor: PredefinedMonitor,
+                isEditTransaction,
+              ) => {
+                openAddTransactionModal(predefinedMonitor, isEditTransaction);
+              }}
             />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <AlertsTable
-              alerts={alerts.map((item, index) => {
+              alerts={alerts.map((item) => {
                 return {
-                  id: index + 1,
-                  key: index + 1,
+                  key: item.monitor.id,
                   ...item,
                 };
               })}
@@ -142,8 +150,8 @@ export function TableTabs({
             <PredefinedMonitorsTable
               predefinedMonitors={predefinedMonitors.map((item, index) => {
                 return {
-                  id: index + 1,
                   key: index + 1,
+                  id: index + 1,
                   ...item,
                 };
               })}

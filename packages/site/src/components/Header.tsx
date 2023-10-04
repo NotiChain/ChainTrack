@@ -4,11 +4,11 @@ import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutli
 
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getSnap } from '../utils';
-import { ReactComponent as MetamaskFox } from '../assets/metamask_fox.svg';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
 import { MyButton } from './Button';
+import { MetamaskFoxLogo } from './MetamaskFoxLogo';
 
 export const Header = ({
   handleToggleClick,
@@ -63,7 +63,10 @@ export const Header = ({
           </Box>
         ) : (
           <Box marginLeft="12px">
-            <MyButton startIcon={<MetamaskFox />} onClick={handleConnectClick}>
+            <MyButton
+              startIcon={<MetamaskFoxLogo />}
+              onClick={handleConnectClick}
+            >
               Connect
             </MyButton>
           </Box>

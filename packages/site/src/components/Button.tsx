@@ -3,11 +3,15 @@ import * as React from 'react';
 import { ComponentProps } from 'react';
 import { useTheme } from '@mui/material/styles';
 
-export const MyButton = (props: ComponentProps<typeof Button>) => {
+type MyButtonProps = {
+  mykey?: string;
+} & ComponentProps<typeof Button>;
+
+export const MyButton = (props: MyButtonProps) => {
   const theme = useTheme();
   return (
     <Button
-      key={props.key || props.name}
+      key={props.mykey || props.key || props.name}
       size="large"
       variant="outlined"
       style={{

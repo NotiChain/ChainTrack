@@ -1,11 +1,8 @@
 - ui look and feel
 - logo
 
-- remove styled components
-- card size
 - remove monitor
 - edit monitor
-- social links
 
 - readme
 - conventional commits

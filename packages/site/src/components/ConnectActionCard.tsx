@@ -3,7 +3,8 @@ import * as React from 'react';
 import { shouldDisplayReconnectButton } from '../utils';
 import { Snap } from '../types';
 import { ActionCard } from './ActionCard';
-import { ConnectButton, ReconnectButton } from './Buttons';
+import { MyButton } from './Button';
+import { MetamaskFoxLogo } from './MetamaskFoxLogo';
 
 type ConnectActionCardProps = {
   isMetaMaskReady: boolean;
@@ -19,23 +20,21 @@ export function ConnectActionCard({
   const showReconnect = Boolean(shouldDisplayReconnectButton(installedSnap));
 
   const button = showReconnect ? (
-    <ReconnectButton
+    <MyButton
       onClick={handleConnectClick}
       disabled={!isMetaMaskReady}
-      variant="contained"
-      color="primary"
+      startIcon={<MetamaskFoxLogo />}
     >
       Reconnect
-    </ReconnectButton>
+    </MyButton>
   ) : (
-    <ConnectButton
+    <MyButton
       onClick={handleConnectClick}
       disabled={!isMetaMaskReady}
-      variant="contained"
-      color="primary"
+      startIcon={<MetamaskFoxLogo />}
     >
       Connect
-    </ConnectButton>
+    </MyButton>
   );
 
   const content = {

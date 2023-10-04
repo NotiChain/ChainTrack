@@ -28,6 +28,7 @@ export enum MonitorCategory {
 }
 
 type BaseMonitor = {
+  id?: number;
   name?: string;
   network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;

@@ -25,7 +25,9 @@ export const Footer = () => {
           size="large"
         >
           <TelegramIcon />
-          <Typography>Share your feedback!</Typography>
+          <Typography variant="h5" marginLeft="4px">
+            Share your feedback!
+          </Typography>
         </IconButton>
         <IconButton
           aria-label="github"
@@ -34,7 +36,9 @@ export const Footer = () => {
           size="large"
         >
           <GitHubIcon />
-          <Typography>Give us a star!</Typography>
+          <Typography variant="h5" marginLeft="4px">
+            Give us a star!
+          </Typography>
         </IconButton>
       </Grid>
       <Grid container item alignItems="center" xs justifyContent="flex-end">

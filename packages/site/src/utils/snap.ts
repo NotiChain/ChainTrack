@@ -1,4 +1,5 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
+import { v4 as uuidv4 } from 'uuid';
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
 import { Alerts, Monitor, Monitors } from '../../../shared/types';
@@ -63,12 +64,11 @@ export const sendAdd = async (): Promise<void> => {
 
 // Adds monitor to snap
 export const addMonitor = async (monitor: Monitor): Promise<void> => {
-  console.log(monitor);
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'create', params: monitor },
+      request: { method: 'create', params: { ...monitor, id: uuidv4() } },
     },
   });
 };
@@ -119,6 +119,7 @@ export const sendUpdate = async ({
   index,
   item,
 }: UpdateParams): Promise<void> => {
+  console.log(index, item);
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
