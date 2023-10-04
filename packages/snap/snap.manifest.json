@@ -1,13 +1,13 @@
 {
   "version": "0.1.0",
-  "description": "A snap that checks for recurring transactions",
-  "proposedName": "Recurring transaction checker",
+  "description": "A snap, that check recurring transactions",
+  "proposedName": "ChainTrackSnap",
   "repository": {
     "type": "git",
     "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "27jz1J5LDiORSK8kCc11RqGFA8uVRae/X7ndmWd2TFc=",
+    "shasum": "yU/JLctSe53EmzhsL77wD1oF6q9SIJdsCbgyT5vqduw=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
