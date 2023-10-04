@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import purple from '@mui/material/colors/purple';
+import { useTheme } from '@mui/material/styles';
 
 type CardProps = {
   content: {
@@ -20,6 +20,7 @@ type CardProps = {
 
 export const ActionCard = ({ content }: CardProps) => {
   const { title, description, button, buttons } = content;
+  const theme = useTheme();
 
   return (
     <Card
@@ -28,7 +29,7 @@ export const ActionCard = ({ content }: CardProps) => {
         height: '100%',
         border: 1,
         borderRadius: '16px',
-        borderColor: purple[500],
+        borderColor: theme.palette.secondary.main,
         display: 'flex',
         flexDirection: 'column',
       }}

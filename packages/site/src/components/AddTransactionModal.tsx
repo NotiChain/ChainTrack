@@ -13,6 +13,8 @@ import {
 } from '../../../shared/types';
 import { MetaMaskContext } from '../hooks';
 import './styles.css';
+import { useTheme } from '@mui/material/styles';
+import { MyButton } from './Button';
 
 type AddTransactionModalProps = {
   open: boolean;
@@ -39,8 +41,8 @@ export const AddTransactionModal = ({
   handleAddMonitor,
   predefinedMonitor,
 }: AddTransactionModalProps) => {
+  const theme = useTheme();
   const [state] = useContext(MetaMaskContext);
-
   const [monitor, setMonitor] = React.useState<Partial<PredefinedMonitor>>(
     predefinedMonitor || {},
   );
@@ -217,10 +219,8 @@ export const AddTransactionModal = ({
         </FormControl>
 
         <Box marginTop="20px" alignSelf="center" width="100%">
-          <Button
+          <MyButton
             onClick={() => handleAddMonitor(monitor as Monitor)}
-            variant="outlined"
-            size="large"
             fullWidth
             disabled={
               !monitor?.from ||
@@ -230,7 +230,7 @@ export const AddTransactionModal = ({
             }
           >
             Start Monitoring
-          </Button>
+          </MyButton>
         </Box>
       </Box>
     </Modal>

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Button } from '@mui/material';
 import { Snap } from '../types';
 import { ActionCard } from './ActionCard';
+import { MyButton } from './Button';
 
 type ConnectActionCardProps = {
   installedSnap?: Snap;
@@ -29,14 +29,9 @@ export function AddMonitorActionCard({
   handleSendAddClick,
 }: ConnectActionCardProps) {
   const button = (
-    <Button
-      onClick={handleSendAddClick}
-      disabled={!installedSnap}
-      size="large"
-      variant="outlined"
-    >
+    <MyButton onClick={handleSendAddClick} disabled={!installedSnap}>
       Add Transaction
-    </Button>
+    </MyButton>
   );
 
   const content = {

@@ -4,7 +4,6 @@ import { Alerts } from '../../../shared/types';
 import { column } from './MonitorsTable';
 
 const columns: GridColDef[] = [
-  column.id,
   column.network,
   column.category,
   column.name,

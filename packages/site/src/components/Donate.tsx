@@ -1,8 +1,11 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button, Modal } from '@mui/material';
+import { Modal } from '@mui/material';
+import CurrencyBitcoinOutlinedIcon from '@mui/icons-material/CurrencyBitcoinOutlined';
+
 import React, { useContext } from 'react';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { MyButton } from './Button';
 
 export const Donate = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
@@ -53,9 +56,12 @@ export const Donate = () => {
         and serve you better. Thank you for believing in <b>ChainTrack</b>!
       </Typography>
       <Box alignSelf="center" marginTop="12px">
-        <Button onClick={handleDonateClick} variant="outlined" size="large">
+        <MyButton
+          onClick={handleDonateClick}
+          startIcon={<CurrencyBitcoinOutlinedIcon />}
+        >
           Donate
-        </Button>
+        </MyButton>
       </Box>
       <Modal
         open={openThanks}

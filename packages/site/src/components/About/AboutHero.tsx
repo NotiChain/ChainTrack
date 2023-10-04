@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Button, Typography, styled } from '@mui/material';
-import purple from '@mui/material/colors/purple';
+import { useTheme } from '@mui/material/styles';
 
 type AboutHeroProps = {
   handleConnectClick(): void;
@@ -17,6 +17,8 @@ export const AboutHero: FC<AboutHeroProps> = ({
   handleConnectClick,
   disabled,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box
       height="100vh"
@@ -25,7 +27,11 @@ export const AboutHero: FC<AboutHeroProps> = ({
       justifyContent="center"
       flexDirection="column"
     >
-      <Typography fontSize="80px" fontWeight="bold" color={purple[500]}>
+      <Typography
+        fontSize="80px"
+        fontWeight="bold"
+        color={theme.palette.secondary.main}
+      >
         ChainTrack
       </Typography>
       <Typography

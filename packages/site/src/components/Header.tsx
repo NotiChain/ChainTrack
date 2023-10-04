@@ -1,20 +1,14 @@
 import { useContext } from 'react';
-import { Box, Button, useTheme, styled } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Box, useTheme } from '@mui/material';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getSnap } from '../utils';
 import { ReactComponent as MetamaskFox } from '../assets/metamask_fox.svg';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
-
-const ConnectedIndicator = styled('div')(() => ({
-  width: '10px',
-  height: '10px',
-  borderRadius: '50%',
-  backgroundColor: 'green',
-  marginRight: '6px',
-}));
+import { MyButton } from './Button';
 
 export const Header = ({
   handleToggleClick,
@@ -61,19 +55,15 @@ export const Header = ({
             padding="1.2rem"
             fontWeight="bold"
           >
-            <ConnectedIndicator />
-            <Typography variant="h5">Connected</Typography>
+            <MyButton startIcon={<CheckCircleOutlineOutlinedIcon />}>
+              Connected
+            </MyButton>
           </Box>
         ) : (
           <Box marginLeft="12px">
-            <Button
-              startIcon={<MetamaskFox />}
-              onClick={handleConnectClick}
-              variant="outlined"
-              size="large"
-            >
+            <MyButton startIcon={<MetamaskFox />} onClick={handleConnectClick}>
               Connect
-            </Button>
+            </MyButton>
           </Box>
         )}
       </Box>

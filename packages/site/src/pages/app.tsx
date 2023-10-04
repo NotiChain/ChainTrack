@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useContext, useState } from 'react';
-import { useTheme } from '@mui/material';
 import red from '@mui/material/colors/red';
 import {
   AddMonitorActionCard,
@@ -105,30 +104,30 @@ export const AppPage = ({
               openAddTransactionModal={(
                 predefinedMonitor: PredefinedMonitor,
               ) => {
-                console.log(
-                  '!!!!!!! openAddTransactionModal !!!!!!!',
-                  'predefinedMonitor',
-                  predefinedMonitor,
-                );
                 setSelectedPredefinedMonitor(predefinedMonitor);
                 setOpenAddTransactionModal(true);
               }}
             />
           </Grid>
-          <Grid item xs={11}>
-            <Fab
-              color="secondary"
-              aria-label="add"
-              onClick={() => {
-                setSelectedPredefinedMonitor(undefined);
-                setOpenAddTransactionModal(true);
-              }}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
         </Grid>
       </Box>
+      <Fab
+        color="secondary"
+        aria-label="add"
+        sx={{
+          margin: 0,
+          top: 'auto',
+          left: 20,
+          bottom: 20,
+          position: 'fixed',
+        }}
+        onClick={() => {
+          setSelectedPredefinedMonitor(undefined);
+          setOpenAddTransactionModal(true);
+        }}
+      >
+        <AddIcon />
+      </Fab>
       <AddTransactionModal
         open={openAddTransactionModal}
         handleClose={() => {

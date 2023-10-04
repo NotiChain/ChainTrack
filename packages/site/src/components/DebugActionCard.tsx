@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button } from '@mui/material';
 import { ActionCard } from './ActionCard';
+import { MyButton } from './Button';
 
 type DebugActionCardProps = {
   handleResetClick: () => void;
@@ -14,30 +14,15 @@ export function DebugActionCard({
   handleConnectClick,
 }: DebugActionCardProps) {
   const buttons = [
-    <Button
-      key="reset"
-      onClick={handleResetClick}
-      size="large"
-      variant="outlined"
-    >
+    <MyButton key="reset" onClick={handleResetClick}>
       Reset
-    </Button>,
-    <Button
-      key="reload"
-      onClick={handleReloadClick}
-      size="large"
-      variant="outlined"
-    >
+    </MyButton>,
+    <MyButton key="reload" onClick={handleReloadClick}>
       Reload
-    </Button>,
-    <Button
-      key="reconnect"
-      onClick={handleConnectClick}
-      size="large"
-      variant="outlined"
-    >
+    </MyButton>,
+    <MyButton key="reconnect" onClick={handleConnectClick}>
       Reconnect
-    </Button>,
+    </MyButton>,
   ];
 
   const content = {
