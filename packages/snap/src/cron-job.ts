@@ -1,4 +1,4 @@
-import { panel, text } from '@metamask/snaps-ui';
+import { panel, text, copyable } from '@metamask/snaps-ui';
 import { Monitor } from '../../shared/types';
 import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
@@ -81,6 +81,7 @@ export class CronJob {
               content: panel([
                 text(`You didn't receive transaction from ${monitor.name}`),
                 text('Would you want us to stop sending notifications?'),
+                monitor.url ? copyable(monitor.url) : text(''),
               ]),
             },
           });
