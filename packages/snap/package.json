@@ -30,7 +30,8 @@
     "@metamask/snaps-types": "^0.32.2",
     "@metamask/snaps-ui": "^0.32.2",
     "buffer": "^6.0.3",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",
@@ -42,6 +43,7 @@
     "@metamask/eslint-config-typescript": "^10.0.0",
     "@metamask/snaps-cli": "^0.38.2-flask.1",
     "@metamask/snaps-jest": "^0.37.3-flask.1",
+    "@types/uuid": "^9.0.4",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "eslint": "^8.21.0",

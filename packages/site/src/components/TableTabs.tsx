@@ -150,8 +150,7 @@ export function TableTabs({
             <PredefinedMonitorsTable
               predefinedMonitors={predefinedMonitors.map((item, index) => {
                 return {
-                  key: index + 1,
-                  id: index + 1,
+                  key: item.id,
                   ...item,
                 };
               })}

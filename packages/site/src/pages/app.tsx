@@ -12,11 +12,13 @@ import {
   StatsActionCard,
   DebugActionCard,
   AddTransactionModal,
+  TableTabs,
 } from '../components';
 import { shouldDisplayReconnectButton, addMonitor, sendUpdate } from '../utils';
 import { AddWizzard } from '../components/AddWizzard/AddWizzard';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
+import predefinedMonitors from '../../../shared/predefined-monitors';
 // eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
 
@@ -128,20 +130,20 @@ export const AppPage = ({
             )}
           </Box>
           <Grid item xs={11}>
-            {/* <TableTabs*/}
-            {/*  monitors={state?.monitors || []}*/}
-            {/*  loadSnapData={loadSnapData}*/}
-            {/*  alerts={state?.alerts || []}*/}
-            {/*  predefinedMonitors={predefinedMonitors}*/}
-            {/*  openAddTransactionModal={(*/}
-            {/*    predefinedMonitor: PredefinedMonitor,*/}
-            {/*    isEditTransaction?: boolean,*/}
-            {/*  ) => {*/}
-            {/*    setSelectedPredefinedMonitor(predefinedMonitor);*/}
-            {/*    setOpenAddTransactionModal(true);*/}
-            {/*    setEditTransaction(Boolean(isEditTransaction));*/}
-            {/*  }}*/}
-            {/* />*/}
+            <TableTabs
+              monitors={state?.monitors || []}
+              loadSnapData={loadSnapData}
+              alerts={state?.alerts || []}
+              predefinedMonitors={predefinedMonitors}
+              openAddTransactionModal={(
+                predefinedMonitor: PredefinedMonitor,
+                isEditTransaction?: boolean,
+              ) => {
+                setSelectedPredefinedMonitor(predefinedMonitor);
+                setOpenAddTransactionModal(true);
+                setEditTransaction(Boolean(isEditTransaction));
+              }}
+            />
           </Grid>
         </Grid>
       </Box>

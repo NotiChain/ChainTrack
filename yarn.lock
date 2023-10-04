@@ -9994,6 +9994,7 @@ __metadata:
     "@metamask/snaps-jest": ^0.37.3-flask.1
     "@metamask/snaps-types": ^0.32.2
     "@metamask/snaps-ui": ^0.32.2
+    "@types/uuid": ^9.0.4
     "@typescript-eslint/eslint-plugin": ^5.33.0
     "@typescript-eslint/parser": ^5.33.0
     buffer: ^6.0.3
@@ -10012,6 +10013,7 @@ __metadata:
     through2: ^4.0.2
     ts-jest: ^29.1.0
     typescript: ^4.7.4
+    uuid: ^9.0.1
   languageName: unknown
   linkType: soft
 
