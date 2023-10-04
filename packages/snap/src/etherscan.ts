@@ -33,10 +33,9 @@ export class Etherscan {
     const { ETHERSCAN_API_KEY: etherscanApiKey = '' } = process.env || {};
 
     // TODO: limit with block numbers
-    const request =
-      contractAddress === '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
-        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
-        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
+    const request = contractAddress
+      ? `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
+      : `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
 
     try {
       const response = await fetch(request);
