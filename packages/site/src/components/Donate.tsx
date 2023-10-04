@@ -23,7 +23,7 @@ export const Donate = () => {
         params: [
           {
             from: state.wallets[0],
-            to: '0x88E67d6eC54E05401aF7a5bDe8Cf609c01eC83D3',
+            to: '0xc2f0CB781Eee77F469cC716c10234dd4F4c2e37f',
             value: (0.01 * 1000000000000000000).toString(16),
           },
         ],
