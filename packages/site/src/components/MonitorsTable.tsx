@@ -18,7 +18,12 @@ export const column: Record<string, GridColDef> = {
       ChainIdToNameEnum[params.value as keyof typeof ChainIdToNameEnum],
   },
   category: { field: 'category', headerName: 'Category', flex: 1 },
-  date: { field: 'date', headerName: 'Date', flex: 1 },
+  date: {
+    field: 'date',
+    headerName: 'Date',
+    flex: 1,
+    valueFormatter: (params) => new Date(params.value).toLocaleString(),
+  },
   from: {
     field: 'from',
     headerName: 'From',
@@ -90,8 +95,6 @@ type MonitorsTableProps = {
 };
 
 export const MonitorsTable = ({ monitors }: MonitorsTableProps) => {
-  console.log(monitors);
-
   return (
     <div style={{ width: '100%' }}>
       <DataGrid

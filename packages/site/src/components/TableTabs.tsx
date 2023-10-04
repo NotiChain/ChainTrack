@@ -3,8 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-import purple from '@mui/material/colors/purple';
-import { Paper } from '@mui/material';
+import { Paper, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {
   Alerts,
@@ -60,6 +59,7 @@ export function TableTabs({
   predefinedMonitors,
   openAddTransactionModal,
 }: TableTabsProps) {
+  const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -73,7 +73,7 @@ export function TableTabs({
         width: '100%',
         border: 1,
         borderRadius: '16px',
-        borderColor: purple[500],
+        borderColor: theme.palette.secondary.main,
       }}
     >
       <Box
@@ -88,7 +88,7 @@ export function TableTabs({
           indicatorColor="secondary"
           sx={{
             '& .MuiTabs-indicator': {
-              backgroundColor: purple[500],
+              backgroundColor: theme.palette.secondary.main,
             },
           }}
         >
@@ -111,7 +111,7 @@ export function TableTabs({
           sx={{
             border: 1,
             borderRadius: '16px',
-            borderColor: purple[500],
+            borderColor: theme.palette.secondary.main,
             backgroundColor: 'background.paper',
           }}
           className="tabs-table-container"
