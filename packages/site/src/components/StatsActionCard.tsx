@@ -21,16 +21,6 @@ export function StatsActionCard({ monitors, alerts }: StatsActionCardProps) {
       color="text.secondary"
       key="alerts"
     >{`Alerts sent: ${alerts.length}`}</Typography>,
-    <Typography
-      variant="h4"
-      color="text.secondary"
-      key="time"
-    >{`Time with us: 0 days, 1 hour and 3 seconds`}</Typography>,
-    <Typography
-      variant="h4"
-      color="text.secondary"
-      key="checks"
-    >{`Background checks: 123456 times`}</Typography>,
   ];
   const content = {
     title: 'Stats',
