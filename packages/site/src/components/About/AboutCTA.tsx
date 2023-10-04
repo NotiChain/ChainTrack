@@ -11,16 +11,29 @@ export const AboutCTA: FC<AboutCTAProps> = ({
   disabled,
 }) => {
   return (
-    <Box>
-      <Typography variant="h1">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      marginBottom="180px"
+    >
+      <Typography variant="h1" fontWeight="bold">
         Stay on top of your recurring transactions.
       </Typography>
-      <Typography variant="h1">
+      <Typography variant="h1" fontWeight="bold">
         Experience the ChainTrack difference today.
       </Typography>
-      <Button disabled={disabled} onClick={handleConnectClick}>
-        Get Started with ChainTrack
-      </Button>
+      <Box padding="30px 40px">
+        <Button
+          disabled={disabled}
+          onClick={handleConnectClick}
+          variant="outlined"
+          size="large"
+        >
+          Get Started with ChainTrack
+        </Button>
+      </Box>
     </Box>
   );
 };

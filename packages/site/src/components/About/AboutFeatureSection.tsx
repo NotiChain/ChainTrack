@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Stack, Typography, styled, Grid, Paper } from '@mui/material';
-import { CodeIcon } from '../../assets/icons/CodeIcon';
-import { MobileIcon } from '../../assets/icons/MobileIcon';
-import { StarIcon } from '../../assets/icons/StarIcon';
+import { Typography, styled, Grid, Box } from '@mui/material';
+import CodeIcon from '@mui/icons-material/Code';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
 const BorderLine = styled('div')(() => ({
   minHeight: '25px',
@@ -13,51 +13,66 @@ const BorderLine = styled('div')(() => ({
 
 export const AboutFeatureSection: FC = () => {
   return (
-    <Stack>
-      <Paper>
-        <Typography variant="h3">WHAT WE DO</Typography>
-      </Paper>
-      <Paper>
-        <Typography variant="h2">
+    <Grid
+      display="flex"
+      justifyContent="space-between"
+      marginBottom="180px"
+      gap="48px"
+    >
+      <Box sx={{ '@media (max-width: 900px)': { display: 'none' } }}>
+        <Typography variant="h2" fontWeight="500">
+          WHAT WE DO
+        </Typography>
+      </Box>
+      <Grid width="60%" sx={{ '@media (max-width: 900px)': { width: '100%' } }}>
+        <Typography variant="h1" fontWeight="500">
           Designed exclusively for MetaMask users, we ensure every recurring
           transaction is right at your fingertips.
         </Typography>
         <BorderLine />
-        <Grid>
-          <Paper>
-            <CodeIcon />
-            <Typography variant="h4">Instant Alerts</Typography>
-            <Typography>
+        <Grid container spacing={8}>
+          <Grid container item xs={6} flexDirection="column" gap="12px">
+            <CodeIcon fontSize="large" />
+            <Typography variant="h3" fontWeight="600">
+              Instant Alerts
+            </Typography>
+            <Typography variant="h4" sx={{ opacity: '60%' }} fontWeight="400">
               Stay informed with real-time notifications. With ChainTrack,
               missed recurring transactions are a thing of the past.
             </Typography>
-          </Paper>
-          <Paper>
-            <MobileIcon />
-            <Typography variant="h4">User-Friendly Interface</Typography>
-            <Typography>
+          </Grid>
+          <Grid container item xs={6} flexDirection="column" gap="12px">
+            <SmartphoneIcon fontSize="large" />
+            <Typography variant="h3" fontWeight="600">
+              User-Friendly Interface
+            </Typography>
+            <Typography variant="h4" sx={{ opacity: '60%' }} fontWeight="400">
               Navigate with ease. ChainTrack's intuitive design ensures you get
               the information you need without the hassle.
             </Typography>
-          </Paper>
-          <Paper>
-            <StarIcon />
-            <Typography variant="h4">Top-Notch Security</Typography>
-            <Typography>
+          </Grid>
+          <Grid container item xs={6} flexDirection="column" gap="12px">
+            <StarBorderIcon fontSize="large" />
+            <Typography variant="h3" fontWeight="600">
+              Top-Notch Security
+            </Typography>
+            <Typography variant="h4" sx={{ opacity: '60%' }} fontWeight="400">
               Your data's safety is paramount. ChainTrack operates with
               stringent security protocols, giving you peace of mind.
             </Typography>
-          </Paper>
-          <Paper>
-            <CodeIcon />
-            <Typography variant="h4">Detailed Insights</Typography>
-            <Typography>
+          </Grid>
+          <Grid container item xs={6} flexDirection="column" gap="12px">
+            <CodeIcon fontSize="large" />
+            <Typography variant="h3" fontWeight="600">
+              Detailed Insights
+            </Typography>
+            <Typography variant="h4" sx={{ opacity: '60%' }} fontWeight="400">
               Understand your transactions better. Dive deep into analytics and
               gain clarity on your recurring transactions.
             </Typography>
-          </Paper>
+          </Grid>
         </Grid>
-      </Paper>
-    </Stack>
+      </Grid>
+    </Grid>
   );
 };

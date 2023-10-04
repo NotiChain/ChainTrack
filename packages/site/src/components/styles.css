@@ -29,3 +29,11 @@
         font-size: 16px;
     }
 }
+
+.faq-accordion {
+  .MuiAccordion-root {
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+  }
+}

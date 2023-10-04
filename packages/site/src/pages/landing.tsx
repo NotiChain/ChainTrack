@@ -19,10 +19,10 @@ export const LandingPage = ({
   return (
     <Box
       sx={{
-        background:
-          theme?.palette?.mode === 'dark'
-            ? 'linear-gradient(to top right, #2f2727, #1a82f7)'
-            : '',
+        [theme?.custom?.mediaQueries?.small]: {
+          padding: '0 20px',
+        },
+        padding: '0 120px',
       }}
     >
       <AboutHero
