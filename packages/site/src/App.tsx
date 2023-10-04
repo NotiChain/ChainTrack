@@ -1,9 +1,10 @@
-import { FunctionComponent, ReactNode, useContext } from 'react';
-import { Box, GlobalStyles } from '@mui/material';
+import React, { FunctionComponent, ReactNode, useContext } from 'react';
+import { Box, GlobalStyles, useTheme } from '@mui/material';
 import { Footer, Header } from './components';
 
 import { getGlobalStyles } from './config/theme';
 import { ToggleThemeContext } from './Root';
+import { Donate } from './components/Donate';
 
 export type AppProps = {
   children: ReactNode;
@@ -11,7 +12,7 @@ export type AppProps = {
 
 export const App: FunctionComponent<AppProps> = ({ children }) => {
   const toggleTheme = useContext(ToggleThemeContext);
-  console.log(toggleTheme);
+  const theme = useTheme();
 
   return (
     <>
@@ -22,9 +23,16 @@ export const App: FunctionComponent<AppProps> = ({ children }) => {
         width="100%"
         minHeight="100vh"
         maxWidth="100vw"
+        sx={{
+          background:
+            theme?.palette?.mode === 'dark'
+              ? 'linear-gradient(315deg, #000000 0%, #5e5368 50%)'
+              : 'linear-gradient(to top right, #2f2727, #1a82f7)',
+        }}
       >
         <Header handleToggleClick={toggleTheme.toggleColorMode} />
         {children}
+        <Donate />
         <Footer />
       </Box>
     </>

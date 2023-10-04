@@ -29,6 +29,8 @@ export const ActionCard = ({ content }: CardProps) => {
         border: 1,
         borderRadius: '16px',
         borderColor: purple[500],
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {title && (
@@ -45,8 +47,8 @@ export const ActionCard = ({ content }: CardProps) => {
           {description}
         </Typography>
       </CardContent>
-      {button && <CardActions>{button}</CardActions>}
-      {buttons && <CardActions>{buttons}</CardActions>}
+      {button && <CardActions sx={{ mt: 'auto' }}>{button}</CardActions>}
+      {buttons && <CardActions sx={{ mt: 'auto' }}>{buttons}</CardActions>}
     </Card>
   );
 };

@@ -64,7 +64,6 @@ export const column: Record<string, GridColDef> = {
 };
 
 export const columns: GridColDef[] = [
-  column.id,
   column.name,
   column.network,
   column.from,

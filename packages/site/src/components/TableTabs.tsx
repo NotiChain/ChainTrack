@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 
 import purple from '@mui/material/colors/purple';
 import { Paper } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import {
   Alerts,
   Monitors,
@@ -70,6 +71,9 @@ export function TableTabs({
       elevation={3}
       sx={{
         width: '100%',
+        border: 1,
+        borderRadius: '16px',
+        borderColor: purple[500],
       }}
     >
       <Box
@@ -88,9 +92,18 @@ export function TableTabs({
             },
           }}
         >
-          <Tab label="Transactions" {...handleTabs(0)} />
-          <Tab label="Alerts" {...handleTabs(1)} />
-          <Tab label="Catalog" {...handleTabs(2)} />
+          <Tab
+            label={<Typography variant="h6">Transactions</Typography>}
+            {...handleTabs(0)}
+          />
+          <Tab
+            label={<Typography variant="h6">Alerts</Typography>}
+            {...handleTabs(1)}
+          />
+          <Tab
+            label={<Typography variant="h6">Catalog</Typography>}
+            {...handleTabs(2)}
+          />
         </Tabs>
       </Box>
       <Box padding="12px 20px 20px 20px">

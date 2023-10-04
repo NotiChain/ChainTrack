@@ -4,18 +4,15 @@ import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
 import { AboutTestimonials } from '../components/About/AboutTestimonials';
 import { AboutFaq } from '../components/About/AboutFAQ';
 import { AboutCTA } from '../components/About/AboutCTA';
-import { AboutFooter } from '../components/About/AboutFooter';
 
 type LandingPageProps = {
   handleConnectClick: () => void;
   isMetaMaskReady: boolean;
-  handleDonateClick: () => void;
 };
 
 export const LandingPage = ({
   handleConnectClick,
   isMetaMaskReady,
-  handleDonateClick,
 }: LandingPageProps) => {
   const theme = useTheme();
 
@@ -39,7 +36,6 @@ export const LandingPage = ({
         handleConnectClick={handleConnectClick}
         disabled={!isMetaMaskReady}
       />
-      <AboutFooter handleDonateClick={handleDonateClick} />
     </Box>
   );
 };

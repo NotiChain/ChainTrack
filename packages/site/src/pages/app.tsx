@@ -3,9 +3,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { useContext, useState } from 'react';
-import { Button, useTheme } from '@mui/material';
-import purple from '@mui/material/colors/purple';
+import React, { useContext, useState } from 'react';
+import { useTheme } from '@mui/material';
 import red from '@mui/material/colors/red';
 import {
   AddMonitorActionCard,
@@ -26,7 +25,6 @@ type AppPageProps = {
   handleSendAddClick: () => void;
   handleResetClick: () => void;
   handleReloadClick: () => void;
-  handleDonateClick: () => void;
   loadSnapData: () => void;
   isMetaMaskReady: boolean;
 };
@@ -37,10 +35,8 @@ export const AppPage = ({
   handleResetClick,
   handleReloadClick,
   isMetaMaskReady,
-  handleDonateClick,
   loadSnapData,
 }: AppPageProps) => {
-  const theme = useTheme();
   const [state, dispatch] = useContext(MetaMaskContext);
   const [showAddWizzard, setShowAddWizzard] = useState(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
@@ -48,39 +44,7 @@ export const AppPage = ({
     useState<PredefinedMonitor>();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      flex="1"
-      sx={{
-        background:
-          theme?.palette?.mode === 'dark'
-            ? 'linear-gradient(to top right, #2f2727, #1a82f7)'
-            : '',
-      }}
-    >
-      <Box display="flex" gap="6px">
-        <Typography variant="h2" gutterBottom>
-          Welcome to
-        </Typography>
-        <Typography
-          sx={{
-            color: purple[500],
-            fontWeight: 'bold',
-          }}
-          variant="h2"
-          gutterBottom
-        >
-          ChainTrack
-        </Typography>
-        <Typography variant="h2" gutterBottom>
-          !
-        </Typography>
-      </Box>
-      <Typography variant="h4" gutterBottom>
-        Get started by adding a new transaction to monitor!
-      </Typography>
+    <Box display="flex" flexDirection="column" alignItems="center" flex="1">
       <Box sx={{ flexGrow: 1 }} marginTop="12px">
         <Grid
           container
@@ -188,25 +152,6 @@ export const AppPage = ({
             loadData={() => {}}
           />
         )}
-        <Box
-          padding="2.4rem"
-          maxWidth="60rem"
-          display="flex"
-          flexDirection="column"
-        >
-          <Typography variant="h5">
-            Support <b>ChainTrack</b>: If you've found value in our tool and
-            wish to support our mission to enhance blockchain transparency,
-            consider making a donation. Every contribution, big or small, helps
-            us continue our work and serve you better. Thank you for believing
-            in <b>ChainTrack</b>!
-          </Typography>
-          <Box alignSelf="center" marginTop="12px">
-            <Button onClick={handleDonateClick} variant="outlined" size="large">
-              Donate
-            </Button>
-          </Box>
-        </Box>
       </Box>
     </Box>
   );

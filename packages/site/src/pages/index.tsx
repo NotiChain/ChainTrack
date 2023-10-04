@@ -114,38 +114,6 @@ const Index = () => {
     }
   };
 
-  const handleDonateClick = async () => {
-    try {
-      const addresses = await window.ethereum.request<string[]>({
-        method: 'eth_requestAccounts',
-      });
-      console.log('!!!! Accounts', addresses);
-      if (!addresses?.length) {
-        return;
-      }
-      const transactionHash = await window.ethereum.request<string>({
-        method: 'eth_sendTransaction',
-        params: [
-          {
-            from: addresses[0],
-            to: '0x88E67d6eC54E05401aF7a5bDe8Cf609c01eC83D3',
-            value: (0.01 * 1000000000000000000).toString(16),
-          },
-        ],
-      });
-
-      if (!transactionHash) {
-        return;
-      }
-
-      // show thank you message
-      console.log('!!!! Donate', transactionHash);
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
   const handleResetClick = async () => {
     try {
       await sendReset();
@@ -177,7 +145,6 @@ const Index = () => {
         <AppPage
           handleConnectClick={handleConnectClick}
           handleReloadClick={handleReloadClick}
-          handleDonateClick={handleDonateClick}
           handleResetClick={handleResetClick}
           handleSendAddClick={handleSendAddClick}
           isMetaMaskReady={isMetaMaskReady}
@@ -186,7 +153,6 @@ const Index = () => {
       ) : (
         <LandingPage
           handleConnectClick={handleConnectClick}
-          handleDonateClick={handleDonateClick}
           isMetaMaskReady={isMetaMaskReady}
         />
       )}

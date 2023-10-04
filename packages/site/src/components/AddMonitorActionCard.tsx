@@ -22,17 +22,22 @@ const phrases = [
   'Don’t Let a Transaction Slip Away! Add It to ChainTrack for Constant Monitoring.',
 ];
 
+const description = phrases[Math.floor(Math.random() * phrases.length)];
+
 export function AddMonitorActionCard({
   installedSnap,
   handleSendAddClick,
 }: ConnectActionCardProps) {
   const button = (
-    <Button onClick={handleSendAddClick} disabled={!installedSnap} size="large">
+    <Button
+      onClick={handleSendAddClick}
+      disabled={!installedSnap}
+      size="large"
+      variant="outlined"
+    >
       Add Transaction
     </Button>
   );
-
-  const description = phrases[Math.floor(Math.random() * phrases.length)];
 
   const content = {
     title: 'Add Transaction',
