@@ -14,6 +14,10 @@ export const App: FunctionComponent<AppProps> = ({ children }) => {
   const toggleTheme = useContext(ToggleThemeContext);
   const theme = useTheme();
 
+  React.useEffect(() => {
+    document.title = 'ChainTrack';
+  });
+
   return (
     <>
       <GlobalStyles styles={getGlobalStyles} />
