@@ -75,8 +75,8 @@ export const AboutFeatureSection: FC = () => {
             </Typography>
             <Typography variant="h4" sx={{ opacity: '60%' }} fontWeight="400">
               Ensuring the security of your data is our top priority. ChainTrack
-              directly saves data to your MetaMask wallet, and we do not retain
-              any of your information.
+              directly saves data to your MetaMask Extension, and we do not
+              retain any of your information.
             </Typography>
           </Grid>
           <Grid container item xs={6} flexDirection="column" gap="12px">
