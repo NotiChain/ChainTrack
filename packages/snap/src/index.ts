@@ -1,9 +1,4 @@
-import {
-  OnRpcRequestHandler,
-  OnCronjobHandler,
-  OnTransactionHandler,
-} from '@metamask/snaps-types';
-import { panel, heading, text } from '@metamask/snaps-ui';
+import { OnRpcRequestHandler, OnCronjobHandler } from '@metamask/snaps-types';
 
 import cronJob from './cron-job';
 import {
@@ -19,22 +14,7 @@ import {
   DeleteParams,
 } from './rpc';
 
-/**
- * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
- *
- * @param args - The request handler args as object.
- * @param args.origin - The origin of the request, e.g., the website that
- * invoked the snap.
- * @param args.request - A validated JSON-RPC request object.
- * @returns The result of `snap_dialog`.
- * @throws If the request method is not valid for this snap.
- */
-export const onRpcRequest: OnRpcRequestHandler = async ({
-  origin,
-  request,
-}) => {
-  console.log('!!!! onRpcRequest args', origin, request);
-
+export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
   switch (request.method) {
     case 'add':
       await add();
@@ -71,28 +51,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   return null;
 };
 
-/**
- * Handle incoming cronjob requests, sent through `wallet_invokeSnap`.
- *
- * @param ctx - The cronjob handler args as object.
- */
 export const onCronjob: OnCronjobHandler = async (ctx) => {
   console.log('onCronjob', ctx);
   await cronJob.process(ctx);
-};
-
-export const onTransaction: OnTransactionHandler = async ({
-  transaction,
-  chainId,
-  transactionOrigin,
-}) => {
-  console.log('!!!!! onTransaction', transaction, chainId, transactionOrigin);
-  const insight = `It's a scammer!`;
-  return {
-    content: panel([
-      heading('My Transaction Insights'),
-      text('Here are the insights:'),
-      text(insight),
-    ]),
-  };
 };
