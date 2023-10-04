@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme, Typography } from '@mui/material';
 import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TelegramIcon from '@mui/icons-material/Telegram';
@@ -22,6 +22,7 @@ export const Footer = () => {
         size="large"
       >
         <TelegramIcon />
+        <Typography>Share your feedback!</Typography>
       </IconButton>
       <IconButton
         aria-label="github"
@@ -30,6 +31,7 @@ export const Footer = () => {
         size="large"
       >
         <GitHubIcon />
+        <Typography>Give us a star!</Typography>
       </IconButton>
       <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
       <SnapName />
