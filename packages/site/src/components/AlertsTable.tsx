@@ -13,8 +13,8 @@ const columns: GridColDef[] = [
   column.intervalHours,
   column.contractAddress,
   column.amount,
-  column.url,
   column.confirmed,
+  column.url,
 ];
 
 type MonitorsTableProps = {
@@ -22,10 +22,13 @@ type MonitorsTableProps = {
 };
 
 export const AlertsTable = ({ alerts }: MonitorsTableProps) => {
+  const data = alerts?.map((alert) => {
+    return { ...alert.monitor, ...alert };
+  });
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
-        rows={alerts || []}
+        rows={data || []}
         columns={columns}
         initialState={{
           pagination: {

@@ -64,7 +64,12 @@ export const column: Record<string, GridColDef> = {
       );
     },
   },
-  confirmed: { field: 'confirmed', headerName: 'Confirmed', flex: 1 },
+  confirmed: {
+    field: 'confirmed',
+    headerName: 'Confirmed',
+    flex: 1,
+    valueFormatter: (params) => (params.value ? 'Yes' : 'No'),
+  },
   precondition: { field: 'precondition', headerName: 'Precondition', flex: 1 },
 };
 
