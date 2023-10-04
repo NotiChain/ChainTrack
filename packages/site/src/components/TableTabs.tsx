@@ -56,6 +56,8 @@ type TableTabsProps = {
     isEditTransaction?: boolean,
   ) => void;
   loadSnapData: () => void;
+  tab: number;
+  setTab: (tab: number) => void;
 };
 
 export function TableTabs({
@@ -64,12 +66,19 @@ export function TableTabs({
   predefinedMonitors,
   openAddTransactionModal,
   loadSnapData,
+  tab,
+  setTab,
 }: TableTabsProps) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
+  React.useEffect(() => {
+    setValue(tab);
+  }, [tab]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    setTab(newValue);
   };
 
   return (

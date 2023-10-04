@@ -13,6 +13,7 @@ import {
   DebugActionCard,
   AddTransactionModal,
   TableTabs,
+  CatalogActionCard,
 } from '../components';
 import { shouldDisplayReconnectButton, addMonitor, sendUpdate } from '../utils';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
@@ -46,6 +47,7 @@ export const AppPage = ({
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
   const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
     useState<PredefinedMonitor>();
+  const [tab, setTab] = useState(0);
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" flex="1">
@@ -117,6 +119,14 @@ export const AppPage = ({
                 }}
               />
             </Box>
+            <Box width="20%">
+              <CatalogActionCard
+                installedSnap={state.installedSnap}
+                handleGoToCatalogClick={() => {
+                  setTab(2);
+                }}
+              />
+            </Box>
             {shouldDisplayReconnectButton(state.installedSnap) && (
               <Box width="20%">
                 <DebugActionCard
@@ -133,6 +143,8 @@ export const AppPage = ({
               loadSnapData={loadSnapData}
               alerts={state?.alerts || []}
               predefinedMonitors={predefinedMonitors}
+              tab={tab}
+              setTab={setTab}
               openAddTransactionModal={(
                 predefinedMonitor: PredefinedMonitor,
                 isEditTransaction?: boolean,
