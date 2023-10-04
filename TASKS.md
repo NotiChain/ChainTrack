@@ -1,5 +1,8 @@
 - ui look and feel
 - logo
+- remove monitor
+- edit monitor
+- social links
 
 - readme
 - conventional commits
