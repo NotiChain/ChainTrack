@@ -40,7 +40,7 @@ const transactionAddedText = 'New transaction has been added!';
 const transactionUpdatedText = 'Transaction has been updated!';
 const maxColumnsInGridContainer = 12;
 
-export const AppPage = ({
+const AppPage = ({
   handleConnectClick,
   handleResetClick,
   handleReloadClick,
@@ -215,3 +215,5 @@ export const AppPage = ({
     </Box>
   );
 };
+
+export default AppPage;

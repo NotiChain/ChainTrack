@@ -10,7 +10,7 @@ type LandingPageProps = {
   isMetaMaskReady: boolean;
 };
 
-export const LandingPage = ({
+const LandingPage = ({
   handleConnectClick,
   isMetaMaskReady,
 }: LandingPageProps) => {
@@ -39,3 +39,5 @@ export const LandingPage = ({
     </Box>
   );
 };
+
+export default LandingPage;
