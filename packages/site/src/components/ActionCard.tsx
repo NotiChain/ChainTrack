@@ -33,12 +33,16 @@ export const ActionCard = ({ content }: CardProps) => {
         borderColor: theme.palette.secondary.main,
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor:
+          theme?.palette?.mode === 'dark'
+            ? 'rgba(0, 0, 0, 0.5)'
+            : 'rgba(255, 255, 255, 0.5)',
       }}
     >
       {title && (
         <CardHeader
           title={
-            <Typography variant="h3" color="secondary">
+            <Typography variant="h3" color="primary">
               {title}
             </Typography>
           }

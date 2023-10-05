@@ -30,8 +30,8 @@ export const App: FunctionComponent<AppProps> = ({ children }) => {
         sx={{
           background:
             theme?.palette?.mode === 'dark'
-              ? 'linear-gradient(315deg, #000000 0%, #5e5368 50%)'
-              : 'linear-gradient(315deg, #ffffff 0%, #5899e2 74%)',
+              ? 'linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(94,83,104,1) 50%, rgba(0,0,0,1) 100%)'
+              : 'linear-gradient(315deg, #44b09e 0%, #e0d2c7 74%)',
         }}
       >
         <Header handleToggleClick={toggleTheme.toggleColorMode} />

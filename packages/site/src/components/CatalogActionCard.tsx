@@ -33,6 +33,7 @@ export function CatalogActionCard({
       Catalog
     </MyButton>,
     <MyButton
+      color="secondary"
       href="https://github.com/NasCorp/ChainTrack/issues"
       target="_blank"
       sx={{ marginLeft: '10px' }}

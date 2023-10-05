@@ -8,16 +8,12 @@ type MyButtonProps = {
 } & ComponentProps<typeof Button>;
 
 export const MyButton = (props: MyButtonProps) => {
-  const theme = useTheme();
   return (
     <Button
       key={props.mykey || props.key || props.name}
       size="large"
       variant="outlined"
-      style={{
-        color: theme.palette.secondary.main,
-        borderColor: theme.palette.secondary.main,
-      }}
+      color="primary"
       {...props}
     >
       {props.children}

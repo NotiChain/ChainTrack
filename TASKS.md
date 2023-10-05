@@ -1,8 +1,7 @@
 - ui look and feel
 - logo
 
-- remove monitor
-- edit monitor
+- fix MUI alerts
 
 - readme
 - conventional commits

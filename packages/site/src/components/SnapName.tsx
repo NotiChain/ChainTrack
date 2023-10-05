@@ -6,7 +6,7 @@ export const SnapName = () => {
   return (
     <Typography
       sx={{
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.main,
         fontWeight: 'bold',
         marginLeft: '1rem',
       }}

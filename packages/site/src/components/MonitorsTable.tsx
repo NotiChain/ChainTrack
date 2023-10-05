@@ -13,6 +13,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
   ChainIdToNameEnum,
   Monitor,
@@ -110,6 +111,7 @@ export const MonitorsTable = ({
   monitors,
   openAddTransactionModal,
 }: MonitorsTableProps) => {
+  const theme = useTheme();
   const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>();
 
   const columns: GridColDef[] = [

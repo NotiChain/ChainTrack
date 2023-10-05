@@ -89,6 +89,10 @@ export function TableTabs({
         border: 1,
         borderRadius: '16px',
         borderColor: theme.palette.secondary.main,
+        backgroundColor:
+          theme?.palette?.mode === 'dark'
+            ? 'rgba(0, 0, 0, 0.5)'
+            : 'rgba(255, 255, 255, 0.5)',
       }}
     >
       <Box>
@@ -97,11 +101,10 @@ export function TableTabs({
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
-          textColor="secondary"
-          indicatorColor="secondary"
+          textColor="primary"
           sx={{
             '& .MuiTabs-indicator': {
-              backgroundColor: theme.palette.secondary.main,
+              backgroundColor: theme.palette.primary.main,
             },
           }}
         >
@@ -124,8 +127,11 @@ export function TableTabs({
           sx={{
             border: 1,
             borderRadius: '16px',
-            borderColor: theme.palette.secondary.main,
-            backgroundColor: 'background.paper',
+            borderColor: theme.palette.primary.main,
+            backgroundColor:
+              theme?.palette?.mode === 'dark'
+                ? 'rgba(0, 0, 0, 0.5)'
+                : 'rgba(255, 255, 255, 0.5)',
           }}
           className="tabs-table-container"
         >

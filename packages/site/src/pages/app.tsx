@@ -100,7 +100,7 @@ export const AppPage = ({
             </Alert>
           </Snackbar>
           <Box display="flex" justifyContent="space-between">
-            <Box width="20%">
+            <Box width="25%">
               {state.installedSnap ? (
                 <StatsActionCard
                   alerts={state?.alerts || []}
@@ -115,7 +115,7 @@ export const AppPage = ({
                 />
               )}
             </Box>
-            <Box width="20%">
+            <Box width="25%">
               <AddMonitorActionCard
                 installedSnap={state.installedSnap}
                 handleSendAddClick={() => {
@@ -124,7 +124,7 @@ export const AppPage = ({
                 }}
               />
             </Box>
-            <Box width="20%">
+            <Box width="25%">
               <CatalogActionCard
                 installedSnap={state.installedSnap}
                 handleGoToCatalogClick={() => {
@@ -133,7 +133,7 @@ export const AppPage = ({
               />
             </Box>
             {shouldDisplayReconnectButton(state.installedSnap) && (
-              <Box width="20%">
+              <Box width="25%">
                 <DebugActionCard
                   handleResetClick={handleResetClick}
                   handleReloadClick={handleReloadClick}

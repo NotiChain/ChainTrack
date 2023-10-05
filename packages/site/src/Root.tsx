@@ -6,6 +6,19 @@ import {
   useState,
 } from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import {
+  lime,
+  purple,
+  deepPurple,
+  blueGrey,
+  indigo,
+  pink,
+  lightBlue,
+  teal,
+  deepOrange,
+  grey,
+  brown,
+} from '@mui/material/colors';
 import { MetaMaskProvider } from './hooks';
 import { getThemePreference, setLocalStorage } from './utils';
 import { dark, light } from './config/theme';
@@ -45,6 +58,8 @@ export const Root: FunctionComponent<RootProps> = ({ children }) => {
   const theme = createTheme({
     palette: {
       mode,
+      primary: mode === 'dark' ? blueGrey : brown,
+      secondary: mode === 'dark' ? grey : blueGrey,
     },
     custom: mode === 'dark' ? { ...dark } : { ...light },
   });
