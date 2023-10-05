@@ -1,13 +1,13 @@
 {
   "version": "0.1.0",
-  "description": "A snap, that check recurring transactions",
-  "proposedName": "ChainTrackSnap",
+  "description": "ChainTrack: Your MetaMask watchdog for missed transactions.",
+  "proposedName": "ChainTrack",
   "repository": {
     "type": "git",
     "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "ET401UaPs8dvMuwYuS5NIRH3AteVzWDDI5FJoJ94D8E=",
+    "shasum": "olzxf8YTn2UqAUi87Dwpi6sce2pFAkztSAQ+G9PN5QQ=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
