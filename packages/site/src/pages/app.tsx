@@ -37,6 +37,7 @@ type AppPageProps = {
 
 const transactionAddedText = 'New transaction has been added!';
 const transactionUpdatedText = 'Transaction has been updated!';
+const monitorAlreadyExistsText = 'Monitor already exists!';
 
 export const AppPage = ({
   handleConnectClick,
@@ -192,23 +193,31 @@ export const AppPage = ({
         }}
         predefinedMonitor={selectedPredefinedMonitor}
         handleAddMonitor={(monitor: Monitor) => {
-          addMonitor(monitor).then(() => {
-            setSelectedPredefinedMonitor(undefined);
-            setOpenAddTransactionModal(false);
-            setSuccessSnackbarText(transactionAddedText);
-            loadSnapData();
-          });
+          addMonitor(monitor)
+            .then(() => {
+              setSelectedPredefinedMonitor(undefined);
+              setOpenAddTransactionModal(false);
+              setSuccessSnackbarText(transactionAddedText);
+              loadSnapData();
+            })
+            .catch(() => {
+              setSuccessSnackbarText(monitorAlreadyExistsText); // TODO: create error/warning toast
+            });
         }}
         handleUpdateMonitor={(editableMonitor: Monitor) => {
           updateMonitor({
             item: editableMonitor,
-          }).then(() => {
-            setSelectedPredefinedMonitor(undefined);
-            setOpenAddTransactionModal(false);
-            setEditTransaction(false);
-            setSuccessSnackbarText(transactionUpdatedText);
-            loadSnapData();
-          });
+          })
+            .then(() => {
+              setSelectedPredefinedMonitor(undefined);
+              setOpenAddTransactionModal(false);
+              setEditTransaction(false);
+              setSuccessSnackbarText(transactionUpdatedText);
+              loadSnapData();
+            })
+            .catch(() => {
+              setSuccessSnackbarText(monitorAlreadyExistsText); // TODO: create error/warning toast
+            });
         }}
       />
       <Snackbar
