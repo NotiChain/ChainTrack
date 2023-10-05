@@ -29,7 +29,11 @@ export function CatalogActionCard({
   handleGoToCatalogClick,
 }: ConnectActionCardProps) {
   const buttons = [
-    <MyButton onClick={handleGoToCatalogClick} disabled={!installedSnap}>
+    <MyButton
+      onClick={handleGoToCatalogClick}
+      disabled={!installedSnap}
+      key="catalog"
+    >
       Catalog
     </MyButton>,
     <MyButton
@@ -38,6 +42,7 @@ export function CatalogActionCard({
       target="_blank"
       sx={{ marginLeft: '10px' }}
       disabled={!installedSnap}
+      key="idea"
     >
       Have an Idea?
     </MyButton>,

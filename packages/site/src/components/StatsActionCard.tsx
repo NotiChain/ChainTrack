@@ -37,7 +37,7 @@ export function StatsActionCard({
     <Typography
       variant="h4"
       color="text.secondary"
-      key="checks"
+      key="runs"
     >{`Background runs: ${
       userStats.totalBackgroundRuns || 0
     } times`}</Typography>,

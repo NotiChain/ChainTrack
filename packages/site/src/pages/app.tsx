@@ -99,7 +99,7 @@ export const AppPage = ({
               </Typography>
             </Alert>
           </Snackbar>
-          <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="space-between" gap="24px">
             <Box width="25%">
               {state.installedSnap ? (
                 <StatsActionCard
@@ -200,16 +200,7 @@ export const AppPage = ({
           });
         }}
         handleUpdateMonitor={(editableMonitor: Monitor) => {
-          let indexOfEditableMonitor = -1;
-          console.log(state.monitors, editableMonitor);
-          state?.monitors?.forEach((monitor, index) => {
-            if (monitor?.id === editableMonitor?.id) {
-              indexOfEditableMonitor = index;
-            }
-          });
-
           updateMonitor({
-            index: indexOfEditableMonitor as number,
             item: editableMonitor,
           }).then(() => {
             setSelectedPredefinedMonitor(undefined);
