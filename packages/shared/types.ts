@@ -2,12 +2,24 @@ export enum ChainNameToIdEnum {
   'Sepolia' = '0xaa36a7',
   'Mainnet' = '0x1',
   'Goerli' = '0x5',
+  'Arbitrum' = '0xa4b1',
+  'Arbitrum-Goerli' = '0x66eed',
+  'Matic' = '0x89',
+  'Maticum' = '0x13881',
+  'Optimism' = '0xa',
+  'Optimism-Goerli' = '0x7a',
 }
 
 export enum ChainIdToNameEnum {
   '0xaa36a7' = 'Sepolia',
   '0x1' = 'Mainnet',
   '0x5' = 'Goerli',
+  '0xa4b1' = 'Arbitrum',
+  '0x66eed' = 'Arbitrum-Goerli',
+  '0x89' = 'Matic',
+  '0x13881' = 'Maticum',
+  '0xa' = 'Optimism',
+  '0x7a' = 'Optimism-Goerli',
 }
 
 export type ChainIds = keyof typeof ChainIdToNameEnum;

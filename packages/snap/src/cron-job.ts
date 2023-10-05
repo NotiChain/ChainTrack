@@ -6,10 +6,13 @@ import etherscan, { Transaction } from './etherscan';
 function alertExpired(alert: { date: string; monitor: Monitor }): boolean {
   const date = new Date(alert.date);
   const diff = Date.now() - date.getTime();
-  return !(
+  if (
     typeof alert.monitor.intervalMs === 'number' &&
     diff < alert.monitor.intervalMs
-  );
+  ) {
+    return false;
+  }
+  return true;
 }
 
 type NotificationType = 'inApp' | 'native';
@@ -62,6 +65,7 @@ export class CronJob {
       return;
     }
 
+    console.log(`CronJob process ${data.monitors.length} monitors found`);
     for (const monitor of data.monitors) {
       const notify = await this.checkMonitor(monitor);
       if (notify) {
@@ -83,15 +87,19 @@ export class CronJob {
             });
           }
         } else if (found && alertExpired(found) && !found.confirmed) {
+          const panelData = [
+            text(`You didn't receive transaction from ${monitor.name}`),
+            text('Would you want us to stop receiving notifications?'),
+          ];
+          if (monitor.url) {
+            panelData.push(copyable(monitor.url));
+          }
+
           const confirm = await snap.request({
             method: 'snap_dialog',
             params: {
               type: 'confirmation',
-              content: panel([
-                text(`You didn't receive transaction from ${monitor.name}`),
-                text('Would you want us to stop sending notifications?'),
-                monitor.url ? copyable(monitor.url) : text(''),
-              ]),
+              content: panel(panelData),
             },
           });
 

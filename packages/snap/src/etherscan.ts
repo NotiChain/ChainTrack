@@ -16,6 +16,13 @@ export class Etherscan {
       [ChainNameToIdEnum.Sepolia]: 'api-sepolia.etherscan.io',
       [ChainNameToIdEnum.Goerli]: 'api-goerli.etherscan.io',
       [ChainNameToIdEnum.Mainnet]: 'api.etherscan.io',
+      [ChainNameToIdEnum.Arbitrum]: 'api.arbiscan.io',
+      [ChainNameToIdEnum['Arbitrum-Goerli']]: 'api-goerli.arbiscan.io',
+      [ChainNameToIdEnum.Matic]: 'api.polygonscan.com',
+      [ChainNameToIdEnum.Maticum]: 'api-testnet.polygonscan.com',
+      [ChainNameToIdEnum.Optimism]: 'api-optimistic.etherscan.io',
+      [ChainNameToIdEnum['Optimism-Goerli']]:
+        'api-goerli-optimistic.etherscan.io',
     };
   }
 
