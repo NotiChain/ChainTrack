@@ -38,7 +38,7 @@ type AppPageProps = {
 
 const transactionAddedText = 'New transaction has been added!';
 const transactionUpdatedText = 'Transaction has been updated!';
-const maxColumnsInGridContainer = 12;
+const maxColumnsInGridContainer = 11;
 
 const AppPage = ({
   handleConnectClick,
@@ -55,10 +55,8 @@ const AppPage = ({
     useState<PredefinedMonitor>();
   const [tab, setTab] = useState(0);
   const throwAsyncError = useThrowAsyncError();
-  const amountOfCards = shouldDisplayReconnectButton(state.installedSnap)
-    ? 4
-    : 3;
-  const cardsGridIndex = maxColumnsInGridContainer / amountOfCards;
+
+  const cardsGridIndex = 3;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" flex="1">
@@ -72,7 +70,7 @@ const AppPage = ({
           container
           direction="row"
           justifyContent="space-evenly"
-          alignItems="stretch"
+          alignItems="space-between"
           spacing={{ xs: 2, md: 2 }}
         >
           <Grid item xs={cardsGridIndex}>
