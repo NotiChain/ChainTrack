@@ -13,15 +13,15 @@ export class Etherscan {
   constructor() {
     console.log('Etherscan constructor');
     this.chains = {
-      [ChainNameToIdEnum.sepolia]: 'api-sepolia.etherscan.io',
-      [ChainNameToIdEnum.goerli]: 'api-goerli.etherscan.io',
-      [ChainNameToIdEnum.mainnet]: 'api.etherscan.io',
-      [ChainNameToIdEnum.arbitrum]: 'api.arbiscan.io',
-      [ChainNameToIdEnum['arbitrum-goerli']]: 'api-goerli.arbiscan.io',
-      [ChainNameToIdEnum.matic]: 'api.polygonscan.com',
-      [ChainNameToIdEnum.maticum]: 'api-testnet.polygonscan.com',
-      [ChainNameToIdEnum.optimism]: 'api-optimistic.etherscan.io',
-      [ChainNameToIdEnum['optimism-goerli']]:
+      [ChainNameToIdEnum.Sepolia]: 'api-sepolia.etherscan.io',
+      [ChainNameToIdEnum.Goerli]: 'api-goerli.etherscan.io',
+      [ChainNameToIdEnum.Mainnet]: 'api.etherscan.io',
+      [ChainNameToIdEnum.Arbitrum]: 'api.arbiscan.io',
+      [ChainNameToIdEnum['Arbitrum-Goerli']]: 'api-goerli.arbiscan.io',
+      [ChainNameToIdEnum.Matic]: 'api.polygonscan.com',
+      [ChainNameToIdEnum.Maticum]: 'api-testnet.polygonscan.com',
+      [ChainNameToIdEnum.Optimism]: 'api-optimistic.etherscan.io',
+      [ChainNameToIdEnum['Optimism-Goerli']]:
         'api-goerli-optimistic.etherscan.io',
     };
   }
@@ -40,18 +40,21 @@ export class Etherscan {
     const { ETHERSCAN_API_KEY: etherscanApiKey = '' } = process.env || {};
 
     // TODO: limit with block numbers
-    const request =
-      contractAddress === '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'
-        ? `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
-        : `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
+    const request = contractAddress
+      ? `https://${host}/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`
+      : `https://${host}/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apiKey=${etherscanApiKey}`;
 
+    console.log('Etherscan.getTransactions request', request);
     try {
       const response = await fetch(request);
-
       const data = await response.json();
       console.log('Etherscan.getTransactions', data);
-      if (data.status !== '1') {
-        console.log('Etherscan.getTransactions status is not 1');
+      // if (data.status !== '1') {
+      //   console.log('Etherscan.getTransactions status is not 1');
+      //   return null;
+      // }
+      if (!data.result && !Array.isArray(data.result)) {
+        console.log('Etherscan.getTransactions result is not array');
         return null;
       }
       return data.result;

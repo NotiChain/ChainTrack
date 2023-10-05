@@ -131,8 +131,7 @@ export async function add(): Promise<void> {
   }
 
   if (contractAddress.length === 0) {
-    // ETH contract address
-    contractAddress = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8';
+    contractAddress = null;
   }
 
   let amount = await snap.request({
@@ -173,7 +172,7 @@ export async function add(): Promise<void> {
       from,
       to: wallet,
       intervalHours,
-      contractAddress,
+      contractAddress: contractAddress || undefined,
       amount: parseFloat(amount),
     });
   }

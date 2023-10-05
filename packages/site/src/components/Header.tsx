@@ -1,41 +1,14 @@
 import { useContext } from 'react';
-import styled, { useTheme } from 'styled-components';
+import { Box, useTheme } from '@mui/material';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import { connectSnap, getThemePreference, getSnap } from '../utils';
-import { HeaderButtons } from './Buttons';
+import { connectSnap, getSnap } from '../utils';
 import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
-
-const HeaderWrapper = styled.header`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2.4rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.border.default};
-`;
-
-const Title = styled.p`
-  font-size: ${(props) => props.theme.fontSizes.title};
-  font-weight: bold;
-  margin: 0;
-  margin-left: 1.2rem;
-  ${({ theme }) => theme.mediaQueries.small} {
-    display: none;
-  }
-`;
-
-const LogoWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
+import { SnapName } from './SnapName';
+import { MyButton } from './Button';
+import { MetamaskFoxLogo } from './MetamaskFoxLogo';
 
 export const Header = ({
   handleToggleClick,
@@ -59,19 +32,46 @@ export const Header = ({
       dispatch({ type: MetamaskActions.SetError, payload: e });
     }
   };
+
   return (
-    <HeaderWrapper>
-      <LogoWrapper>
-        <SnapLogo color={theme.colors.icon.default} size={36} />
-        <Title>ChainTrack</Title>
-      </LogoWrapper>
-      <RightContainer>
-        <Toggle
-          onToggle={handleToggleClick}
-          defaultChecked={getThemePreference()}
-        />
-        <HeaderButtons state={state} onConnectClick={handleConnectClick} />
-      </RightContainer>
-    </HeaderWrapper>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      padding="2.4rem"
+    >
+      <Box display="flex" alignItems="center">
+        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
+        <SnapName />
+      </Box>
+      <Box display="flex" alignItems="center">
+        <Toggle onToggle={handleToggleClick} />
+        {state.installedSnap ? (
+          <Box
+            display="flex"
+            alignSelf="flex-start"
+            alignItems="center"
+            justifyContent="center"
+            padding="1.2rem"
+            fontWeight="bold"
+          >
+            <MyButton
+              startIcon={<CheckCircleOutlineOutlinedIcon color="success" />}
+            >
+              Connected
+            </MyButton>
+          </Box>
+        ) : (
+          <Box marginLeft="12px">
+            <MyButton
+              startIcon={<MetamaskFoxLogo />}
+              onClick={handleConnectClick}
+            >
+              Connect
+            </MyButton>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };

@@ -1,26 +1,29 @@
 export enum ChainNameToIdEnum {
-  'sepolia' = '0xaa36a7',
-  'mainnet' = '0x1',
-  'goerli' = '0x5',
-  'arbitrum' = '0xa4b1',
-  'arbitrum-goerli' = '0x66eed',
-  'matic' = '0x89',
-  'maticum' = '0x13881',
-  'optimism' = '0xa',
-  'optimism-goerli' = '0x7a',
+  'Sepolia' = '0xaa36a7',
+  'Mainnet' = '0x1',
+  'Goerli' = '0x5',
+  'Arbitrum' = '0xa4b1',
+  'Arbitrum-Goerli' = '0x66eed',
+  'Matic' = '0x89',
+  'Maticum' = '0x13881',
+  'Optimism' = '0xa',
+  'Optimism-Goerli' = '0x7a',
 }
 
 export enum ChainIdToNameEnum {
-  '0xaa36a7' = 'sepolia',
-  '0x1' = 'mainnet',
-  '0x5' = 'goerli',
-  '0xa4b1' = 'arbitrum',
-  '0x66eed' = 'arbitrum-goerli',
-  '0x89' = 'matic',
-  '0x13881' = 'maticum',
-  '0xa' = 'optimism',
-  '0x7a' = 'optimism-goerli',
+  '0xaa36a7' = 'Sepolia',
+  '0x1' = 'Mainnet',
+  '0x5' = 'Goerli',
+  '0xa4b1' = 'Arbitrum',
+  '0x66eed' = 'Arbitrum-Goerli',
+  '0x89' = 'Matic',
+  '0x13881' = 'Maticum',
+  '0xa' = 'Optimism',
+  '0x7a' = 'Optimism-Goerli',
 }
+
+export type ChainIds = keyof typeof ChainIdToNameEnum;
+export type ChainNames = keyof typeof ChainNameToIdEnum;
 
 export enum Preconditions {
   'BrightID' = 'BrightID',
@@ -37,6 +40,7 @@ export enum MonitorCategory {
 }
 
 type BaseMonitor = {
+  id: string;
   name?: string;
   network: keyof typeof ChainIdToNameEnum;
   intervalHours: string;
@@ -74,8 +78,14 @@ export type Alert = {
 
 export type Monitors = Monitor[];
 
+export type Alerts = Alert[];
+
 export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
 
 export type PredefinedMonitors = PredefinedMonitor[];
 
-export type Alerts = Alert[];
+export type UserStats = {
+  snapAddedDate?: string;
+  totalBackgroundRuns?: number;
+  totalBackgroundChecks?: number;
+};

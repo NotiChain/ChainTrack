@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { Snap } from '../types';
 import { detectSnaps, getSnap, isFlask } from '../utils';
-import { Alerts, Monitors } from '../../../shared/types';
+import { Alerts, Monitors, UserStats } from '../../../shared/types';
 
 export type MetamaskState = {
   snapsDetected: boolean;
@@ -17,14 +17,19 @@ export type MetamaskState = {
   error?: Error;
   alerts?: Alerts;
   monitors?: Monitors;
+  userStats?: UserStats;
+  wallets?: string[];
+  chainId?: string;
+  isLoading: boolean;
 };
 
 const initialState: MetamaskState = {
   snapsDetected: false,
   isFlask: false,
+  isLoading: false,
 };
 
-type MetamaskDispatch = { type: MetamaskActions; payload: any };
+export type MetamaskDispatch = { type: MetamaskActions; payload: any };
 
 export const MetaMaskContext = createContext<
   [MetamaskState, Dispatch<MetamaskDispatch>]
@@ -42,6 +47,10 @@ export enum MetamaskActions {
   SetIsFlask = 'SetIsFlask',
   SetAlerts = 'SetAlerts',
   SetMonitors = 'SetMonitors',
+  SetWallets = 'SetWallets',
+  SetChain = 'SetChain',
+  SetUserStats = 'SetUserStats',
+  SetLoading = 'SetLoading',
 }
 
 const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
@@ -72,10 +81,30 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
         ...state,
         monitors: action.payload,
       };
+    case MetamaskActions.SetUserStats:
+      return {
+        ...state,
+        userStats: action.payload,
+      };
+    case MetamaskActions.SetWallets:
+      return {
+        ...state,
+        wallets: action.payload,
+      };
+    case MetamaskActions.SetChain:
+      return {
+        ...state,
+        chainId: action.payload,
+      };
     case MetamaskActions.SetError:
       return {
         ...state,
         error: action.payload,
+      };
+    case MetamaskActions.SetLoading:
+      return {
+        ...state,
+        isLoading: action.payload,
       };
     default:
       return state;

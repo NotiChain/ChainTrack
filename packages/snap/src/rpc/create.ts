@@ -1,9 +1,11 @@
+import { v4 as uuidv4 } from 'uuid';
 import storage, { Data } from '../storage';
 import { Monitor } from '../../../shared/types';
 
 export type CreateParams = Omit<Monitor, 'intervalMs' | 'lastTransaction'>;
 
 export async function create({
+  id,
   name,
   network,
   from,
@@ -11,6 +13,9 @@ export async function create({
   intervalHours,
   contractAddress,
   amount,
+  url,
+  precondition,
+  category,
 }: CreateParams): Promise<void> {
   if (!network) {
     throw new Error('Network is required');
@@ -33,6 +38,7 @@ export async function create({
   }
 
   const snapDataItem = {
+    id: id || uuidv4(),
     name,
     network,
     from,
@@ -41,6 +47,9 @@ export async function create({
     intervalHours,
     contractAddress,
     amount,
+    url,
+    precondition,
+    category,
   } as Monitor;
 
   const existing = snapData.monitors.find((item) => {

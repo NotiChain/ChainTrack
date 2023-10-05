@@ -1,0 +1,43 @@
+.tabs-table-container {
+    .MuiDataGrid-root {
+        border: none;
+
+        .MuiDataGrid-columnHeaderTitle, .MuiDataGrid-cellContent {
+            font-size: 16px;
+        }
+
+        .MuiDataGrid-columnHeaderTitle {
+            font-weight: bold;
+        }
+
+        .MuiDataGrid-cell:focus {
+            outline: none;
+        }
+
+        .MuiDataGrid-cell[data-field="url"] {
+            cursor: auto;
+        }
+
+        .MuiDataGrid-row:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.add-transactions-modal {
+    .MuiFormLabel-root {
+        font-size: 18px;
+    }
+
+    .MuiInputBase-root {
+        font-size: 16px;
+    }
+}
+
+.faq-accordion {
+  .MuiAccordion-root {
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+  }
+}

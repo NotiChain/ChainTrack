@@ -1,18 +1,20 @@
 import storage from '../storage';
 
 export type DeleteParams = {
-  index: number;
+  id: string;
 };
 
-export async function del({ index }: DeleteParams) {
-  if (typeof index !== 'number') {
-    throw new Error('Invalid index');
+export async function del({ id }: DeleteParams) {
+  if (!id) {
+    throw new Error('Monitor ID is required');
   }
 
   const snapData = await storage.get();
 
-  if (!snapData?.monitors || !snapData?.monitors[index]) {
-    throw new Error('Monitor does not exist');
+  const index = snapData.monitors.findIndex((monitor) => monitor.id === id);
+
+  if (index === -1) {
+    throw new Error('Monitor not found');
   }
 
   snapData.monitors.splice(index, 1);

@@ -1,4 +1,4 @@
-import { copyable, panel, text } from '@metamask/snaps-ui';
+import { panel, text, copyable } from '@metamask/snaps-ui';
 import { Monitor } from '../../shared/types';
 import storage, { monitorEq } from './storage';
 import etherscan, { Transaction } from './etherscan';
@@ -40,15 +40,27 @@ export class CronJob {
   }
 
   async process(ctx: { request: { method: string } }) {
-    const data = await storage.get();
-
     console.log('CronJob process');
 
     if (ctx.request.method !== 'everyMinute') {
       throw new Error('Method not found.');
     }
 
-    if (!data?.monitors) {
+    const data = await storage.get();
+
+    if (!data.userStats?.snapAddedDate) {
+      data.userStats.snapAddedDate = new Date().toISOString();
+    }
+
+    data.userStats.totalBackgroundRuns =
+      (data.userStats.totalBackgroundRuns || 0) + 1;
+
+    data.userStats.totalBackgroundChecks =
+      (data.userStats.totalBackgroundChecks || 0) + data.monitors?.length || 0;
+
+    await storage.setUserStats(data.userStats);
+
+    if (!data.monitors.length) {
       console.log('CronJob process no monitors found');
       return;
     }
@@ -77,7 +89,7 @@ export class CronJob {
         } else if (found && alertExpired(found) && !found.confirmed) {
           const panelData = [
             text(`You didn't receive transaction from ${monitor.name}`),
-            text('Would you like to NOT receive another notification?'),
+            text('Would you want us to stop receiving notifications?'),
           ];
           if (monitor.url) {
             panelData.push(copyable(monitor.url));
@@ -123,6 +135,11 @@ export class CronJob {
     console.log('CronJob.checkMonitor transaction found');
     // compare time
     const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
+
+    // eslint-disable-next-line require-atomic-updates
+    monitor.lastTransaction = transactionTime;
+    await storage.updateMonitor(monitor);
+
     const diff = Date.now() - transactionTime;
 
     if (diff < monitor.intervalMs) {
@@ -168,12 +185,13 @@ export class CronJob {
       (transaction: Transaction) => {
         if (monitor.to && monitor.from) {
           return (
-            transaction.to === monitor.to && transaction.from === monitor.from
+            transaction.to.toLowerCase() === monitor.to.toLowerCase() &&
+            transaction.from.toLowerCase() === monitor.from.toLowerCase()
           );
         } else if (monitor.to) {
-          return transaction.to === monitor.to;
+          return transaction.to.toLowerCase() === monitor.to.toLowerCase();
         } else if (monitor.from) {
-          return transaction.from === monitor.from;
+          return transaction.from.toLowerCase() === monitor.from.toLowerCase();
         }
         // this should never happen
         // error in case we accidentally remove one of checks above

@@ -1,7 +1,8 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
+import { v4 as uuidv4 } from 'uuid';
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
-import { Alerts, Monitor, Monitors } from '../../../shared/types';
+import { Alerts, Monitor, Monitors, UserStats } from '../../../shared/types';
 
 /**
  * Get the installed snaps in MetaMask.
@@ -67,7 +68,7 @@ export const addMonitor = async (monitor: Monitor): Promise<void> => {
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'create', params: monitor },
+      request: { method: 'create', params: { ...monitor, id: uuidv4() } },
     },
   });
 };
@@ -100,34 +101,75 @@ export const getAlerts = async (): Promise<Alerts> => {
   return alerts as Alerts;
 };
 
+// responds with userStats on snap
+export const getUserStats = async (): Promise<UserStats> => {
+  const userStats = await window.ethereum.request<UserStats>({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'get_user_stats' },
+    },
+  });
+
+  if (!userStats) {
+    return {};
+  }
+
+  return userStats as UserStats;
+};
+
 // Initiates reset process on snap - removes all the data in snap's storage
-export const sendReset = async (): Promise<void> => {
+export const resetData = async (): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'reset' } },
   });
 };
 
+export type UpdateParams = {
+  item: Monitor;
+};
+
 // Initiates update process on snap
-export const sendUpdate = async (monitor: Monitor): Promise<void> => {
+export const updateMonitor = async ({ item }: UpdateParams): Promise<void> => {
+  if (!item.id) {
+    throw new Error('Monitor ID is required');
+  }
+
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'update', params: monitor },
+      request: { method: 'update_monitor', params: { item } },
     },
   });
 };
 
 // Initiates delete process on snap
-export const sendDelete = async (monitor: Monitor): Promise<void> => {
+export const deleteMonitor = async ({ id }: { id: string }): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'delete', params: monitor },
+      request: { method: 'delete_monitor', params: { id } },
     },
   });
 };
 
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
+
+const snap = {
+  getSnaps,
+  connectSnap,
+  getSnap,
+  sendAdd,
+  addMonitor,
+  getMonitors,
+  getAlerts,
+  resetData,
+  updateMonitor,
+  deleteMonitor,
+  isLocalSnap,
+};
+
+export default snap;

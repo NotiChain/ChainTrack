@@ -9,7 +9,6 @@ const config: GatsbyConfig = {
 
   plugins: [
     'gatsby-plugin-svgr',
-    'gatsby-plugin-styled-components',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {

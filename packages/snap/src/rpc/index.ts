@@ -5,3 +5,4 @@ export * from './reset';
 export * from './create';
 export * from './get-monitors';
 export * from './get-alerts';
+export * from './get-user-stats';
