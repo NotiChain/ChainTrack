@@ -81,6 +81,20 @@ export class Storage {
     await this.set(data);
   }
 
+  async updateMonitor(monitor: Monitor): Promise<void> {
+    console.log('Storage.updateMonitor()', monitor);
+    const data = await this.get();
+    if (!data.monitors) {
+      data.monitors = [];
+    }
+    const index = data.monitors.findIndex((m) => monitorEq(m, monitor));
+    if (index === -1) {
+      throw new Error('Monitor not found');
+    }
+    data.monitors[index] = monitor;
+    await this.set(data);
+  }
+
   async getAlerts(): Promise<Alerts> {
     console.log('Storage.getAlerts()');
     const data = await this.get();
