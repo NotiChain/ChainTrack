@@ -65,14 +65,22 @@ export const column: Record<string, GridColDef> = {
     field: 'lastTransaction',
     headerName: 'Last Transaction',
     flex: 1,
+    valueFormatter: (params) =>
+      params.value ? new Date(params.value).toLocaleString() : '-',
   },
   contractAddress: {
     field: 'contractAddress',
     headerName: 'Contract Address',
     flex: 1,
-    valueFormatter: (params) => shortenEthWallet(params.value),
+    valueFormatter: (params) =>
+      params.value ? shortenEthWallet(params.value) : '-',
   },
-  amount: { field: 'amount', headerName: 'Amount', flex: 1 },
+  amount: {
+    field: 'amount',
+    headerName: 'Amount',
+    flex: 1,
+    valueFormatter: (params) => params.value || '-',
+  },
   url: {
     field: 'url',
     headerName: 'URL',

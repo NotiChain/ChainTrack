@@ -129,7 +129,7 @@ export class CronJob {
     const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
 
     // eslint-disable-next-line require-atomic-updates
-    monitor.lastTransaction = transactionTime;
+    monitor.lastTransaction = transactionTime * 1000;
     await storage.updateMonitor(monitor);
 
     const diff = Date.now() - transactionTime;
@@ -177,12 +177,13 @@ export class CronJob {
       (transaction: Transaction) => {
         if (monitor.to && monitor.from) {
           return (
-            transaction.to === monitor.to && transaction.from === monitor.from
+            transaction.to.toLowerCase() === monitor.to.toLowerCase() &&
+            transaction.from.toLowerCase() === monitor.from.toLowerCase()
           );
         } else if (monitor.to) {
-          return transaction.to === monitor.to;
+          return transaction.to.toLowerCase() === monitor.to.toLowerCase();
         } else if (monitor.from) {
-          return transaction.from === monitor.from;
+          return transaction.from.toLowerCase() === monitor.from.toLowerCase();
         }
         // this should never happen
         // error in case we accidentally remove one of checks above
