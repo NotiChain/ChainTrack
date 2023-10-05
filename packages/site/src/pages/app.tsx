@@ -41,12 +41,12 @@ const transactionUpdatedText = 'Transaction has been updated!';
 const maxColumnsInGridContainer = 12;
 
 export const AppPage = ({
-                          handleConnectClick,
-                          handleResetClick,
-                          handleReloadClick,
-                          isMetaMaskReady,
-                          loadSnapData,
-                        }: AppPageProps) => {
+  handleConnectClick,
+  handleResetClick,
+  handleReloadClick,
+  isMetaMaskReady,
+  loadSnapData,
+}: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
   const [editTransaction, setEditTransaction] = useState<boolean>(false);
