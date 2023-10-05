@@ -7,12 +7,12 @@
     "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "olzxf8YTn2UqAUi87Dwpi6sce2pFAkztSAQ+G9PN5QQ=",
+    "shasum": "P5vMn+xMI3/AxsvsueLFaprGPG35lQZhyQLuYNRjjVU=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "chain-track-snap",
+        "packageName": "@nascorp/chain-track-snap",
         "registry": "https://registry.npmjs.org/"
       }
     }
