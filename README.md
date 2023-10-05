@@ -1,6 +1,6 @@
 ## Welcome to ChainTrack
 
-ChainTrack: Your Guardian for 🚫 Missed Transactions on MetaMask.
+[ChainTrack](https://www.chaintrack.xyz/): Your Guardian for 🚫 Missed Transactions on MetaMask.
 Experience peace of mind with ChainTrack, the premier tool dedicated to alerting you about missed or absent transactions.
 In the dynamic world of decentralized finance, never miss a beat again.
 Our real-time notifications ensure you're always informed when a transaction doesn't occur, keeping your crypto management seamless and efficient.
