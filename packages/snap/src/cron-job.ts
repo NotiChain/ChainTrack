@@ -129,7 +129,7 @@ export class CronJob {
     const transactionTime = new Date(transaction.timeStamp * 1000).getTime();
 
     // eslint-disable-next-line require-atomic-updates
-    monitor.lastTransaction = transactionTime * 1000;
+    monitor.lastTransaction = transactionTime;
     await storage.updateMonitor(monitor);
 
     const diff = Date.now() - transactionTime;

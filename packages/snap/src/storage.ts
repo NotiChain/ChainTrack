@@ -87,7 +87,7 @@ export class Storage {
     if (!data.monitors) {
       data.monitors = [];
     }
-    const index = data.monitors.findIndex((m) => monitorEq(m, monitor));
+    const index = data.monitors.findIndex((m) => m.id === monitor.id);
     if (index === -1) {
       throw new Error('Monitor not found');
     }
