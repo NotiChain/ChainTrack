@@ -28,16 +28,24 @@ export function CatalogActionCard({
   installedSnap,
   handleGoToCatalogClick,
 }: ConnectActionCardProps) {
-  const button = (
+  const buttons = [
     <MyButton onClick={handleGoToCatalogClick} disabled={!installedSnap}>
       Catalog
-    </MyButton>
-  );
+    </MyButton>,
+    <MyButton
+      href="https://github.com/NasCorp/ChainTrack/issues"
+      target="_blank"
+      sx={{ marginLeft: '10px' }}
+      disabled={!installedSnap}
+    >
+      Have an Idea?
+    </MyButton>,
+  ];
 
   const content = {
     title: 'Catalog',
     description,
-    button,
+    buttons,
   };
 
   return <ActionCard content={content}></ActionCard>;
