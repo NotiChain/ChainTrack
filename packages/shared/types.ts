@@ -1,13 +1,13 @@
 export enum ChainNameToIdEnum {
-  'sepolia' = '0xaa36a7',
-  'mainnet' = '0x1',
-  'goerli' = '0x5',
+  'Sepolia' = '0xaa36a7',
+  'Mainnet' = '0x1',
+  'Goerli' = '0x5',
 }
 
 export enum ChainIdToNameEnum {
-  '0xaa36a7' = 'sepolia',
-  '0x1' = 'mainnet',
-  '0x5' = 'goerli',
+  '0xaa36a7' = 'Sepolia',
+  '0x1' = 'Mainnet',
+  '0x5' = 'Goerli',
 }
 
 export type ChainIds = keyof typeof ChainIdToNameEnum;
@@ -71,3 +71,9 @@ export type Alerts = Alert[];
 export type PredefinedMonitor = Omit<Monitor, 'lastTransaction'>;
 
 export type PredefinedMonitors = PredefinedMonitor[];
+
+export type UserStats = {
+  snapAddedDate?: string;
+  totalBackgroundRuns?: number;
+  totalBackgroundChecks?: number;
+};

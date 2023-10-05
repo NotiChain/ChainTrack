@@ -1,8 +1,15 @@
-import { Alert, Alerts, Monitor, Monitors } from '../../shared/types';
+import {
+  Alert,
+  Alerts,
+  Monitor,
+  Monitors,
+  UserStats,
+} from '../../shared/types';
 
 export type Data = {
-  monitors?: Monitors;
-  alerts?: Alerts;
+  monitors: Monitors;
+  alerts: Alerts;
+  userStats: UserStats;
 };
 
 export function monitorEq(a: Monitor, b: Monitor): boolean {
@@ -22,12 +29,12 @@ export class Storage {
       method: 'snap_manageState',
       params: { operation: 'get' },
     });
-    return (
-      data || {
-        monitors: [],
-        alerts: [],
-      }
-    );
+
+    return {
+      monitors: (data?.monitors as Monitors) || [],
+      alerts: (data?.alerts as Alerts) || [],
+      userStats: (data?.userStats as UserStats) || {},
+    };
   }
 
   async set(data: Data): Promise<void> {
@@ -88,6 +95,19 @@ export class Storage {
     }
     // TODO: if alerts len exceeds some threshold, delete first
     data.alerts.push(alert);
+    await this.set(data);
+  }
+
+  async getUserStats(): Promise<UserStats> {
+    console.log('Storage.getUserStats()');
+    const data = await this.get();
+    return data.userStats || {};
+  }
+
+  async setUserStats(userStats: UserStats): Promise<void> {
+    console.log('Storage.setUserStats()', userStats);
+    const data = await this.get();
+    data.userStats = { ...data.userStats, ...userStats };
     await this.set(data);
   }
 }

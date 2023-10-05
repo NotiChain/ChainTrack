@@ -2,7 +2,7 @@ import { MetaMaskInpageProvider } from '@metamask/providers';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
-import { Alerts, Monitor, Monitors } from '../../../shared/types';
+import { Alerts, Monitor, Monitors, UserStats } from '../../../shared/types';
 
 /**
  * Get the installed snaps in MetaMask.
@@ -101,8 +101,25 @@ export const getAlerts = async (): Promise<Alerts> => {
   return alerts as Alerts;
 };
 
+// responds with userStats on snap
+export const getUserStats = async (): Promise<UserStats> => {
+  const userStats = await window.ethereum.request<UserStats>({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'get_user_stats' },
+    },
+  });
+
+  if (!userStats) {
+    return {};
+  }
+
+  return userStats as UserStats;
+};
+
 // Initiates reset process on snap - removes all the data in snap's storage
-export const sendReset = async (): Promise<void> => {
+export const resetData = async (): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: { snapId: defaultSnapOrigin, request: { method: 'reset' } },
@@ -115,7 +132,7 @@ export type UpdateParams = {
 };
 
 // Initiates update process on snap
-export const sendUpdate = async ({
+export const updateMonitor = async ({
   index,
   item,
 }: UpdateParams): Promise<void> => {
@@ -130,7 +147,7 @@ export const sendUpdate = async ({
 };
 
 // Initiates delete process on snap
-export const sendDelete = async ({
+export const deleteMonitor = async ({
   index,
 }: {
   index: number;
@@ -154,9 +171,9 @@ const snap = {
   addMonitor,
   getMonitors,
   getAlerts,
-  sendReset,
-  sendUpdate,
-  sendDelete,
+  resetData,
+  updateMonitor,
+  deleteMonitor,
   isLocalSnap,
 };
 

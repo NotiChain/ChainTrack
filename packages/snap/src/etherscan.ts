@@ -13,9 +13,9 @@ export class Etherscan {
   constructor() {
     console.log('Etherscan constructor');
     this.chains = {
-      [ChainNameToIdEnum.sepolia]: 'api-sepolia.etherscan.io',
-      [ChainNameToIdEnum.goerli]: 'api-goerli.etherscan.io',
-      [ChainNameToIdEnum.mainnet]: 'api.etherscan.io',
+      [ChainNameToIdEnum.Sepolia]: 'api-sepolia.etherscan.io',
+      [ChainNameToIdEnum.Goerli]: 'api-goerli.etherscan.io',
+      [ChainNameToIdEnum.Mainnet]: 'api.etherscan.io',
     };
   }
 

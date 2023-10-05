@@ -15,7 +15,12 @@ import {
   TableTabs,
   CatalogActionCard,
 } from '../components';
-import { shouldDisplayReconnectButton, addMonitor, sendUpdate } from '../utils';
+import {
+  shouldDisplayReconnectButton,
+  addMonitor,
+  updateMonitor,
+  sendAdd,
+} from '../utils';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
 import predefinedMonitors from '../../../shared/predefined-monitors';
@@ -41,7 +46,6 @@ export const AppPage = ({
   loadSnapData,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
-  console.log(state);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
   const [editTransaction, setEditTransaction] = useState<boolean>(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
@@ -101,6 +105,7 @@ export const AppPage = ({
                 <StatsActionCard
                   alerts={state?.alerts || []}
                   monitors={state?.monitors || []}
+                  userStats={state?.userStats || {}}
                 />
               ) : (
                 <ConnectActionCard
@@ -133,6 +138,7 @@ export const AppPage = ({
                   handleResetClick={handleResetClick}
                   handleReloadClick={handleReloadClick}
                   handleConnectClick={handleConnectClick}
+                  handleAddClick={sendAdd}
                 />
               </Box>
             )}
@@ -202,7 +208,7 @@ export const AppPage = ({
             }
           });
 
-          sendUpdate({
+          updateMonitor({
             index: indexOfEditableMonitor as number,
             item: editableMonitor,
           }).then(() => {

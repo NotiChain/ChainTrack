@@ -6,12 +6,14 @@ type DebugActionCardProps = {
   handleResetClick: () => void;
   handleReloadClick: () => void;
   handleConnectClick: () => void;
+  handleAddClick: () => void;
 };
 
 export function DebugActionCard({
   handleResetClick,
   handleReloadClick,
   handleConnectClick,
+  handleAddClick,
 }: DebugActionCardProps) {
   const buttons = [
     <MyButton mykey="reset" key="reset" onClick={handleResetClick}>
@@ -22,6 +24,9 @@ export function DebugActionCard({
     </MyButton>,
     <MyButton mykey="reconnect" key="reconnect" onClick={handleConnectClick}>
       Reconnect
+    </MyButton>,
+    <MyButton mykey="reconnect" key="send_add" onClick={handleAddClick}>
+      SendAdd
     </MyButton>,
   ];
 

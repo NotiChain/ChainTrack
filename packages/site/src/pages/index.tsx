@@ -5,10 +5,10 @@ import {
   connectSnap,
   getAlerts,
   getMonitors,
+  getUserStats,
   getSnap,
   isLocalSnap,
-  sendAdd,
-  sendReset,
+  resetData,
 } from '../utils';
 import { defaultSnapOrigin } from '../config';
 
@@ -67,8 +67,24 @@ const Index = () => {
     }
   };
 
+  const loadUserStats = async () => {
+    try {
+      const data = await getUserStats();
+      dispatch({ type: MetamaskActions.SetUserStats, payload: data });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   async function loadSnapData() {
-    await Promise.all([getWallets(), getChain(), loadMonitors(), loadAlerts()]);
+    await Promise.all([
+      getWallets(),
+      getChain(),
+      loadMonitors(),
+      loadAlerts(),
+      loadUserStats(),
+    ]);
   }
 
   async function startLoadingSnapData() {
@@ -103,7 +119,7 @@ const Index = () => {
 
   const handleResetClick = async () => {
     try {
-      await sendReset();
+      await resetData();
       await loadSnapData();
     } catch (e) {
       console.error(e);

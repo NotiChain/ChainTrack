@@ -8,6 +8,7 @@ import {
   del,
   reset,
   getAlerts,
+  getUserStats,
   getMonitors,
   CreateParams,
   UpdateParams,
@@ -29,6 +30,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
 
     case 'get_alerts':
       return await getAlerts();
+
+    case 'get_user_stats':
+      return await getUserStats();
 
     case 'reset':
       await reset();

@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { Snap } from '../types';
 import { detectSnaps, getSnap, isFlask } from '../utils';
-import { Alerts, Monitors } from '../../../shared/types';
+import { Alerts, Monitors, UserStats } from '../../../shared/types';
 
 export type MetamaskState = {
   snapsDetected: boolean;
@@ -17,6 +17,7 @@ export type MetamaskState = {
   error?: Error;
   alerts?: Alerts;
   monitors?: Monitors;
+  userStats?: UserStats;
   wallets?: string[];
   chainId?: string;
 };
@@ -46,6 +47,7 @@ export enum MetamaskActions {
   SetMonitors = 'SetMonitors',
   SetWallets = 'SetWallets',
   SetChain = 'SetChain',
+  SetUserStats = 'SetUserStats',
 }
 
 const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
@@ -75,6 +77,11 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
       return {
         ...state,
         monitors: action.payload,
+      };
+    case MetamaskActions.SetUserStats:
+      return {
+        ...state,
+        userStats: action.payload,
       };
     case MetamaskActions.SetWallets:
       return {

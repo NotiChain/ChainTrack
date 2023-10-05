@@ -19,7 +19,7 @@ import {
   Monitors,
   PredefinedMonitor,
 } from '../../../shared/types';
-import { sendDelete } from '../utils';
+import { deleteMonitor } from '../utils';
 
 export function shortenEthWallet(wallet?: string) {
   return wallet ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}` : wallet;
@@ -173,7 +173,7 @@ export const MonitorsTable = ({
                 }
               });
 
-              sendDelete({ index: indexOfMonitorToDelete }).then(() => {
+              deleteMonitor({ index: indexOfMonitorToDelete }).then(() => {
                 setMonitorToDelete(null);
                 loadSnapData();
               });

@@ -37,15 +37,27 @@ export class CronJob {
   }
 
   async process(ctx: { request: { method: string } }) {
-    const data = await storage.get();
-
     console.log('CronJob process');
 
     if (ctx.request.method !== 'everyMinute') {
       throw new Error('Method not found.');
     }
 
-    if (!data?.monitors) {
+    const data = await storage.get();
+
+    if (!data.userStats?.snapAddedDate) {
+      data.userStats.snapAddedDate = new Date().toISOString();
+    }
+
+    data.userStats.totalBackgroundRuns =
+      (data.userStats.totalBackgroundRuns || 0) + 1;
+
+    data.userStats.totalBackgroundChecks =
+      (data.userStats.totalBackgroundChecks || 0) + data.monitors?.length || 0;
+
+    await storage.setUserStats(data.userStats);
+
+    if (!data.monitors.length) {
       console.log('CronJob process no monitors found');
       return;
     }
