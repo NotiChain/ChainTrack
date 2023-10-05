@@ -13,8 +13,8 @@ import { defaultSnapOrigin } from '../config';
 
 import { ChainIdToNameEnum } from '../../../shared/types';
 import ErrorHandler from '../components/ErrorHandler';
-import { LandingPage } from './landing';
-import { AppPage } from './app';
+import { LandingPage } from '../components/landing';
+import { AppPage } from '../components/app';
 
 const Index = () => {
   let loadDataInterval: NodeJS.Timeout | null = null;
