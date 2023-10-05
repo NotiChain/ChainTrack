@@ -32,6 +32,7 @@ export function CatalogActionCard({
     <MyButton
       onClick={handleGoToCatalogClick}
       disabled={!installedSnap}
+      mykey="catalog"
       key="catalog"
     >
       Catalog
@@ -42,6 +43,7 @@ export function CatalogActionCard({
       target="_blank"
       sx={{ marginLeft: '10px' }}
       disabled={!installedSnap}
+      mykey="idea"
       key="idea"
     >
       Have an Idea?

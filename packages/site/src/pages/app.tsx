@@ -5,7 +5,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useContext, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, IconButton, Slide, Snackbar } from '@mui/material';
+import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
@@ -26,6 +26,7 @@ import { Monitor, PredefinedMonitor } from '../../../shared/types';
 import predefinedMonitors from '../../../shared/predefined-monitors';
 // eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
+import useThrowAsyncError from '../utils/errorHandler';
 
 type AppPageProps = {
   handleConnectClick: () => void;
@@ -37,15 +38,15 @@ type AppPageProps = {
 
 const transactionAddedText = 'New transaction has been added!';
 const transactionUpdatedText = 'Transaction has been updated!';
-const monitorAlreadyExistsText = 'Monitor already exists!';
+const maxColumnsInGridContainer = 12;
 
 export const AppPage = ({
-  handleConnectClick,
-  handleResetClick,
-  handleReloadClick,
-  isMetaMaskReady,
-  loadSnapData,
-}: AppPageProps) => {
+                          handleConnectClick,
+                          handleResetClick,
+                          handleReloadClick,
+                          isMetaMaskReady,
+                          loadSnapData,
+                        }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
   const [editTransaction, setEditTransaction] = useState<boolean>(false);
@@ -53,98 +54,70 @@ export const AppPage = ({
   const [selectedPredefinedMonitor, setSelectedPredefinedMonitor] =
     useState<PredefinedMonitor>();
   const [tab, setTab] = useState(0);
+  const throwAsyncError = useThrowAsyncError();
+  const amountOfCards = shouldDisplayReconnectButton(state.installedSnap)
+    ? 4
+    : 3;
+  const cardsGridIndex = maxColumnsInGridContainer / amountOfCards;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" flex="1">
-      <Box sx={{ flexGrow: 1 }} marginTop="24px">
+      {state.isLoading && (
+        <CircularProgress
+          sx={{ position: 'absolute', left: '50%', top: '50%' }}
+        />
+      )}
+      <Box sx={{ flexGrow: 1 }} margin="24px">
         <Grid
           container
           direction="row"
           justifyContent="space-evenly"
-          spacing={{ xs: 2, md: 3 }}
-          gap="24px"
+          alignItems="stretch"
+          spacing={{ xs: 2, md: 2 }}
         >
-          <Snackbar
-            open={Boolean(state?.error)}
-            autoHideDuration={6000}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            onClose={() =>
-              dispatch({
-                type: MetamaskActions.SetError,
-                payload: undefined,
-              })
-            }
-            TransitionComponent={(props) => <Slide {...props} direction="up" />}
-          >
-            <Alert
-              severity="error"
-              sx={{ width: '100%', alignItems: 'center' }}
-              elevation={6}
-              className="snackbar"
-              action={
-                <IconButton
-                  size="large"
-                  onClick={() =>
-                    dispatch({
-                      type: MetamaskActions.SetError,
-                      payload: undefined,
-                    })
-                  }
-                >
-                  <CloseIcon />
-                </IconButton>
-              }
-            >
-              <Typography variant="h4">
-                <b>An error happened:</b> {state?.error?.message}
-              </Typography>
-            </Alert>
-          </Snackbar>
-          <Box display="flex" justifyContent="space-between" gap="24px">
-            <Box width="25%">
-              {state.installedSnap ? (
-                <StatsActionCard
-                  alerts={state?.alerts || []}
-                  monitors={state?.monitors || []}
-                  userStats={state?.userStats || {}}
-                />
-              ) : (
-                <ConnectActionCard
-                  installedSnap={state.installedSnap}
-                  handleConnectClick={handleConnectClick}
-                  isMetaMaskReady={isMetaMaskReady}
-                />
-              )}
-            </Box>
-            <Box width="25%">
-              <AddMonitorActionCard
-                installedSnap={state.installedSnap}
-                handleSendAddClick={() => {
-                  setSelectedPredefinedMonitor(undefined);
-                  setOpenAddTransactionModal(true);
-                }}
+          <Grid item xs={cardsGridIndex}>
+            {state.installedSnap ? (
+              <StatsActionCard
+                alerts={state?.alerts || []}
+                monitors={state?.monitors || []}
+                userStats={state?.userStats || {}}
               />
-            </Box>
-            <Box width="25%">
-              <CatalogActionCard
+            ) : (
+              <ConnectActionCard
                 installedSnap={state.installedSnap}
-                handleGoToCatalogClick={() => {
-                  setTab(2);
-                }}
+                handleConnectClick={handleConnectClick}
+                isMetaMaskReady={isMetaMaskReady}
               />
-            </Box>
-            {shouldDisplayReconnectButton(state.installedSnap) && (
-              <Box width="25%">
-                <DebugActionCard
-                  handleResetClick={handleResetClick}
-                  handleReloadClick={handleReloadClick}
-                  handleConnectClick={handleConnectClick}
-                  handleAddClick={sendAdd}
-                />
-              </Box>
             )}
-          </Box>
-          <Grid item xs={11}>
+          </Grid>
+          <Grid item xs={cardsGridIndex}>
+            <AddMonitorActionCard
+              installedSnap={state.installedSnap}
+              handleSendAddClick={() => {
+                setSelectedPredefinedMonitor(undefined);
+                setOpenAddTransactionModal(true);
+              }}
+            />
+          </Grid>
+          <Grid item xs={cardsGridIndex}>
+            <CatalogActionCard
+              installedSnap={state.installedSnap}
+              handleGoToCatalogClick={() => {
+                setTab(2);
+              }}
+            />
+          </Grid>
+          {shouldDisplayReconnectButton(state.installedSnap) && (
+            <Grid item xs={cardsGridIndex}>
+              <DebugActionCard
+                handleResetClick={handleResetClick}
+                handleReloadClick={handleReloadClick}
+                handleConnectClick={handleConnectClick}
+                handleAddClick={sendAdd}
+              />
+            </Grid>
+          )}
+          <Grid item xs={11} marginTop="24px">
             <TableTabs
               monitors={state?.monitors || []}
               loadSnapData={loadSnapData}
@@ -193,6 +166,7 @@ export const AppPage = ({
         }}
         predefinedMonitor={selectedPredefinedMonitor}
         handleAddMonitor={(monitor: Monitor) => {
+          dispatch({ type: MetamaskActions.SetLoading, payload: true });
           addMonitor(monitor)
             .then(() => {
               setSelectedPredefinedMonitor(undefined);
@@ -200,11 +174,10 @@ export const AppPage = ({
               setSuccessSnackbarText(transactionAddedText);
               loadSnapData();
             })
-            .catch(() => {
-              setSuccessSnackbarText(monitorAlreadyExistsText); // TODO: create error/warning toast
-            });
+            .catch(throwAsyncError);
         }}
         handleUpdateMonitor={(editableMonitor: Monitor) => {
+          dispatch({ type: MetamaskActions.SetLoading, payload: true });
           updateMonitor({
             item: editableMonitor,
           })
@@ -215,9 +188,7 @@ export const AppPage = ({
               setSuccessSnackbarText(transactionUpdatedText);
               loadSnapData();
             })
-            .catch(() => {
-              setSuccessSnackbarText(monitorAlreadyExistsText); // TODO: create error/warning toast
-            });
+            .catch(throwAsyncError);
         }}
       />
       <Snackbar
@@ -225,7 +196,6 @@ export const AppPage = ({
         autoHideDuration={6000}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         onClose={() => setSuccessSnackbarText('')}
-        TransitionComponent={(props) => <Slide {...props} direction="up" />}
       >
         <Alert
           severity="success"

@@ -1,5 +1,4 @@
 import { useContext, useEffect } from 'react';
-
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
@@ -13,6 +12,7 @@ import {
 import { defaultSnapOrigin } from '../config';
 
 import { ChainIdToNameEnum } from '../../../shared/types';
+import ErrorHandler from '../components/ErrorHandler';
 import { LandingPage } from './landing';
 import { AppPage } from './app';
 
@@ -78,6 +78,7 @@ const Index = () => {
   };
 
   async function loadSnapData() {
+    dispatch({ type: MetamaskActions.SetLoading, payload: true });
     await Promise.all([
       getWallets(),
       getChain(),
@@ -85,6 +86,7 @@ const Index = () => {
       loadAlerts(),
       loadUserStats(),
     ]);
+    dispatch({ type: MetamaskActions.SetLoading, payload: false });
   }
 
   async function startLoadingSnapData() {
@@ -143,7 +145,7 @@ const Index = () => {
   }, [state.installedSnap]);
 
   return (
-    <>
+    <ErrorHandler>
       {state.installedSnap ? (
         <AppPage
           handleConnectClick={handleConnectClick}
@@ -158,7 +160,7 @@ const Index = () => {
           isMetaMaskReady={isMetaMaskReady}
         />
       )}
-    </>
+    </ErrorHandler>
   );
 };
 

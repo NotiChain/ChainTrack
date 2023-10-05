@@ -26,6 +26,10 @@
 
 .add-transactions-modal {
     .MuiFormLabel-root {
+        font-size: 18px;
+    }
+
+    .MuiInputBase-root {
         font-size: 16px;
     }
 }

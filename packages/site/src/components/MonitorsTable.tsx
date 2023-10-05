@@ -13,7 +13,6 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import {
   ChainIdToNameEnum,
   Monitor,
@@ -21,6 +20,7 @@ import {
   PredefinedMonitor,
 } from '../../../shared/types';
 import { deleteMonitor } from '../utils';
+import useThrowAsyncError from '../utils/errorHandler';
 
 export function shortenEthWallet(wallet?: string) {
   return wallet ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}` : wallet;
@@ -119,7 +119,7 @@ export const MonitorsTable = ({
   monitors,
   openAddTransactionModal,
 }: MonitorsTableProps) => {
-  const theme = useTheme();
+  const throwAsyncError = useThrowAsyncError();
   const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>();
 
   const columns: GridColDef[] = [
@@ -180,10 +180,12 @@ export const MonitorsTable = ({
                 return;
               }
 
-              deleteMonitor({ id: monitorToDelete?.id }).then(() => {
-                setMonitorToDelete(null);
-                loadSnapData();
-              });
+              deleteMonitor({ id: monitorToDelete?.id })
+                .then(() => {
+                  setMonitorToDelete(null);
+                  loadSnapData();
+                })
+                .catch(throwAsyncError);
             }}
           >
             Delete
