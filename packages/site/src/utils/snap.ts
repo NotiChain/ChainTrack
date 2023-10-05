@@ -127,36 +127,31 @@ export const resetData = async (): Promise<void> => {
 };
 
 export type UpdateParams = {
-  index: number;
   item: Monitor;
 };
 
 // Initiates update process on snap
-export const updateMonitor = async ({
-  index,
-  item,
-}: UpdateParams): Promise<void> => {
-  console.log(index, item);
+export const updateMonitor = async ({ item }: UpdateParams): Promise<void> => {
+  if (!item.id) {
+    throw new Error('Monitor ID is required');
+  }
+
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'update', params: { index, item } },
+      request: { method: 'update_monitor', params: { item } },
     },
   });
 };
 
 // Initiates delete process on snap
-export const deleteMonitor = async ({
-  index,
-}: {
-  index: number;
-}): Promise<void> => {
+export const deleteMonitor = async ({ id }: { id: string }): Promise<void> => {
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'delete', params: { index } },
+      request: { method: 'delete_monitor', params: { id } },
     },
   });
 };

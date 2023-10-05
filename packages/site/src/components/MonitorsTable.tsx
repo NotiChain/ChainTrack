@@ -168,14 +168,11 @@ export const MonitorsTable = ({
           <Button onClick={() => setMonitorToDelete(null)}>Cancel</Button>
           <Button
             onClick={() => {
-              let indexOfMonitorToDelete = -1;
-              monitors?.forEach((monitor, index) => {
-                if (monitor?.id === monitorToDelete?.id) {
-                  indexOfMonitorToDelete = index;
-                }
-              });
+              if (!monitorToDelete || !monitorToDelete?.id) {
+                return;
+              }
 
-              deleteMonitor({ index: indexOfMonitorToDelete }).then(() => {
+              deleteMonitor({ id: monitorToDelete?.id }).then(() => {
                 setMonitorToDelete(null);
                 loadSnapData();
               });

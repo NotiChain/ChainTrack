@@ -38,12 +38,12 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
       await reset();
       break;
 
-    case 'update': {
+    case 'update_monitor': {
       await update(request.params as UpdateParams);
       break;
     }
 
-    case 'delete': {
+    case 'delete_monitor': {
       await del(request.params as DeleteParams);
       break;
     }

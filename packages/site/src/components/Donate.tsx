@@ -59,6 +59,7 @@ export const Donate = () => {
         <MyButton
           onClick={handleDonateClick}
           startIcon={<CurrencyBitcoinOutlinedIcon />}
+          color="secondary"
         >
           Donate
         </MyButton>
