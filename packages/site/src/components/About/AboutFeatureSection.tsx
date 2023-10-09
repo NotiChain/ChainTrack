@@ -11,9 +11,6 @@ export const AboutFeatureSection: FC = () => {
     background: 'linear-gradient(-45deg, #5899e2, #5e5368, #23a6d5, #23d5ab)',
     animation: 'gradient 15s ease infinite',
     'background-size': '400% 400%',
-    // background: theme?.palette?.mode === 'dark'
-    //   ? 'linear-gradient(90deg, rgba(238,174,202,1) 2%, rgba(195,180,217,1) 100%, rgba(148,187,233,1) 100%)'
-    //   : 'linear-gradient(90deg, #ffffff 0%, #5899e2 74%)',
     keyframes: {
       '@keyframes gradient': {
         '0%': {

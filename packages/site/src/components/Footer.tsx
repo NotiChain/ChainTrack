@@ -16,7 +16,10 @@ export const Footer = () => {
       alignItems="center"
       container
     >
-      <Grid item xs />
+      <Grid container item alignItems="center" xs justifyContent="flex-start">
+        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
+        <SnapName />
+      </Grid>
       <Grid container item alignItems="center" xs={6} justifyContent="center">
         <IconButton
           aria-label="telegram"
@@ -41,10 +44,7 @@ export const Footer = () => {
           </Typography>
         </IconButton>
       </Grid>
-      <Grid container item alignItems="center" xs justifyContent="flex-end">
-        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
-        <SnapName />
-      </Grid>
+      <Grid item xs />
     </Grid>
   );
 };
