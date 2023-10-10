@@ -1,7 +1,6 @@
 {
   "name": "@nascorp/chain-track-snap",
   "version": "0.1.0",
-  "private": false,
   "description": "ChainTrack: Your MetaMask watchdog for missed transactions.",
   "repository": {
     "type": "git",

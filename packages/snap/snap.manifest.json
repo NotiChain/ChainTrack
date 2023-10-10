@@ -7,7 +7,6 @@
     "url": "https://github.com/NasCorp/ChainTrack.git"
   },
   "source": {
-    "shasum": "hylJ6uOrzQBlOgvcBx4kUZyQsVm/0rIciI7sRmydUFc=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
