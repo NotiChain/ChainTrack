@@ -1,14 +1,12 @@
-import { IconButton, useTheme, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import Grid from '@mui/material/Grid';
-import { SnapLogo } from './SnapLogo';
 import { SnapName } from './SnapName';
+import { Logo } from './Logo';
 
 export const Footer = () => {
-  const theme = useTheme();
-
   return (
     <Grid
       padding="2.4rem"
@@ -17,7 +15,7 @@ export const Footer = () => {
       container
     >
       <Grid container item alignItems="center" xs justifyContent="flex-start">
-        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
+        <Logo size={36} />
         <SnapName />
       </Grid>
       <Grid container item alignItems="center" xs={6} justifyContent="center">

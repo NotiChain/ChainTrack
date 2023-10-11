@@ -1,21 +1,20 @@
 import { useContext } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getSnap } from '../utils';
-import { SnapLogo } from './SnapLogo';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
 import { MyButton } from './Button';
 import { MetamaskFoxLogo } from './MetamaskFoxLogo';
+import { Logo } from './Logo';
 
 export const Header = ({
   handleToggleClick,
 }: {
   handleToggleClick(): void;
 }) => {
-  const theme = useTheme();
   const [state, dispatch] = useContext(MetaMaskContext);
 
   const handleConnectClick = async () => {
@@ -41,7 +40,7 @@ export const Header = ({
       padding="2.4rem"
     >
       <Box display="flex" alignItems="center">
-        <SnapLogo color={theme?.custom?.colors?.icon?.default} size={36} />
+        <Logo size={36} />
         <SnapName />
       </Box>
       <Box display="flex" alignItems="center">
