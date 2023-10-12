@@ -167,8 +167,10 @@ export const MonitorsTable = ({
         onClose={() => setMonitorToDelete(null)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="xs"
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" fontSize="large">
           Are you sure you want to delete <b>{monitorToDelete?.name}</b>{' '}
           monitor?
         </DialogTitle>
