@@ -44,6 +44,13 @@ const testMonitors: Monitor[] = [
   },
 ];
 
+const errorneousResponse = {
+  error: expect.objectContaining({
+    code: -32603,
+    message: 'Internal JSON-RPC error.',
+  }),
+};
+
 describe('onRpcRequest', () => {
   beforeAll(async () => {
     const snap = await installSnap();
@@ -117,14 +124,7 @@ describe('onRpcRequest', () => {
 
   describe('create', () => {
     it('create', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -152,12 +152,7 @@ describe('onRpcRequest', () => {
         params: monitor,
       });
 
-      expect(response.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response.response).toEqual(errorneousResponse);
     });
 
     it('from or to is required', async () => {
@@ -172,12 +167,7 @@ describe('onRpcRequest', () => {
         params: monitor,
       });
 
-      expect(response.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response.response).toEqual(errorneousResponse);
     });
 
     it('interval is required', async () => {
@@ -192,23 +182,11 @@ describe('onRpcRequest', () => {
         params: monitor,
       });
 
-      expect(response.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response.response).toEqual(errorneousResponse);
     });
 
     it('monitor exists', async () => {
-      const monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -221,25 +199,13 @@ describe('onRpcRequest', () => {
         params: monitor,
       });
 
-      expect(response2.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response2.response).toEqual(errorneousResponse);
     });
   });
 
   describe('reset', () => {
     it('reset', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -265,14 +231,7 @@ describe('onRpcRequest', () => {
 
   describe('update', () => {
     it('update', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -309,14 +268,7 @@ describe('onRpcRequest', () => {
     });
 
     it('empty update', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -329,47 +281,23 @@ describe('onRpcRequest', () => {
         params: {},
       });
 
-      expect(response2.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response2.response).toEqual(errorneousResponse);
     });
 
     it('update not existing', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'update_monitor',
         params: { item: monitor },
       });
 
-      expect(response.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response.response).toEqual(errorneousResponse);
     });
   });
 
   describe('delete', () => {
     it('delete', async () => {
-      const monitor: Monitor = {
-        id: '1',
-        network: '0x1',
-        intervalHours: '24',
-        intervalMs: 86400000,
-        from: '0x0',
-        to: '0x1',
-      };
+      const monitor = testMonitors[0];
       const response = await request({
         method: 'create',
         params: monitor,
@@ -397,12 +325,7 @@ describe('onRpcRequest', () => {
         params: {},
       });
 
-      expect(response2.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response2.response).toEqual(errorneousResponse);
     });
 
     it('delete not existing', async () => {
@@ -419,12 +342,7 @@ describe('onRpcRequest', () => {
         params: monitor,
       });
 
-      expect(response.response).toEqual({
-        error: expect.objectContaining({
-          code: -32603,
-          message: 'Internal JSON-RPC error.',
-        }),
-      });
+      expect(response.response).toEqual(errorneousResponse);
     });
   });
 
