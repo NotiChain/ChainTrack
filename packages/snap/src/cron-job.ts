@@ -92,6 +92,8 @@ export class CronJob {
             text('Would you want us to stop receiving notifications?'),
           ];
           /*
+          Here are some problems with types, so I commented this out for tests
+          Fix please :)
           if (monitor.url) {
             panelData.push(copyable(monitor.url));
           }
