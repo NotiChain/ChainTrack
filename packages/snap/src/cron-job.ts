@@ -91,9 +91,11 @@ export class CronJob {
             text(`You didn't receive transaction from ${monitor.name}`),
             text('Would you want us to stop receiving notifications?'),
           ];
+          /*
           if (monitor.url) {
             panelData.push(copyable(monitor.url));
           }
+          */
 
           const confirm = await snap.request({
             method: 'snap_dialog',

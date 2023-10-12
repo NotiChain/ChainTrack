@@ -48,6 +48,12 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
       break;
     }
 
+    case 'trigger_cronjob': {
+      // pass in a fake request object here because of the check in cronJob
+      await cronJob.process({ request: { method: 'everyMinute' } });
+      break;
+    }
+
     default:
       throw new Error('Method not found.');
   }
