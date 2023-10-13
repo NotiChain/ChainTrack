@@ -2,23 +2,12 @@ import {
   createContext,
   FunctionComponent,
   ReactNode,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import {
-  lime,
-  purple,
-  deepPurple,
-  blueGrey,
-  indigo,
-  pink,
-  lightBlue,
-  teal,
-  deepOrange,
-  grey,
-  brown,
-} from '@mui/material/colors';
+import { blueGrey, grey, brown } from '@mui/material/colors';
 import { MetaMaskProvider } from './hooks';
 import { getThemePreference, setLocalStorage } from './utils';
 import { dark, light } from './config/theme';
@@ -64,12 +53,18 @@ export const Root: FunctionComponent<RootProps> = ({ children }) => {
     custom: mode === 'dark' ? { ...dark } : { ...light },
   });
 
+  useEffect(() => {
+    setMode(getThemePreference());
+  }, []);
+
   return (
-    <ToggleThemeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <MetaMaskProvider>{children}</MetaMaskProvider>
-      </ThemeProvider>
-    </ToggleThemeContext.Provider>
+    mode && (
+      <ToggleThemeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <MetaMaskProvider>{children}</MetaMaskProvider>
+        </ThemeProvider>
+      </ToggleThemeContext.Provider>
+    )
   );
 };
