@@ -40,7 +40,7 @@ export const Header = ({
       padding="2.4rem"
     >
       <Box display="flex" alignItems="center">
-        <Logo size={36} />
+        <Logo size={54} />
         <SnapName />
       </Box>
       <Box display="flex" alignItems="center">

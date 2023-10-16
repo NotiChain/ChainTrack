@@ -32,6 +32,7 @@ type AppPageProps = {
   handleConnectClick: () => void;
   handleResetClick: () => void;
   handleReloadClick: () => void;
+  handleAddClick: () => void;
   loadSnapData: () => void;
   isMetaMaskReady: boolean;
 };
@@ -46,6 +47,7 @@ const AppPage = ({
   handleReloadClick,
   isMetaMaskReady,
   loadSnapData,
+  handleAddClick,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
@@ -109,7 +111,7 @@ const AppPage = ({
                     handleResetClick={handleResetClick}
                     handleReloadClick={handleReloadClick}
                     handleConnectClick={handleConnectClick}
-                    handleAddClick={sendAdd}
+                    handleAddClick={handleAddClick}
                   />
                 </Grid>
               )}

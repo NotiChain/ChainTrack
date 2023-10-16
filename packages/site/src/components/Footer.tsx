@@ -15,7 +15,7 @@ export const Footer = () => {
       container
     >
       <Grid container item alignItems="center" xs justifyContent="flex-start">
-        <Logo size={36} />
+        <Logo size={54} />
         <SnapName />
       </Grid>
       <Grid container item alignItems="center" xs={6} justifyContent="center">

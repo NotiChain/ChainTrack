@@ -6,7 +6,6 @@ export const Logo = ({ size }: { size: number }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect width="1000" height="1000" fill="white" />
     <mask
       id="mask0_3_1914"
       maskUnits="userSpaceOnUse"
