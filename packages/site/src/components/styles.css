@@ -41,3 +41,23 @@
     background-image: none;
   }
 }
+
+.MuiDataGrid-cell:not(:last-child) {
+  &::before {
+    content: "Click row to add predefined monitor";
+    position: absolute;
+    left: 50%;
+    opacity: 0;
+    font-size: 14px;
+    transition: all 0.15s ease;
+    padding: 10px;
+    color: #fff;
+    border-radius: 10px;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    background: black;
+    margin-left: 20px;
+  }
+}

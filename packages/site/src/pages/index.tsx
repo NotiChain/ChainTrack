@@ -8,6 +8,7 @@ import {
   getSnap,
   isLocalSnap,
   resetData,
+  sendAdd,
 } from '../utils';
 import { defaultSnapOrigin } from '../config';
 
@@ -138,6 +139,15 @@ const Index = () => {
     }
   };
 
+  const handleAddClick = async () => {
+    try {
+      await sendAdd();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   useEffect(() => {
     if (state.installedSnap) {
       loadSnapData();
@@ -151,6 +161,7 @@ const Index = () => {
           handleConnectClick={handleConnectClick}
           handleReloadClick={handleReloadClick}
           handleResetClick={handleResetClick}
+          handleAddClick={handleAddClick}
           isMetaMaskReady={isMetaMaskReady}
           loadSnapData={loadSnapData}
         />
