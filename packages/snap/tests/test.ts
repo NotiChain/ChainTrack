@@ -22,7 +22,7 @@ async function triggerCronjob() {
   const response = await request({
     method: 'trigger_cronjob',
   });
-  expect(response.response).toEqual({ result: expect.anything() });
+  expect(response.response).toEqual({ result: null });
 }
 
 const testMonitors: Monitor[] = [
@@ -346,7 +346,6 @@ describe('onRpcRequest', () => {
     });
   });
 
-  /*
   describe('get-user-stats', () => {
     it('get-user-stats', async () => {
       triggerCronjob();
@@ -387,5 +386,4 @@ describe('onRpcRequest', () => {
       });
     });
   });
-  */
 });
