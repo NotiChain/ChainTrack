@@ -28,8 +28,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
     case 'get_monitors':
       return await getMonitors();
 
-    case 'get_alerts':
+    case 'get_alerts': {
       return await getAlerts();
+    }
 
     case 'get_user_stats':
       return await getUserStats();
@@ -45,6 +46,12 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
 
     case 'delete_monitor': {
       await del(request.params as DeleteParams);
+      break;
+    }
+
+    case 'trigger_cronjob': {
+      // pass in a fake request object here because of the check in cronJob
+      await cronJob.process({ request: { method: 'everyMinute' } });
       break;
     }
 

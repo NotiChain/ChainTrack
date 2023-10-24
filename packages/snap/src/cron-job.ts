@@ -41,7 +41,6 @@ export class CronJob {
 
   async process(ctx: { request: { method: string } }) {
     console.log('CronJob process');
-
     if (ctx.request.method !== 'everyMinute') {
       throw new Error('Method not found.');
     }
@@ -87,10 +86,11 @@ export class CronJob {
             });
           }
         } else if (found && alertExpired(found) && !found.confirmed) {
-          const panelData = [
+          const panelData: SnapPanel = [
             text(`You didn't receive transaction from ${monitor.name}`),
             text('Would you want us to stop receiving notifications?'),
           ];
+
           if (monitor.url) {
             panelData.push(copyable(monitor.url));
           }
