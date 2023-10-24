@@ -28,8 +28,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
     case 'get_monitors':
       return await getMonitors();
 
-    case 'get_alerts':
+    case 'get_alerts': {
       return await getAlerts();
+    }
 
     case 'get_user_stats':
       return await getUserStats();

@@ -41,7 +41,6 @@ export class CronJob {
 
   async process(ctx: { request: { method: string } }) {
     console.log('CronJob process');
-
     if (ctx.request.method !== 'everyMinute') {
       throw new Error('Method not found.');
     }
