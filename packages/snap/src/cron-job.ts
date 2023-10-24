@@ -86,17 +86,14 @@ export class CronJob {
             });
           }
         } else if (found && alertExpired(found) && !found.confirmed) {
-          const panelData = [
+          const panelData: SnapPanel = [
             text(`You didn't receive transaction from ${monitor.name}`),
             text('Would you want us to stop receiving notifications?'),
           ];
-          /*
-          Here are some problems with types, so I commented this out for tests
-          Fix please :)
+
           if (monitor.url) {
             panelData.push(copyable(monitor.url));
           }
-          */
 
           const confirm = await snap.request({
             method: 'snap_dialog',
