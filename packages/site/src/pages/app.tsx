@@ -32,6 +32,7 @@ type AppPageProps = {
   handleConnectClick: () => void;
   handleResetClick: () => void;
   handleReloadClick: () => void;
+  handleAddClick: () => void;
   loadSnapData: () => void;
   isMetaMaskReady: boolean;
 };
@@ -46,6 +47,7 @@ const AppPage = ({
   handleReloadClick,
   isMetaMaskReady,
   loadSnapData,
+  handleAddClick,
 }: AppPageProps) => {
   const [state, dispatch] = useContext(MetaMaskContext);
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
@@ -68,55 +70,53 @@ const AppPage = ({
         />
       )}
       <Box sx={{ flexGrow: 1 }} margin="24px">
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="stretch"
-          spacing={{ xs: 2, md: 2 }}
-        >
-          <Grid item xs={cardsGridIndex}>
-            {state.installedSnap ? (
-              <StatsActionCard
-                alerts={state?.alerts || []}
-                monitors={state?.monitors || []}
-                userStats={state?.userStats || {}}
-              />
-            ) : (
-              <ConnectActionCard
-                installedSnap={state.installedSnap}
-                handleConnectClick={handleConnectClick}
-                isMetaMaskReady={isMetaMaskReady}
-              />
-            )}
-          </Grid>
-          <Grid item xs={cardsGridIndex}>
-            <AddMonitorActionCard
-              installedSnap={state.installedSnap}
-              handleSendAddClick={() => {
-                setSelectedPredefinedMonitor(undefined);
-                setOpenAddTransactionModal(true);
-              }}
-            />
-          </Grid>
-          <Grid item xs={cardsGridIndex}>
-            <CatalogActionCard
-              installedSnap={state.installedSnap}
-              handleGoToCatalogClick={() => {
-                setTab(2);
-              }}
-            />
-          </Grid>
-          {shouldDisplayReconnectButton(state.installedSnap) && (
-            <Grid item xs={cardsGridIndex}>
-              <DebugActionCard
-                handleResetClick={handleResetClick}
-                handleReloadClick={handleReloadClick}
-                handleConnectClick={handleConnectClick}
-                handleAddClick={sendAdd}
-              />
+        <Grid container justifyContent="space-evenly" alignItems="stretch">
+          <Grid item xs={11}>
+            <Grid container spacing={{ xs: 2, md: 2 }}>
+              <Grid item xs={cardsGridIndex}>
+                {state.installedSnap ? (
+                  <StatsActionCard
+                    alerts={state?.alerts || []}
+                    monitors={state?.monitors || []}
+                    userStats={state?.userStats || {}}
+                  />
+                ) : (
+                  <ConnectActionCard
+                    installedSnap={state.installedSnap}
+                    handleConnectClick={handleConnectClick}
+                    isMetaMaskReady={isMetaMaskReady}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={cardsGridIndex}>
+                <AddMonitorActionCard
+                  installedSnap={state.installedSnap}
+                  handleSendAddClick={() => {
+                    setSelectedPredefinedMonitor(undefined);
+                    setOpenAddTransactionModal(true);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={cardsGridIndex}>
+                <CatalogActionCard
+                  installedSnap={state.installedSnap}
+                  handleGoToCatalogClick={() => {
+                    setTab(2);
+                  }}
+                />
+              </Grid>
+              {shouldDisplayReconnectButton(state.installedSnap) && (
+                <Grid item xs={cardsGridIndex}>
+                  <DebugActionCard
+                    handleResetClick={handleResetClick}
+                    handleReloadClick={handleReloadClick}
+                    handleConnectClick={handleConnectClick}
+                    handleAddClick={handleAddClick}
+                  />
+                </Grid>
+              )}
             </Grid>
-          )}
+          </Grid>
           <Grid item xs={11} marginTop="24px">
             <TableTabs
               monitors={state?.monitors || []}
@@ -143,7 +143,7 @@ const AppPage = ({
         sx={{
           margin: 0,
           top: 'auto',
-          left: 20,
+          right: 20,
           bottom: 20,
           position: 'fixed',
         }}

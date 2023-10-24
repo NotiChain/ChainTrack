@@ -6,7 +6,7 @@
  */
 export const getLocalStorage = (key: string) => {
   if (typeof window === 'undefined') {
-    return;
+    return null;
   }
 
   const { localStorage: ls } = window;

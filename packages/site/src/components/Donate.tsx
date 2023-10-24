@@ -43,8 +43,9 @@ export const Donate = () => {
 
   return (
     <Box
-      padding="2.4rem"
-      maxWidth="60rem"
+      paddingLeft="2.4rem"
+      paddingTop="2.4rem"
+      maxWidth="50rem"
       display="flex"
       flexDirection="column"
       alignSelf="center"
@@ -55,7 +56,7 @@ export const Donate = () => {
         a donation. Every contribution, big or small, helps us continue our work
         and serve you better. Thank you for believing in <b>ChainTrack</b>!
       </Typography>
-      <Box alignSelf="center" marginTop="12px">
+      <Box alignSelf="center" marginTop="24px">
         <MyButton
           onClick={handleDonateClick}
           startIcon={<CurrencyBitcoinOutlinedIcon />}

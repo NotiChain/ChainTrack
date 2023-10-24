@@ -167,13 +167,20 @@ export const MonitorsTable = ({
         onClose={() => setMonitorToDelete(null)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="xs"
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" fontSize="large" marginTop="12px">
           Are you sure you want to delete <b>{monitorToDelete?.name}</b>{' '}
           monitor?
         </DialogTitle>
         <DialogActions>
-          <Button onClick={() => setMonitorToDelete(null)}>Cancel</Button>
+          <Button
+            onClick={() => setMonitorToDelete(null)}
+            sx={{ fontSize: '14px' }}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={() => {
               if (!monitorToDelete || !monitorToDelete?.id) {
@@ -187,6 +194,7 @@ export const MonitorsTable = ({
                 })
                 .catch(throwAsyncError);
             }}
+            sx={{ fontSize: '14px' }}
           >
             Delete
           </Button>
