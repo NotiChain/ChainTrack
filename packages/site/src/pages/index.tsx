@@ -14,6 +14,7 @@ import { defaultSnapOrigin } from '../config';
 
 import { ChainIdToNameEnum } from '../../../shared/types';
 import ErrorHandler from '../components/ErrorHandler';
+import Analytics, { Action } from '../utils/analytics';
 import LandingPage from './landing';
 import AppPage from './app';
 
@@ -103,6 +104,10 @@ const Index = () => {
       clearInterval(loadDataInterval);
       loadDataInterval = null;
     }
+
+    Analytics.trackUserEvent({
+      action: Action.snapConnectClick,
+    });
 
     try {
       await connectSnap();
