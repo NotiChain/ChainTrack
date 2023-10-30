@@ -61,6 +61,7 @@ export const Donate = () => {
           onClick={handleDonateClick}
           startIcon={<CurrencyBitcoinOutlinedIcon />}
           color="secondary"
+          disabled={!state.installedSnap}
         >
           Donate
         </MyButton>

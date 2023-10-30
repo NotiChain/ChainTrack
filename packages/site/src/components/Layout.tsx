@@ -126,11 +126,14 @@ const Layout = ({ children }: LayoutProps) => {
       });
 
       await startLoadingSnapData();
-      await navigate('tracking', { replace: true, state: {} });
+      navigate('/tracking');
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
-      navigate('', { replace: true, state: {} });
+      dispatch({
+        type: MetamaskActions.SetInstalled,
+        payload: null,
+      });
     }
   };
 

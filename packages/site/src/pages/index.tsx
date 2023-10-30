@@ -1,13 +1,16 @@
 import { Box, useTheme } from '@mui/material';
+import { useContext } from 'react';
 import { AboutHero } from '../components/About/AboutHero';
 import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
 import { AboutTestimonials } from '../components/About/AboutTestimonials';
 import { AboutFaq } from '../components/About/AboutFAQ';
 import { AboutCTA } from '../components/About/AboutCTA';
 import Layout from '../components/Layout';
+import { MetaMaskContext } from '../hooks';
 
 const HomePage = () => {
   const theme = useTheme();
+  const [state] = useContext(MetaMaskContext);
 
   return (
     <Layout>
@@ -22,14 +25,14 @@ const HomePage = () => {
         >
           <AboutHero
             handleConnectClick={handleConnectClick}
-            disabled={!isMetaMaskReady}
+            disabled={!isMetaMaskReady || Boolean(state.installedSnap)}
           />
           <AboutFeatureSection />
           <AboutTestimonials />
           <AboutFaq />
           <AboutCTA
             handleConnectClick={handleConnectClick}
-            disabled={!isMetaMaskReady}
+            disabled={!isMetaMaskReady || Boolean(state.installedSnap)}
           />
         </Box>
       )}

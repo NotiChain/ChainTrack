@@ -144,6 +144,7 @@ const TrackingPage = () => {
               setSelectedPredefinedMonitor(undefined);
               setOpenAddTransactionModal(true);
             }}
+            disabled={!state.installedSnap}
           >
             <AddIcon />
           </Fab>
