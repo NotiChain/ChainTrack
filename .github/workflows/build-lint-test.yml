@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+        env:
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+          GATSBY_GA_TRACKING_ID: ${{ secrets.GATSBY_GA_TRACKING_ID }}
       - run: yarn install --immutable
       - run: yarn lint
       - run: yarn build
