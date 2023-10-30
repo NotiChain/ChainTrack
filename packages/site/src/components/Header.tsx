@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { Box, Toolbar, Typography } from '@mui/material';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { navigate, Link } from 'gatsby';
 import { useTheme } from '@mui/material/styles';
