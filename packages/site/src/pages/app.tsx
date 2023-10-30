@@ -19,7 +19,6 @@ import {
   shouldDisplayReconnectButton,
   addMonitor,
   updateMonitor,
-  sendAdd,
 } from '../utils';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { Monitor, PredefinedMonitor } from '../../../shared/types';
