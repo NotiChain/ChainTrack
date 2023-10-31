@@ -1,5 +1,100 @@
+body {
+  padding: 0 !important;
+  overflow: auto !important;
+}
+
 .snackbar {
   .MuiAlert-action {
     padding: 0;
   }
+}
+
+.tabs-table-container {
+  .MuiDataGrid-root {
+    border: none;
+
+    .MuiDataGrid-columnHeaderTitle, .MuiDataGrid-cellContent {
+      font-size: 16px;
+    }
+
+    .MuiDataGrid-columnHeaderTitle {
+      font-weight: bold;
+    }
+
+    .MuiDataGrid-cell:focus {
+      outline: none;
+    }
+
+    .MuiDataGrid-cell[data-field="url"] {
+      cursor: auto;
+    }
+
+    .MuiDataGrid-row:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.add-transactions-modal {
+  .MuiFormLabel-root {
+    font-size: 18px;
+  }
+
+  .MuiInputBase-root {
+    font-size: 16px;
+  }
+}
+
+.faq-accordion {
+  .MuiAccordion-root {
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+  }
+}
+
+.MuiDataGrid-cell:not(:last-child) {
+  &::before {
+    content: "Click row to add predefined monitor";
+    position: absolute;
+    left: 50%;
+    opacity: 0;
+    font-size: 14px;
+    transition: all 0.15s ease;
+    padding: 10px;
+    color: #fff;
+    border-radius: 10px;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    background: black;
+    margin-left: 20px;
+  }
+}
+
+.header-component {
+  & > div {
+    padding: 0;
+  }
+}
+
+.card-actions.MuiCardActions-root {
+  & >:not(:first-of-type) {
+    margin-left: 0;
+  }
+}
+
+ul.MuiMenu-list {
+  padding: 0;
+}
+
+a.MuiButtonBase-root:hover {
+  background-color: inherit;
+}
+
+div.MuiMenu-paper {
+  width: 100%;
+  left: 0 !important;
+  max-width: none;
 }

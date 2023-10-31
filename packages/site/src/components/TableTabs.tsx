@@ -15,8 +15,6 @@ import {
 import { MonitorsTable } from './MonitorsTable';
 import { AlertsTable } from './AlertsTable';
 import { PredefinedMonitorsTable } from './PredefinedMonitorsTable';
-// eslint-disable-next-line import/no-unassigned-import
-import './styles.css';
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -164,7 +162,7 @@ export function TableTabs({
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
             <PredefinedMonitorsTable
-              predefinedMonitors={predefinedMonitors.map((item, index) => {
+              predefinedMonitors={predefinedMonitors.map((item) => {
                 return {
                   key: item.id,
                   ...item,

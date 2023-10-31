@@ -14,7 +14,6 @@ const config: GatsbyConfig = {
       options: {
         name: 'ChainTrack Snap',
         icon: 'src/assets/logo.svg',
-        theme_color: '#6F4CFF',
         background_color: '#FFFFFF',
         display: 'standalone',
       },

@@ -14,6 +14,7 @@ import {
 import { defaultSnapOrigin } from '../config';
 import Analytics, { Action } from '../utils/analytics';
 import { ChainIdToNameEnum } from '../../../shared/types';
+import { TRACKING_ROUTE } from '../routes';
 import ErrorHandler from './ErrorHandler';
 
 export type LayoutChildrenProps = {
@@ -130,7 +131,7 @@ const Layout = ({ children }: LayoutProps) => {
       });
 
       await startLoadingSnapData();
-      navigate('/tracking');
+      navigate(TRACKING_ROUTE);
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });

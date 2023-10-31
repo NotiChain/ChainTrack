@@ -5,19 +5,24 @@ import {
   AccordionSummary,
   Box,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material/styles';
 
 export const AboutFaq: FC = () => {
+  const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <Grid
       display="flex"
       justifyContent="space-between"
-      marginBottom="180px"
+      marginBottom={screenLessThanMedium ? '90px' : '180px'}
       flexDirection="column"
       gap="48px"
-      width="50%"
+      width={screenLessThanMedium ? '100%' : '50%'}
       className="faq-accordion"
     >
       <Box>

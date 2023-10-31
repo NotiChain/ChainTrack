@@ -13,8 +13,6 @@ import {
 } from '../../../shared/types';
 import { MetaMaskContext } from '../hooks';
 import { MyButton } from './Button';
-// eslint-disable-next-line import/no-unassigned-import
-import './styles.css';
 
 type AddTransactionModalProps = {
   open: boolean;

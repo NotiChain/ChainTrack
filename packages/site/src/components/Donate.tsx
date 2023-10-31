@@ -51,8 +51,7 @@ export const Donate = () => {
 
   return (
     <Box
-      paddingLeft="2.4rem"
-      paddingTop="2.4rem"
+      padding="2.4rem"
       maxWidth="50rem"
       display="flex"
       flexDirection="column"

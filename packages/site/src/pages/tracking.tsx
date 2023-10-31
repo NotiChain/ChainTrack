@@ -5,7 +5,14 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useContext, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
+import {
+  Alert,
+  CircularProgress,
+  IconButton,
+  Snackbar,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import {
   AddMonitorActionCard,
   ConnectActionCard,
@@ -34,6 +41,9 @@ const maxColumnsInGridContainer = 12;
 
 const TrackingPage = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
+  const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
+  const screenLessThanLarge = useMediaQuery(theme.breakpoints.down('lg'));
   const [successSnackbarText, setSuccessSnackbarText] = useState<string>('');
   const [editTransaction, setEditTransaction] = useState<boolean>(false);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
@@ -44,7 +54,16 @@ const TrackingPage = () => {
   const amountOfCards = shouldDisplayReconnectButton(state.installedSnap)
     ? 4
     : 3;
-  const cardsGridIndex = maxColumnsInGridContainer / amountOfCards;
+
+  const getCardDimension = () => {
+    if (screenLessThanMedium) {
+      return false;
+    } else if (screenLessThanLarge) {
+      return 6;
+    }
+
+    return maxColumnsInGridContainer / amountOfCards;
+  };
 
   return (
     <Layout>
@@ -62,11 +81,15 @@ const TrackingPage = () => {
               sx={{ position: 'absolute', left: '50%', top: '50%' }}
             />
           )}
-          <Box sx={{ flexGrow: 1 }} margin="24px">
+          <Box sx={{ flexGrow: 1 }} margin="24px" width="100%">
             <Grid container justifyContent="space-evenly" alignItems="stretch">
               <Grid item xs={11}>
-                <Grid container spacing={{ xs: 2, md: 2 }}>
-                  <Grid item xs={cardsGridIndex}>
+                <Grid
+                  container
+                  spacing={{ xs: 2, md: 2 }}
+                  flexDirection={screenLessThanMedium ? 'column' : undefined}
+                >
+                  <Grid item xs={getCardDimension()}>
                     {state.installedSnap ? (
                       <StatsActionCard
                         alerts={state?.alerts || []}
@@ -81,7 +104,7 @@ const TrackingPage = () => {
                       />
                     )}
                   </Grid>
-                  <Grid item xs={cardsGridIndex}>
+                  <Grid item xs={getCardDimension()}>
                     <AddMonitorActionCard
                       installedSnap={state.installedSnap}
                       handleSendAddClick={() => {
@@ -90,7 +113,7 @@ const TrackingPage = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={cardsGridIndex}>
+                  <Grid item xs={getCardDimension()}>
                     <CatalogActionCard
                       installedSnap={state.installedSnap}
                       handleGoToCatalogClick={() => {
@@ -99,7 +122,7 @@ const TrackingPage = () => {
                     />
                   </Grid>
                   {shouldDisplayReconnectButton(state.installedSnap) && (
-                    <Grid item xs={cardsGridIndex}>
+                    <Grid item xs={getCardDimension()}>
                       <DebugActionCard
                         handleResetClick={handleResetClick}
                         handleReloadClick={handleReloadClick}

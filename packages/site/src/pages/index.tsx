@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useContext } from 'react';
 import { AboutHero } from '../components/About/AboutHero';
 import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
@@ -7,20 +7,20 @@ import { AboutFaq } from '../components/About/AboutFAQ';
 import { AboutCTA } from '../components/About/AboutCTA';
 import Layout from '../components/Layout';
 import { MetaMaskContext } from '../hooks';
+// eslint-disable-next-line import/no-unassigned-import
+import './styles.css';
 
 const HomePage = () => {
   const theme = useTheme();
   const [state] = useContext(MetaMaskContext);
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Layout>
       {({ handleConnectClick, isMetaMaskReady }) => (
         <Box
           sx={{
-            [theme?.custom?.mediaQueries?.small]: {
-              padding: '0 20px',
-            },
-            padding: '0 120px',
+            padding: screenLessThanMedium ? '20px' : '0 120px',
           }}
         >
           <AboutHero

@@ -1,7 +1,5 @@
 import { Theme } from '@mui/material';
 
-const breakpoints = ['600px', '768px', '992px'];
-
 /**
  * Common theme properties.
  */
@@ -16,12 +14,6 @@ const commonThemeProps = {
   },
   radii: {
     button: '8px',
-  },
-  breakpoints,
-  mediaQueries: {
-    small: `@media screen and (max-width: ${breakpoints[0]})`,
-    medium: `@media screen and (min-width: ${breakpoints[1]})`,
-    large: `@media screen and (min-width: ${breakpoints[2]})`,
   },
 };
 

@@ -6,13 +6,12 @@ import CardActions from '@mui/material/CardActions';
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 
 type CardProps = {
   content: {
     title?: string;
     description: ReactNode;
-    button?: ReactNode;
     buttons?: ReactNode[];
   };
   disabled?: boolean;
@@ -20,8 +19,9 @@ type CardProps = {
 };
 
 export const ActionCard = ({ content }: CardProps) => {
-  const { title, description, button, buttons } = content;
+  const { title, description, buttons } = content;
   const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Card
@@ -51,8 +51,23 @@ export const ActionCard = ({ content }: CardProps) => {
       <CardContent>
         <Box>{description}</Box>
       </CardContent>
-      {button && <CardActions sx={{ mt: 'auto' }}>{button}</CardActions>}
-      {buttons && <CardActions sx={{ mt: 'auto' }}>{buttons}</CardActions>}
+      {buttons && (
+        <CardActions
+          className="card-actions"
+          sx={{
+            mt: 'auto',
+            display: 'grid',
+            [screenLessThanMedium
+              ? 'gridTemplateRows'
+              : 'gridTemplateColumns']: `repeat(${
+              screenLessThanMedium ? 1 : 2
+            }, 1fr)`,
+            gap: '12px',
+          }}
+        >
+          {buttons}
+        </CardActions>
+      )}
     </Card>
   );
 };

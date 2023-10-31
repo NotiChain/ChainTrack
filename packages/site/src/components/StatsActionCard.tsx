@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Typography } from '@mui/material';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import moment from 'moment';
 
 import { Alerts, Monitors, UserStats } from '../../../shared/types';

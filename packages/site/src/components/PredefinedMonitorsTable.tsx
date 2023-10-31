@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { PredefinedMonitors, PredefinedMonitor } from '../../../shared/types';
 import { column } from './MonitorsTable';
 
@@ -13,6 +14,8 @@ export const PredefinedMonitorsTable = ({
   predefinedMonitors,
   openAddTransactionModal,
 }: MonitorsTableProps) => {
+  const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
   const handleAdd = (predefinedMonitor: PredefinedMonitor) => {
     openAddTransactionModal(predefinedMonitor);
   };
@@ -28,7 +31,7 @@ export const PredefinedMonitorsTable = ({
     column.contractAddress,
     column.amount,
     column.url,
-  ];
+  ].map((col) => (screenLessThanMedium ? { ...col, flex: 0 } : col));
 
   return (
     <Box style={{ width: '100%' }}>
