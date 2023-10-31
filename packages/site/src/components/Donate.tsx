@@ -2,8 +2,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Modal } from '@mui/material';
 import CurrencyBitcoinOutlinedIcon from '@mui/icons-material/CurrencyBitcoinOutlined';
-
 import React, { useContext } from 'react';
+import Analytics, { Action } from '../utils/analytics';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { MyButton } from './Button';
 
@@ -14,6 +14,10 @@ export const Donate = () => {
 
   const handleDonateClick = async () => {
     try {
+      Analytics.trackUserEvent({
+        action: Action.donateClick,
+      });
+
       if (!state?.wallets || !state.wallets[0]) {
         throw new Error('Wallet not connected');
       }
@@ -32,6 +36,10 @@ export const Donate = () => {
       if (!hash) {
         return;
       }
+
+      Analytics.trackUserEvent({
+        action: Action.donateSuccess,
+      });
 
       setTransactionHash(hash);
       setOpenThanks(true);

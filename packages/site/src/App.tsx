@@ -1,7 +1,8 @@
 import React, { FunctionComponent, ReactNode, useContext } from 'react';
 import { Box, GlobalStyles, useTheme } from '@mui/material';
-import { Footer, Header } from './components';
 
+import Analytics from './utils/analytics';
+import { Footer, Header } from './components';
 import { getGlobalStyles } from './config/theme';
 import { ToggleThemeContext } from './Root';
 import { Donate } from './components/Donate';
