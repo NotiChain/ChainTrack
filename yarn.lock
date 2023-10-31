@@ -10805,6 +10805,7 @@ __metadata:
     react: ^18.2.0
     react-data-table-component: ^7.5.4
     react-dom: ^18.2.0
+    react-ga4: ^2.1.0
     react-is: ^18.2.0
     react-use-wizard: ^2.2.3
     rimraf: ^3.0.2
@@ -21140,6 +21141,13 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f4c696bdbde5008560388622b994c00502d1faeeabff32b02964770c8c020208872f5f6b914b249a8bf3e97cc12e58bb0d227cd33460093654156b7b7f4c8d76
+  languageName: node
+  linkType: hard
+
+"react-ga4@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-ga4@npm:2.1.0"
+  checksum: f7fb41141418d4ad14756f1126a1e9958db37d4d84ae6cd798043dc03a390b6dba74d69311af0349f0b9580a43bda8930138194ccc29c4100efe446e2d6eb057
   languageName: node
   linkType: hard
 

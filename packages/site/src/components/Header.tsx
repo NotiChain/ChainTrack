@@ -5,6 +5,7 @@ import { navigate, Link } from 'gatsby';
 import { useTheme } from '@mui/material/styles';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getSnap } from '../utils';
+import Analytics, { Action } from '../utils/analytics';
 import { Toggle } from './Toggle';
 import { SnapName } from './SnapName';
 import { MyButton } from './Button';
@@ -22,6 +23,10 @@ export const Header = ({
   const theme = useTheme();
 
   const handleConnectClick = async () => {
+    Analytics.trackUserEvent({
+      action: Action.snapConnectClick,
+    });
+
     try {
       await connectSnap();
       const installedSnap = await getSnap();

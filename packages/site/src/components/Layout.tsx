@@ -12,7 +12,7 @@ import {
   sendAdd,
 } from '../utils';
 import { defaultSnapOrigin } from '../config';
-
+import Analytics, { Action } from '../utils/analytics';
 import { ChainIdToNameEnum } from '../../../shared/types';
 import ErrorHandler from './ErrorHandler';
 
@@ -115,6 +115,10 @@ const Layout = ({ children }: LayoutProps) => {
       clearInterval(loadDataInterval);
       loadDataInterval = null;
     }
+
+    Analytics.trackUserEvent({
+      action: Action.snapConnectClick,
+    });
 
     try {
       await connectSnap();
