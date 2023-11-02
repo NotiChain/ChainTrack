@@ -2,7 +2,10 @@ import { v4 as uuidv4 } from 'uuid';
 import storage, { Data } from '../storage';
 import { Monitor } from '../../../shared/types';
 
-export type CreateParams = Omit<Monitor, 'intervalMs' | 'lastTransaction'>;
+export type CreateParams = Omit<
+  Monitor,
+  'intervalMs' | 'lastTransaction' | 'id'
+> & { id?: string };
 
 export async function create({
   id,
