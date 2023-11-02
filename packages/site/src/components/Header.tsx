@@ -138,6 +138,7 @@ export const Header = ({
                     setAnchorEl(null);
                   }}
                   divider
+                  sx={{ fontSize: '2rem' }}
                 >
                   Home
                 </MenuItem>
@@ -147,6 +148,7 @@ export const Header = ({
                     setAnchorEl(null);
                   }}
                   divider
+                  sx={{ fontSize: '2rem' }}
                 >
                   Tracking
                 </MenuItem>

@@ -43,6 +43,21 @@ body {
   .MuiInputBase-root {
     font-size: 16px;
   }
+
+  @media screen and (max-width: 600px) {
+    .add-transactions-modal-container {
+      height: 80%;
+      overflow: scroll;
+    }
+
+    .MuiFormLabel-root {
+      font-size: 14px;
+    }
+
+    .MuiInputBase-root {
+      font-size: 12px;
+    }
+  }
 }
 
 .faq-accordion {

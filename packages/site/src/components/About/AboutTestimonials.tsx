@@ -8,18 +8,8 @@ export const AboutTestimonials: FC = () => {
   const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Grid
-      container
-      spacing={screenLessThanMedium ? 4 : 8}
-      marginBottom={screenLessThanMedium ? '90px' : '180px'}
-    >
-      <Grid
-        container
-        item
-        xs={screenLessThanMedium ? 6 : 5}
-        flexDirection="column"
-        gap="12px"
-      >
+    <Grid container spacing={screenLessThanMedium ? 4 : 8} marginBottom="6rem">
+      <Grid container item xs={6} flexDirection="column" gap="12px">
         <Typography
           variant={screenLessThanMedium ? 'h4' : 'h3'}
           fontWeight="500"
@@ -43,13 +33,7 @@ export const AboutTestimonials: FC = () => {
           </Typography>
         </Box>
       </Grid>
-      <Grid
-        container
-        item
-        xs={screenLessThanMedium ? 6 : 5}
-        flexDirection="column"
-        gap="12px"
-      >
+      <Grid container item xs={6} flexDirection="column" gap="12px">
         <Typography
           variant={screenLessThanMedium ? 'h4' : 'h3'}
           fontWeight="500"

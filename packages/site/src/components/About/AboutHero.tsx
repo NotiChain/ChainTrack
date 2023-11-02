@@ -24,14 +24,14 @@ export const AboutHero: FC<AboutHeroProps> = ({
       flexDirection="column"
     >
       <Typography
-        fontSize={screenLessThanMedium ? '40px' : '80px'}
+        fontSize="6rem"
         fontWeight="bold"
         color={theme.palette.secondary.main}
       >
         ChainTrack
       </Typography>
       <Typography
-        fontSize={screenLessThanMedium ? '25px' : '50px'}
+        fontSize="3rem"
         fontWeight="bold"
         marginTop="20px"
         marginBottom="20px"
@@ -43,7 +43,7 @@ export const AboutHero: FC<AboutHeroProps> = ({
         onClick={handleConnectClick}
         size="large"
         sx={{
-          fontSize: screenLessThanMedium ? '16px' : '32px',
+          fontSize: '2rem',
           fontWeight: 500,
           padding: '20px 40px',
         }}

@@ -34,8 +34,8 @@ export const AboutFeatureSection: FC = () => {
     <Grid
       display="flex"
       justifyContent="space-between"
-      marginTop={screenLessThanMedium ? '90px' : '180px'}
-      marginBottom={screenLessThanMedium ? '90px' : '180px'}
+      marginTop="6rem"
+      marginBottom="6rem"
       gap="48px"
     >
       <Grid width="60%" sx={{ '@media (max-width: 900px)': { width: '100%' } }}>

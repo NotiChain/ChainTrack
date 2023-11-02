@@ -21,7 +21,7 @@ export const AboutCTA: FC<AboutCTAProps> = ({
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      marginBottom={screenLessThanMedium ? '90px' : '180px'}
+      marginBottom="6rem"
     >
       <Typography
         variant={screenLessThanMedium ? 'h2' : 'h1'}
@@ -41,7 +41,7 @@ export const AboutCTA: FC<AboutCTAProps> = ({
           onClick={handleConnectClick}
           size="large"
           sx={{
-            fontSize: screenLessThanMedium ? '16px' : '32px',
+            fontSize: '2rem',
             fontWeight: 500,
             padding: '20px 40px',
           }}

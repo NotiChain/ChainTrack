@@ -57,11 +57,7 @@ export const ActionCard = ({ content }: CardProps) => {
           sx={{
             mt: 'auto',
             display: 'grid',
-            [screenLessThanMedium
-              ? 'gridTemplateRows'
-              : 'gridTemplateColumns']: `repeat(${
-              screenLessThanMedium ? 1 : 2
-            }, 1fr)`,
+            gridTemplateColumns: `repeat(2, 1fr)`,
             gap: '12px',
           }}
         >

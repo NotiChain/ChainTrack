@@ -19,7 +19,7 @@ export const AboutFaq: FC = () => {
     <Grid
       display="flex"
       justifyContent="space-between"
-      marginBottom={screenLessThanMedium ? '90px' : '180px'}
+      marginBottom="6rem"
       flexDirection="column"
       gap="48px"
       width={screenLessThanMedium ? '100%' : '50%'}
