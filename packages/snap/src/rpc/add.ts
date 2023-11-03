@@ -2,6 +2,17 @@ import { panel, heading, text, copyable, divider } from '@metamask/snaps-ui';
 import { ChainIdToNameEnum } from '../../../shared/types';
 import { create } from './create';
 
+function sanitizeString(str: string): string {
+  return str
+    .replace(/[\r\n]/gmu, '')
+    .replace(/\s+/gu, ' ')
+    .trim();
+}
+
+function validateAddress(address: string): boolean {
+  return /^0x[a-fA-F0-9]{40}$/u.test(address);
+}
+
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
@@ -39,14 +50,25 @@ export async function add(): Promise<void> {
     throw new Error('Network is not confirmed');
   }
 
-  // Get the wallet address, from which we expect to have transactions
-  // TODO: add validation for wallet address
   const wallets = await window.ethereum.request<string[]>({
     method: 'eth_requestAccounts',
   });
 
   if (!wallets || wallets.length === 0) {
     throw new Error('Wallets are not provided');
+  }
+
+  const sanitizedWallets = wallets.map((wallet) => {
+    if (typeof wallet !== 'string') {
+      throw new Error('Wallet is not a string');
+    }
+    return sanitizeString(wallet);
+  });
+
+  for (const wallet of sanitizedWallets) {
+    if (!validateAddress(wallet)) {
+      throw new Error('Wallet address is invalid');
+    }
   }
 
   let name = await snap.request({
@@ -86,6 +108,10 @@ export async function add(): Promise<void> {
     throw new Error('From is not a string');
   }
 
+  if (from.length !== 0 && !validateAddress(from)) {
+    throw new Error('From address is invalid');
+  }
+
   const intervalHours = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -112,26 +138,34 @@ export async function add(): Promise<void> {
     throw new Error('Interval can not be less than 1 hour');
   }
 
-  let contractAddress = await snap.request({
-    method: 'snap_dialog',
-    params: {
-      type: 'prompt',
-      content: panel([
-        heading('Contract Address'),
-        text('By default we monitor ETH transactions.'),
-        text(
-          'By default, ChainTrack monitors ETH transactions. To track transactions of another ERC-20 token, please enter its contract address.',
-        ),
-      ]),
+  let contractAddress: string | boolean | null | undefined = await snap.request(
+    {
+      method: 'snap_dialog',
+      params: {
+        type: 'prompt',
+        content: panel([
+          heading('Contract Address'),
+          text('By default we monitor ETH transactions.'),
+          text(
+            'By default, ChainTrack monitors ETH transactions. To track transactions of another ERC-20 token, please enter its contract address.',
+          ),
+        ]),
+      },
     },
-  });
+  );
 
   if (typeof contractAddress !== 'string') {
     throw new Error('ContractAddress is not a string');
   }
 
+  contractAddress = sanitizeString(contractAddress);
+
+  if (contractAddress.length !== 0 && !validateAddress(contractAddress)) {
+    throw new Error('ContractAddress is invalid');
+  }
+
   if (contractAddress.length === 0) {
-    contractAddress = null;
+    contractAddress = undefined;
   }
 
   let amount = await snap.request({
@@ -153,6 +187,8 @@ export async function add(): Promise<void> {
     throw new Error('Amount is not a string');
   }
 
+  amount = sanitizeString(amount);
+
   if (amount.length === 0) {
     amount = '0';
   } else {
@@ -165,14 +201,14 @@ export async function add(): Promise<void> {
     }
   }
 
-  for (const wallet of wallets) {
+  for (const wallet of sanitizedWallets) {
     await create({
       name,
       network,
       from,
       to: wallet,
       intervalHours,
-      contractAddress: contractAddress || undefined,
+      contractAddress,
       amount: parseFloat(amount),
     });
   }
