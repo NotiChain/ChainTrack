@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import {
   Button,
   ButtonGroup,
@@ -9,10 +9,12 @@ import {
   IconButton,
   Link,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
   ChainIdToNameEnum,
   Monitor,
@@ -121,10 +123,12 @@ export const MonitorsTable = ({
 }: MonitorsTableProps) => {
   const throwAsyncError = useThrowAsyncError();
   const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>();
+  const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   const columns: GridColDef[] = [
     {
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams) => (
         <ButtonGroup variant="outlined" aria-label="outlined button group">
           <IconButton onClick={() => openAddTransactionModal(params.row, true)}>
             <EditIcon color="primary" />
@@ -146,7 +150,7 @@ export const MonitorsTable = ({
     column.contractAddress,
     column.amount,
     column.url,
-  ];
+  ].map((col) => (screenLessThanMedium ? { ...col, flex: 0 } : col));
 
   return (
     <div style={{ width: '100%' }}>
@@ -183,7 +187,7 @@ export const MonitorsTable = ({
           </Button>
           <Button
             onClick={() => {
-              if (!monitorToDelete || !monitorToDelete?.id) {
+              if (!monitorToDelete?.id) {
                 return;
               }
 

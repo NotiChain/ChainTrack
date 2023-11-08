@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
-import { Typography, styled, Grid, Box } from '@mui/material';
+import { Typography, styled, Grid, useMediaQuery } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import { useTheme } from '@mui/material/styles';
 
 export const AboutFeatureSection: FC = () => {
+  const theme = useTheme();
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
+
   const BorderLine = styled('div')(() => ({
     minHeight: '25px',
     margin: '60px 0 40px 0',
@@ -30,16 +34,15 @@ export const AboutFeatureSection: FC = () => {
     <Grid
       display="flex"
       justifyContent="space-between"
-      marginBottom="180px"
+      marginTop="6rem"
+      marginBottom="6rem"
       gap="48px"
     >
-      <Box sx={{ '@media (max-width: 900px)': { display: 'none' } }}>
-        <Typography variant="h2" fontWeight="500">
-          WHAT WE DO
-        </Typography>
-      </Box>
       <Grid width="60%" sx={{ '@media (max-width: 900px)': { width: '100%' } }}>
-        <Typography variant="h1" fontWeight="500">
+        <Typography
+          variant={screenLessThanMedium ? 'h2' : 'h1'}
+          fontWeight="500"
+        >
           Exclusively for MetaMask users, we'll alert you about recurring
           transaction that hasn't taken place.
         </Typography>

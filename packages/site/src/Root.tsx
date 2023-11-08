@@ -30,7 +30,9 @@ export const ToggleThemeContext = createContext({
 });
 
 export const Root: FunctionComponent<RootProps> = ({ children }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>(getThemePreference());
+  const [mode, setMode] = useState<'light' | 'dark' | null>(
+    getThemePreference(),
+  );
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -44,27 +46,33 @@ export const Root: FunctionComponent<RootProps> = ({ children }) => {
     [],
   );
 
-  const theme = createTheme({
-    palette: {
-      mode,
-      primary: mode === 'dark' ? blueGrey : brown,
-      secondary: mode === 'dark' ? grey : blueGrey,
-    },
-    custom: mode === 'dark' ? { ...dark } : { ...light },
-  });
+  let theme;
+
+  if (mode) {
+    theme = createTheme({
+      palette: {
+        mode,
+        primary: mode === 'dark' ? blueGrey : brown,
+        secondary: mode === 'dark' ? grey : blueGrey,
+      },
+      custom: mode === 'dark' ? { ...dark } : { ...light },
+    });
+  }
 
   useEffect(() => {
     setMode(getThemePreference());
   }, []);
 
+  if (!mode || !theme) {
+    return null;
+  }
+
   return (
-    mode && (
-      <ToggleThemeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <MetaMaskProvider>{children}</MetaMaskProvider>
-        </ThemeProvider>
-      </ToggleThemeContext.Provider>
-    )
+    <ToggleThemeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <MetaMaskProvider>{children}</MetaMaskProvider>
+      </ThemeProvider>
+    </ToggleThemeContext.Provider>
   );
 };

@@ -41,7 +41,6 @@ export function CatalogActionCard({
       color="secondary"
       href="https://github.com/NasCorp/ChainTrack/issues"
       target="_blank"
-      sx={{ marginLeft: '10px' }}
       disabled={!installedSnap}
       mykey="idea"
       key="idea"

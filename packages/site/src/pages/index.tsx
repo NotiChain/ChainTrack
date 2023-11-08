@@ -1,183 +1,43 @@
-import { useContext, useEffect } from 'react';
-import { MetamaskActions, MetaMaskContext } from '../hooks';
-import {
-  connectSnap,
-  getAlerts,
-  getMonitors,
-  getUserStats,
-  getSnap,
-  isLocalSnap,
-  resetData,
-  sendAdd,
-} from '../utils';
-import { defaultSnapOrigin } from '../config';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { useContext } from 'react';
+import { AboutHero } from '../components/About/AboutHero';
+import { AboutFeatureSection } from '../components/About/AboutFeatureSection';
+import { AboutTestimonials } from '../components/About/AboutTestimonials';
+import { AboutFaq } from '../components/About/AboutFAQ';
+import { AboutCTA } from '../components/About/AboutCTA';
+import Layout from '../components/Layout';
+import { MetaMaskContext } from '../hooks';
+// eslint-disable-next-line import/no-unassigned-import
+import './styles.css';
 
-import { ChainIdToNameEnum } from '../../../shared/types';
-import ErrorHandler from '../components/ErrorHandler';
-import Analytics, { Action } from '../utils/analytics';
-import LandingPage from './landing';
-import AppPage from './app';
-
-const Index = () => {
-  let loadDataInterval: NodeJS.Timeout | null = null;
-  const [state, dispatch] = useContext(MetaMaskContext);
-  const isMetaMaskReady = isLocalSnap(defaultSnapOrigin) && state.snapsDetected;
-
-  const getWallets = async () => {
-    try {
-      const data = await window.ethereum.request<string[]>({
-        method: 'eth_requestAccounts',
-      });
-      dispatch({ type: MetamaskActions.SetWallets, payload: data });
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const getChain = async () => {
-    try {
-      const data = await window.ethereum.request<
-        keyof typeof ChainIdToNameEnum
-      >({
-        method: 'eth_chainId',
-      });
-      dispatch({ type: MetamaskActions.SetChain, payload: data });
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const loadMonitors = async () => {
-    try {
-      const data = await getMonitors();
-      dispatch({ type: MetamaskActions.SetMonitors, payload: data });
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const loadAlerts = async () => {
-    try {
-      const data = await getAlerts();
-      dispatch({ type: MetamaskActions.SetAlerts, payload: data });
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const loadUserStats = async () => {
-    try {
-      const data = await getUserStats();
-      dispatch({ type: MetamaskActions.SetUserStats, payload: data });
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  async function loadSnapData() {
-    dispatch({ type: MetamaskActions.SetLoading, payload: true });
-    await Promise.all([
-      getWallets(),
-      getChain(),
-      loadMonitors(),
-      loadAlerts(),
-      loadUserStats(),
-    ]);
-    dispatch({ type: MetamaskActions.SetLoading, payload: false });
-  }
-
-  async function startLoadingSnapData() {
-    if (!loadDataInterval) {
-      await loadSnapData();
-      // eslint-disable-next-line require-atomic-updates
-      loadDataInterval = setInterval(loadSnapData, 5 * 60 * 1000);
-    }
-  }
-
-  const handleConnectClick = async () => {
-    if (loadDataInterval) {
-      clearInterval(loadDataInterval);
-      loadDataInterval = null;
-    }
-
-    Analytics.trackUserEvent({
-      action: Action.snapConnectClick,
-    });
-
-    try {
-      await connectSnap();
-      const installedSnap = await getSnap();
-
-      dispatch({
-        type: MetamaskActions.SetInstalled,
-        payload: installedSnap,
-      });
-
-      await startLoadingSnapData();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleResetClick = async () => {
-    try {
-      await resetData();
-      await loadSnapData();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleReloadClick = async () => {
-    try {
-      await loadSnapData();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  const handleAddClick = async () => {
-    try {
-      await sendAdd();
-    } catch (e) {
-      console.error(e);
-      dispatch({ type: MetamaskActions.SetError, payload: e });
-    }
-  };
-
-  useEffect(() => {
-    if (state.installedSnap) {
-      loadSnapData();
-    }
-  }, [state.installedSnap]);
+const HomePage = () => {
+  const theme = useTheme();
+  const [state] = useContext(MetaMaskContext);
+  const screenLessThanMedium = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <ErrorHandler>
-      {state.installedSnap ? (
-        <AppPage
-          handleConnectClick={handleConnectClick}
-          handleReloadClick={handleReloadClick}
-          handleResetClick={handleResetClick}
-          handleAddClick={handleAddClick}
-          isMetaMaskReady={isMetaMaskReady}
-          loadSnapData={loadSnapData}
-        />
-      ) : (
-        <LandingPage
-          handleConnectClick={handleConnectClick}
-          isMetaMaskReady={isMetaMaskReady}
-        />
+    <Layout>
+      {({ handleConnectClick, isMetaMaskReady }) => (
+        <Box
+          sx={{
+            padding: screenLessThanMedium ? '20px' : '0 120px',
+          }}
+        >
+          <AboutHero
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady || Boolean(state.installedSnap)}
+          />
+          <AboutFeatureSection />
+          <AboutTestimonials />
+          <AboutFaq />
+          <AboutCTA
+            handleConnectClick={handleConnectClick}
+            disabled={!isMetaMaskReady || Boolean(state.installedSnap)}
+          />
+        </Box>
       )}
-    </ErrorHandler>
+    </Layout>
   );
 };
 
-export default Index;
+export default HomePage;
